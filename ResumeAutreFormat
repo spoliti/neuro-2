@@ -1,0 +1,69 @@
+BRUNEL
+
+
+PARTIES UTILES (à lire pour plus de détails)
+*définition des variables et valeurs :
+		-part 2 : the model (pages 184 - 185 or 2 - 3) (seul le modèle A nous intéresse)
+		-part 6 : comparison between theory and simulations (p 194-197 or 12-15)
+*graphiques à réaliser : page 197 ou 15
+*partie ‘maths’ : 
+		-eq différentielle : (1), 
+		-détail pour RI(t) : (2), approx pour modèle A (3), (4) et (5)
+
+
+VALEURS ET DIFFERENTS PARAMETRES
+
+Model A  (excitatory neuron’s characteristics = inhibitory neurons)
+(notation : Xe = characteristic X for excitatory neurons, Xi = for inhibitory ones, sans indice: commun aux deux types, ext = en lien avec le background)
+Paramètres qui doivent pouvoir varier: g et 𝜈 ext. (valeurs données pour chaque sets de paramètres dans la figure 8 p197 ou 15). A part le temps t, les autres sont a priori constants.
+But : calculer V(t) pour chaque neurone (dépolarization de la membrane) en fonction du temps.
+
+N = total number of neurons in the simulation
+Ne = number of excitory neurons (0.8N), Ni = inhibitory neurons (0.2N)
+N = 12 500, Ne = 10 000, Ni = 2 500
+
+Connection probability (yé) Є = 0.1 
+C = number of connections from other neurons (random) for 1 neuron -> Ce = 4 Ci
+Cext = number of connections from excitatory neurons outside the network (Cext = Ce)
+Each neurone has : Ce = 1 000, Ci = 250, Cext = 1 000 
+
+Postsynaptic potential (PSP) amplitude (or efficacy) J = 0.1 mV
+Relative strength of inhibitory synapses : g (donné pour chaque set de paramètres)
+Excitatory neurons : at each synapse -> use J
+Inhibitory neurons : at each synapse -> use -gJ 
+Synaptic currents arriving at the soma (central part of a neuron) : I(t) (sum of the contribution of spikes arriving at different synapses)
+
+Transmission delay D = 1.5ms
+Emission time of a spike and time in general are notated t.
+Membrane time constant (tau)  τ = 20 ms
+
+Théorie utile :  When V(t) reaches the firing threshold (theta) θ, an action potential is emitted by the neuron (spike). The depolarization is reset to the reset potential Vr  after a refractory period (tau) τrp  during which the potential is insensitive to stimulation.
+
+firing threshold (theta) θ = 20 mV
+reset potential Vr = 10 mV
+refractory period (tau) τrp = 2 ms
+
+Frequency needed for a neuron to reach threshold in absence of feedback (?) : 𝜈thr .
+ 𝜈thr = θ / (J*Ce* τ)
+Background: external synapses are activated by independent Poisson processes with rate (nu) 𝜈ext  ( = external  frequency) (calculée par rapport à 𝜈thr  : le rapport 𝜈ext / 𝜈thr  est donné dans les détails de la figure 8 pour chaque sets de paramètres.) (p 197 ou 15) 
+
+
+***********************
+
+Pour ceux que ça intéresse un peu de théorie sur les différents états qu’on devrait observer:
+
+*Different states possible:
+	-synchronous
+	-asynchronous with stationary global activity and very irregular individual cell activity
+	-oscillation of the global activity but individual cells fire irregularly (typically at lower rate than the global oscillation frequency)
+
+	-> depending on the external frequency and the balance between excitation and inhibition
+	-> fast oscillation state : depends mostly on the synaptic time scale
+	-> slow oscillation state : depends mostly on the membrane time constant
+
+*definitions of SR, SI, AI, AR (figure 7 p 196 )
+
+	-Synchronous regular (SR) states, where neurons are almost fully synchronized in a few clusters and behave as oscillators when excitation dominates inhibition and synaptic time distributions are sharply peaked;
+	-Asynchronous regular (AR) states, with stationary global activity and quasi-regular individual neuron firing when excitation dominates inhibition and synaptic time distributions are broadly peaked;
+	-Asynchronous irregular (AI) states, with stationary global activity but strongly irregular individual firing at low rates when inhibition dominates excitation in an intermediate range of external frequencies;
+	-Synchronous irregular (SI) states, with oscillatory global activity but strongly irregular individual firing at low (compared to the global oscillation frequency) firing rates, when inhibition dominates excitation and either low external frequencies (slow oscillations) or high external frequencies (fast oscillations). When the average synaptic time constant is high enough, these two regions merge together.
