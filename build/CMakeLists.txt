@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(neuro-2)
 
-add_executable(neuro-2 src/Env1.cpp src/Neurone.cpp)
+add_executable(neuro-2 src/Env.cpp src/Neurone.cpp)
 
 include_directories(src)
 link_directories("/usr/local/lib")              // Not sure about the directory
@@ -19,7 +19,7 @@ if (test)
   find_package(GTest)
   include_directories(${GTEST_INCLUDE_DIRS})
     // Link GTest library to executable files
-  add_executable(project_test test/test_main.cpp src/Env1.cpp)
+  add_executable(project_test test/test_main.cpp src/Env.cpp)
   target_link_libraries(project_test ${GTEST_BOTH_LIBRARIES} pthread)
     // Add Test
   add_test(project0 project_test)
