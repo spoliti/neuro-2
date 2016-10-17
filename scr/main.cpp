@@ -9,10 +9,11 @@ class Env;
 int main() {
 	
 	//Création de la simulation
-	Env(); //constructeur de env pour créer des neurones
+	//Env(); //constructeur de env pour créer des neurones
+	Env network;
 	//appel de random_connection pour générer les connections
-	//random_connection();
-	//FONCTION NOT DECLARED IN THIS SCOPE -> PB D INCLUSIONS ??
+	network.Env::random_connection();
+
 	
 	//Mise en route de la simulation
 	

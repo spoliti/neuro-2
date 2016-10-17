@@ -1,5 +1,7 @@
 //#include <neuro-2/neuron.hpp>
 #include "neuron.hpp"
+#include <iostream>
+
 
 //Initialisation des constantes static
 	const double Neuron::v_reset(10);         	   	 //[milliVolt]
@@ -11,9 +13,11 @@
 
     const double Neuron::connection_probability(0.1);
     const int Neuron::excitatory_connection(1000);       //nb of excitatory connections for each neuron
-    const int Neuron::inhibatory_connection(250);        //nb of inhibitory connections for each neuron
+	const int Neuron::inhibatory_connection(250);        //nb of inhibitory connections for each neuron
     const int Neuron::ext_excitatory_connection(1000);   //nb of external excitatory connections for each neuron
 	
+	const int Neuron::excitatory_neurons(10000);    	//nb of excitatory neurons in the network
+    const int Neuron::inhibatory_neurons(2500);   	//nb of inhibitory neurons in the network
 
 //Methodes
 	
@@ -62,4 +66,35 @@ void Neuron::refractory(){
     active_state = false;
 }
 
+void Neuron::random_connection() {
+	  /* Pour un nombre random entre min et max :
+      * a = min + rand() % (max - min + 1 );
+      * exemple : nb entre 250 et 1249 : neurones excitateurs
+      * a = 250 + rand() % 1000;
+      */
+     
+    int number;
+    
+	//Connections avec les neurons inhibiteurs
+	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
+		//indice de neurones_ entre 0 et 2499 : neurones inhibiteurs
+		number = rand() % Neuron::inhibatory_neurons;
+		this->Neuron::add_connection(i, number);
+	}
+     
+     //Connections avec les neurons excitateurs
+     unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
+     
+     for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
+		//indice de neurones_ entre 2500 et 12499 : neurones excitateurs
+		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
+		this->Neuron::add_connection(i, number);
+	}
+
+	
+}
+
+void Neuron::add_connection(int indice, int number) {
+	this->connections_[indice] = number;
+}
 
