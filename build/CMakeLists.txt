@@ -8,10 +8,12 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++11")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_executable(neuro-2 src/Env.cpp src/Neurone.cpp)include_directories(src)link_directories("/usr/local/lib")              // Not sure about the directory
+add_executable(neuro-2 src/Env.cpp src/Neurone.cpp)
+
+include_directories(src)
+link_directories("/usr/local/lib")              // Not sure about the directory
+
 if (test)
-
-
     // Find GTest
   enable_testing()
   find_package(GTest)
@@ -24,7 +26,6 @@ if (test)
 endif()
 
 find_package(Doxygen)
-
 if (DOXYGEN_FOUND)
   add_custom_target(doc
     ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Doxyfile
