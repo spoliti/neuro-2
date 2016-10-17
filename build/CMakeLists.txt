@@ -19,10 +19,10 @@ if (test)
   find_package(GTest)
   include_directories(${GTEST_INCLUDE_DIRS})
     // Link GTest library to executable files
-  add_executable(project_test test/test_main.cpp src/Env.cpp)
-  target_link_libraries(project_test ${GTEST_BOTH_LIBRARIES} pthread)
+  add_executable(neuro-2_test test/test_main.cpp src/Env.cpp)
+  target_link_libraries(neuro-2_test ${GTEST_BOTH_LIBRARIES} pthread)
     // Add Test
-  add_test(project0 project_test)
+  add_test(neuro-2_0 neuro-2_test)
 endif()
 
 find_package(Doxygen)
