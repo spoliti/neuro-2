@@ -22,7 +22,7 @@ if (test)
   add_executable(neuro-2_test test/test_main.cpp src/Env.cpp)
   target_link_libraries(neuro-2_test ${GTEST_BOTH_LIBRARIES} pthread)
     // Add Test
-  add_test(neuro-2_0 neuro-2_test)
+  add_test(test_1 neuro-2_test)
 endif()
 
 find_package(Doxygen)
