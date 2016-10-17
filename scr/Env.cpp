@@ -18,7 +18,7 @@ Env::Env() {
 	do {
 		cout << "Valeur de Vext/Vthr ? ( ratio > 0) " << endl;
 		cin >> ratio;
-	} while (ratio <= 0);
+	} while (ratio <= 0.0);
 	
 	
 	unsigned int number_of_neurons(10);
