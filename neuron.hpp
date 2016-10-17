@@ -33,7 +33,6 @@ private:
     double g;				//relative strength of inhibitory synapses
     double v_thr;    //frequency needed for a neuron to reach threshold in absence of feedback
     double v_ext;    //external frequency (background ?)
-    //pk erreur pour g et pas pour v_ext et v_thr ??
     
     
     //constantes
