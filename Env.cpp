@@ -6,7 +6,7 @@
 using namespace std;
 
 
-Env::Env(){
+Env::Env() {
 	
     //FAIRE DES CONTROLES SUR LES VALEURS DE G ET DU RATIO
 
@@ -18,19 +18,32 @@ Env::Env(){
 	cout << "Valeur de Vext/Vthr ? " << endl;
 	cin >> ratio;
 	
-	int number_of_neurons(10);
-	for(int i(0); i < number_of_neurons; ++i){
-		Neuron A (i, g, ratio);
+	
+	unsigned int number_of_neurons(10);
+	for(unsigned int i(0); i < number_of_neurons; ++i){
+		Neuron* A = new Neuron(i, g, ratio);
+		neurones_.push_back(A);
 	}
 }
 
+Env::~Env() {
+	
+	//destruction de la collection de neurones
+    for (unsigned int i(0); i < neurones_.size(); ++i) {
+        delete neurones_[i];
+    }
+	
+	//réinitialise la taille de neurons_ à 0
+	neurones_.clear();
+}
+
 //FAIRE LE MAIN DANS UN FICHIER A PART 
-/*
+
 int main(){
 	Env(); // ici on appelera le constructeur de env pour creer des neurones
 	
 return 0;
-} */
+} 
 
 /*
 Neurone* Env::addNeurone() {
