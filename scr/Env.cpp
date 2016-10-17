@@ -43,12 +43,11 @@ Env::~Env() {
 }
 
 void Env::random_connection() {
-    //CHOISIR L ALGORITHME -> CREATION ET UTILISATION D UN NOUVEL ATTRIBUT DE NEURON ?
-    //BOUCLE SUR TOUS LES NEURONES DE neurones_ ?
-    /*int a, b;
-     a = rand() % 100; //valeur entre 0 et 99 -> pour faire entre 0 et 2500 ? remplacer 100 par 2501 ?
-     b= rand() % 100 + 2; //valeur entre 2 et 101
-     cout << a << endl; */
+	//Boucle sur tous les neurones du network
+	for (unsigned int i(0); i < neurones_.size(); ++i) {
+		neurones_[i]->Neuron::random_connection();
+	}
+
 }
 
 
