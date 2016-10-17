@@ -26,7 +26,7 @@ Env::Env() {
 		Neuron* A = new Neuron(i, g, ratio);
 		neurones_.push_back(A);
 	}
-	cout << number_of_neurons << " neurons created ! :) " << endl;
+	cout << neurones_.size() << " neurons created ! :) " << endl;
 }
 
 
