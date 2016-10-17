@@ -5,13 +5,13 @@ project(neuro-2)
 
 add_executable(neuro-2 src/Env1.cpp src/Neurone.cpp)
 
+include_directories(src)
+link_directories("/usr/local/lib")              // Not sure about the directory
+
 option(test "Build tests." ON)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++11")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-include_directories(src)
-link_directories("/usr/local/lib")
 
 if (test)
     // Find GTest
@@ -22,7 +22,7 @@ if (test)
   add_executable(project_test test/test_main.cpp src/Env1.cpp)
   target_link_libraries(project_test ${GTEST_BOTH_LIBRARIES} pthread)
     // Add Test
-  add_test(neuro-2 project_test)
+  add_test(project0 project_test)
 endif()
 
 find_package(Doxygen)
