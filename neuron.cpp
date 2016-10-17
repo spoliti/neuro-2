@@ -61,3 +61,5 @@ void Neuron::refractory(){
     //temps (refractory_time)
     active_state = false;
 }
+
+
