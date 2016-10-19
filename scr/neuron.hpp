@@ -14,17 +14,19 @@ public:
     //getters
     int get_numero();
     double get_compteur();
-    double get_potentiel();
+    double get_potential();
+    //autre
     void reset();
     void refractory();
     void random_connection();
     void add_connection(int indice_tab, int neuron_number);
-    
+    void get_spike(int neuron_number); 	//modifier l'argument si on utilise un booléen pour le type
+										//neuron_number est le numero du neurone qui ENVOIE le spike
 private:
     
     //attributs
 	const int numero_neuron;
-	double compteur_spikes; //nombre de spikes envoyés ? -> int ?
+	int compteur_spikes; 	//nombre de spikes envoyés ?
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
 	std::array<int, 1250> connections_;	//tab contenant les indices des neurones auquel l'instance est connectée

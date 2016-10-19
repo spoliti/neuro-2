@@ -48,7 +48,7 @@ double Neuron::get_compteur(){
     return compteur_spikes;
 }
 	
-double Neuron::get_potentiel(){
+double Neuron::get_potential(){
     return potential;
 }
 	
@@ -97,4 +97,42 @@ void Neuron::random_connection() {
 void Neuron::add_connection(int indice, int number) {
 	this->connections_[indice] = number;
 }
+
+void Neuron::get_spike(int number) {
+	//number est le numéro du neurone qui ENVOIE le spike
+	
+	//sauf erreur l'indice dans le tableau = numero du neuron - 1
+	//donc les neurones n°1 à 2500 sont inhibiteurs, et 2501-12500 excitateurs
+	//pour le moment les neurones d'indice 12501 à 13500 sont excitateurs externes
+	
+	//(paranoia : controler que le numero est positif, sinon faire une erreur)
+	
+	//Recu d'un neurone inhibiteur
+	if (number <= Neuron::inhibatory_neurons) {
+		
+		if (this->potential >= g*Neuron::potential_amplitude) {
+			this->potential -= g*Neuron::potential_amplitude;
+			compteur_spikes += 1; 
+			
+		} else if (this->potential > 0) {
+			this->potential = 0;
+			compteur_spikes += 1;
+		}
+		//dans les autres cas il ne se passe rien 
+		//(en considérant que le potentiel ne peux pas etre negatif)
+		//sinon mettre une limite minimale autre que 0 
+	}
+	
+	//Recu d'un neurone excitateur (du network ou externe)
+	int total_number(Neuron::inhibatory_neurons + Neuron::excitatory_neurons + Neuron::ext_excitatory_connection);
+	if ((number > Neuron::inhibatory_neurons) and (number < total_number )) {
+		this->potential += Neuron::potential_amplitude;
+		compteur_spikes += 1;
+	}
+	
+}
+
+
+
+
 
