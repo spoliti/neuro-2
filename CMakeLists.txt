@@ -8,6 +8,19 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++11")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+find_package(PkgConfig)
+
+pkg_check_modules(GTKMM gtkmm-3) # look into FindPkgConfig.cmake, 
+                                                                # it contains documentation
+# Now the variables GTKMM_INCLUDE_DIRS, GTKMM_LIBRARY_DIRS and GTKMM_LIBRARIES 
+# contain what you expect 
+
+link_directories(
+    ${GTKMM_LIBRARY_DIRS}  )
+
+include_directories(
+    ${GTKMM_INCLUDE_DIRS}  )
+
 add_executable(neuro-2 src/main.cpp src/Env.cpp scr/neuron.cpp)
 
 include_directories(src)
@@ -32,3 +45,7 @@ if (DOXYGEN_FOUND)
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating API documentation with Doxygen" VERBATIM)
 endif(DOXYGEN_FOUND)
+
+target_link_libraries(example 
+    ${GTKMM_LIBRARIES}  )
+
