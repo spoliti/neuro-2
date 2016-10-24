@@ -1,6 +1,6 @@
 ﻿#include "neuron.hpp"
 #include "neuron.cpp"
-#include "env.hpp"
+#include "Env.hpp"
 #include <iostream>
 #include <vector>
 #include <math.h>
