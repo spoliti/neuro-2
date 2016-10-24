@@ -98,6 +98,9 @@ void Neuron::add_connection(int indice, int number) {
 }
 
 void Neuron::get_spike(int number) {
+	//MODIFIER L ARGUMENT ET LES CONDITIONS POUR UTILISER LE BOOLEEN IS_EXCITATORY
+	//CREER UN GETTEUR POUR LE BOOLEEN
+	
 	//number est le numéro du neurone qui ENVOIE le spike
 	
 	//sauf erreur l'indice dans le tableau = numero du neuron - 1
