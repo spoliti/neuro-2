@@ -15,15 +15,14 @@ public:
     int get_numero();
     double get_compteur();
     double get_potential();
+    bool get_type(); 			//true si excitatory, false sinon
     //autre
     void reset();
     void refractory();
     void random_connection();
     void add_connection(int indice_tab, int neuron_number);
-    void get_spike(int neuron_number); 	//modifier l'argument si on utilise un booléen pour le type
-					//neuron_number est le numero du neurone qui ENVOIE le spike
-	//MODIFIER L ARGUMENT ET LES CONDITIONS POUR UTILISER LE BOOLEEN IS_EXCITATORY
-	//CREER UN GETTEUR POUR LE BOOLEEN
+    void get_spike(bool is_excitatory); 	//is_excitatory est le bool du neurone qui ENVOIE le spike
+	
 private:
     
     //attributs

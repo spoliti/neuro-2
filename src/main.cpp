@@ -17,10 +17,9 @@ int main() {
 	
 	//Mise en route de la simulation
     
-    int time_simu = network.Env::get_time_simu();
+    double time_simu(network.Env::get_time_simu());
     
-    for(int i(0); i <= time_simu; ++i){
-        network.Env::actualise_time();
+    for(; network.get_time() <= time_simu; network.actualise_time()){
         
         //lancement des spikes pdt que le temps s'écoule
         network.Env::random_spike();

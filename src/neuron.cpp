@@ -1,4 +1,3 @@
-//#include <neuro-2/neuron.hpp>
 #include "neuron.hpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
@@ -54,6 +53,9 @@ double Neuron::get_potential(){
     return potential;
 }
 	
+bool Neuron::get_type() {
+	return is_excitatory;
+}
 	
 void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
@@ -78,14 +80,13 @@ void Neuron::random_connection() {
     int number;
     
 	//Connections avec les neurons inhibiteurs
-	if (is_excitatory == false) {										//AVANT: for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i)
+	if (is_excitatory == false) {								 
 		number = rand() % Neuron::inhibatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
      
      //Connections avec les neurons excitateurs
-	else if (is_excitatory == true) {									// AVANT: unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
-																		//for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
+	else if (is_excitatory == true) {									
 		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
@@ -97,20 +98,12 @@ void Neuron::add_connection(int indice, int number) {
 	this->connections_[indice] = number;
 }
 
-void Neuron::get_spike(int number) {
-	//MODIFIER L ARGUMENT ET LES CONDITIONS POUR UTILISER LE BOOLEEN IS_EXCITATORY
-	//CREER UN GETTEUR POUR LE BOOLEEN
+void Neuron::get_spike(bool isExcitatory) {
 	
-	//number est le numéro du neurone qui ENVOIE le spike
-	
-	//sauf erreur l'indice dans le tableau = numero du neuron - 1
-	//donc les neurones n°1 à 2500 sont inhibiteurs, et 2501-12500 excitateurs
-	//pour le moment les neurones d'indice 12501 à 13500 sont excitateurs externes
-	
-	//(paranoia : controler que le numero est positif, sinon faire une erreur)
-	
+	//isExcitatory est le bool du neurone qui ENVOIE le spike
+
 	//Recu d'un neurone inhibiteur
-	if (number <= Neuron::inhibatory_neurons) {
+	if (!isExcitatory) {
 		
 		if (this->potential >= g*Neuron::potential_amplitude) {
 			this->potential -= g*Neuron::potential_amplitude;
@@ -120,16 +113,18 @@ void Neuron::get_spike(int number) {
 			this->potential = 0;
 			compteur_spikes += 1;
 		}
+		
 		//dans les autres cas il ne se passe rien 
 		//(en considérant que le potentiel ne peux pas etre negatif)
 		//sinon mettre une limite minimale autre que 0 
 	}
 	
 	//Recu d'un neurone excitateur (du network ou externe)
-	int total_number(Neuron::inhibatory_neurons + Neuron::excitatory_neurons + Neuron::ext_excitatory_connection);
-	if ((number > Neuron::inhibatory_neurons) and (number < total_number )) {
+	if (isExcitatory) {
 		this->potential += Neuron::potential_amplitude;
 		compteur_spikes += 1;
 	}
 	
 }
+
+

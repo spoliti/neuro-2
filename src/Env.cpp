@@ -6,6 +6,9 @@
 #include <math.h>
 using namespace std;
 
+//Initialisation des constantes statiques
+	const double Env::time_unit(0.01);		//[millisecondes]
+
 
 Env::Env() : time(0), time_simu(100){
 	
@@ -81,15 +84,14 @@ double Env::fact(double x){
 	return s;
 }
 		
-int Env::get_time(){
+double Env::get_time(){
 	return time;
 }
 
-int Env::get_time_simu(){
+double Env::get_time_simu(){
 	return time_simu;
 }
 
-int Env::actualise_time(){
-	time = time + 1;
-	return time;
+void Env::actualise_time(){
+	time += time_unit;
 }
