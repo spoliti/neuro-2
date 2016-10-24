@@ -8,9 +8,11 @@ using namespace std;
 
 //Initialisation des constantes statiques
 	const double Env::time_unit(0.01);		//[millisecondes]
+	const double Env::time_simu(2000); 		//[ms] = 2s
 
-
-Env::Env() : time(0), time_simu(100){
+Env::Env() 
+	:time(0)
+{
 	
 	double g;
 	do {
@@ -88,9 +90,10 @@ double Env::get_time(){
 	return time;
 }
 
+/*
 double Env::get_time_simu(){
 	return time_simu;
-}
+} */
 
 void Env::actualise_time(){
 	time += time_unit;

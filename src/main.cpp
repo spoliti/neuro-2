@@ -16,10 +16,12 @@ int main() {
 
 	
 	//Mise en route de la simulation
+	
+	//toutes les actions doivent etre appelées dans la boucle
+	//chaque itération correspond à une unité de temps (soit 0.01 ms)
+	//on peut changer l'unité de tps dans Env.cpp si trop petit
     
-    double time_simu(network.Env::get_time_simu());
-    
-    for(; network.get_time() <= time_simu; network.actualise_time()){
+    for(; network.get_time() <= Env::time_simu; network.actualise_time()){
         
         //lancement des spikes pdt que le temps s'écoule
         network.Env::random_spike();
