@@ -1,6 +1,7 @@
 //#include <neuro-2/neuron.hpp>
 #include "neuron.hpp"
 #include <iostream>
+#include <cstdlib>		//pour fonction rand()
 
 
 //Initialisation des constantes static
@@ -21,11 +22,12 @@
 
 //Methodes
 	
-Neuron::Neuron(int neuron_number_, double g_, double rapport_vext_over_vthr_)
+Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, double rapport_vext_over_vthr_)
     :numero_neuron(neuron_number_), //initialisation du numero du neuron
     compteur_spikes(0.0),           //initialisation du nb de spikes a 0
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
+    is_excitatory(excitatory_),
     g(g_)                           //initialisation de g
 
 {
@@ -68,27 +70,24 @@ void Neuron::refractory(){
 
 void Neuron::random_connection() {
 	  /* Pour un nombre random entre min et max :
-      * a = min + rand() % (max - min + 1 );
-      * exemple : nb entre 250 et 1249 : neurones excitateurs
+      * a = min + rand() % (max - min + 1 );
+      * exemple : nb entre 250 et 1249 : neurones excitateurs
       * a = 250 + rand() % 1000;
       */
      
     int number;
     
 	//Connections avec les neurons inhibiteurs
-	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
-		//indice de neurones_ entre 0 et 2499 : neurones inhibiteurs
+	if (is_excitatory == false) {										//AVANT: for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i)
 		number = rand() % Neuron::inhibatory_neurons;
-		this->Neuron::add_connection(i, number);
+		this->Neuron::add_connection(numero_neuron, number);
 	}
      
      //Connections avec les neurons excitateurs
-     unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
-     
-     for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
-		//indice de neurones_ entre 2500 et 12499 : neurones excitateurs
+	else if (is_excitatory == true) {									// AVANT: unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
+																		//for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
 		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
-		this->Neuron::add_connection(i, number);
+		this->Neuron::add_connection(numero_neuron, number);
 	}
 
 	
@@ -131,8 +130,3 @@ void Neuron::get_spike(int number) {
 	}
 	
 }
-
-
-
-
-
