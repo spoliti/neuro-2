@@ -16,8 +16,8 @@ class Env {
 		double fact(double t);
 	private:
 		vector<Neuron*> neurons_; 		//collection de neurones de l'env,
-		int time;	
-		int time_simu;	
+		int time;	//temps auquel on est 
+		int time_simu;	//durée totale de la simuation
 };
 
 
