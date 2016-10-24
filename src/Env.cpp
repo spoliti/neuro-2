@@ -73,7 +73,7 @@ void Env::random_spike() {
 	p= ((pow(lambda,t))/(fact(t)))*exp(-lambda);
 	
 	if (p>= 0.15){
-		neurons_[i]->get_spike(i);
+		neurons_[i]->receive_spike(i);
 	}
 }
 }

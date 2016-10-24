@@ -24,7 +24,13 @@ int main() {
     for(; network.get_time() <= Env::time_simu; network.actualise_time()){
         
         //lancement des spikes pdt que le temps s'écoule
-        network.Env::random_spike();
+        
+        //par les neurones du background
+        //network.Env::random_spike();
+        
+        //pour tous les autres neurones
+        //appel d'une fonction de env qui boucle sur neurons_ pour les mettre à jour
+        
         
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
         

@@ -21,18 +21,19 @@ public:
     void refractory();
     void random_connection();
     void add_connection(int indice_tab, int neuron_number);
-    void get_spike(bool is_excitatory); 	//is_excitatory est le bool du neurone qui ENVOIE le spike
+    void receive_spike(bool is_excitatory); 	//is_excitatory est le bool du neurone qui ENVOIE le spike
+	void send_spike();
 	
 private:
     
     //attributs
 	const int numero_neuron;
-	int compteur_spikes; 	//nombre de spikes envoyés ?
+	int compteur_spikes; 	//nombre de spikes envoyés
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory;		//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
 	std::array<int, 2250> connections_;	//tab contenant les indices des neurones auquel l'instance est connectée
-	//modifier la taille si on compte les connections avec le background (à 2250) -> fait
+	double last_spike; 		//tps auquel le dernier spike a été envoyé
  
     double g;		//relative strength of inhibitory synapses
     double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback

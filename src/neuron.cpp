@@ -27,6 +27,7 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, double rapport_v
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
     is_excitatory(excitatory_),
+    last_spike(0),
     g(g_)                           //initialisation de g
 
 {
@@ -61,13 +62,22 @@ void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
     //envoyé un spike
     potential = v_reset;
-    active_state = true;
 }
 	
 void Neuron::refractory(){
     //rend le neurone incapable de produire un spike pendant un certain
     //temps (refractory_time)
-    active_state = false;
+   
+   	active_state = false;
+   		
+    /*do {
+		active_state = false;
+		last_spike += Env::time_unit;
+	} while (Env::time < last_spike + Neuron::refractory_period);
+	* pb : pas de cohérence du temps (passe plus vite ici que dans env
+	* et pas d'accès à Env::time dans ce fichier
+	*/
+	
 }
 
 void Neuron::random_connection() {
@@ -98,7 +108,7 @@ void Neuron::add_connection(int indice, int number) {
 	this->connections_[indice] = number;
 }
 
-void Neuron::get_spike(bool isExcitatory) {
+void Neuron::receive_spike(bool isExcitatory) {
 	
 	//isExcitatory est le bool du neurone qui ENVOIE le spike
 
@@ -107,11 +117,10 @@ void Neuron::get_spike(bool isExcitatory) {
 		
 		if (this->potential >= g*Neuron::potential_amplitude) {
 			this->potential -= g*Neuron::potential_amplitude;
-			compteur_spikes += 1; 
 			
 		} else if (this->potential > 0) {
 			this->potential = 0;
-			compteur_spikes += 1;
+		
 		}
 		
 		//dans les autres cas il ne se passe rien 
@@ -125,6 +134,19 @@ void Neuron::get_spike(bool isExcitatory) {
 		compteur_spikes += 1;
 	}
 	
+}
+
+void Neuron::send_spike() {
+
+	compteur_spikes += 1;
+	this->reset();
+	this->refractory();
+	
+	/* voir comment implémenter le tps pour que refractory soit appelé
+	 * en boucle tant que Env::time < last_spike+Neuron::refractory_period
+	 * (sachant que on n'a pas accès à time car on ne peux meme pas
+	 * utiliser le getteur (on ne peux pas inclure Env ici)
+	 */
 }
 
 
