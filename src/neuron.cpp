@@ -1,7 +1,9 @@
+//#include <neuro-2/neuron.hpp>
 #include "neuron.hpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
 
+using namespace std;
 
 //Initialisation des constantes static
 	const double Neuron::v_reset(10);         	   	 //[milliVolt]
@@ -27,7 +29,6 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, double rapport_v
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
     is_excitatory(excitatory_),
-    last_spike(0),
     g(g_)                           //initialisation de g
 
 {
@@ -54,14 +55,12 @@ double Neuron::get_potential(){
     return potential;
 }
 	
-bool Neuron::get_type() {
-	return is_excitatory;
-}
 	
 void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
     //envoyé un spike
     potential = v_reset;
+    active_state = true;
 }
 	
 void Neuron::refractory(){
@@ -90,13 +89,14 @@ void Neuron::random_connection() {
     int number;
     
 	//Connections avec les neurons inhibiteurs
-	if (is_excitatory == false) {								 
+	if (is_excitatory == false) {										//AVANT: for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i)
 		number = rand() % Neuron::inhibatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
      
      //Connections avec les neurons excitateurs
-	else if (is_excitatory == true) {									
+	else if (is_excitatory == true) {									// AVANT: unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
+																		//for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
 		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
@@ -108,45 +108,53 @@ void Neuron::add_connection(int indice, int number) {
 	this->connections_[indice] = number;
 }
 
-void Neuron::receive_spike(bool isExcitatory) {
+void Neuron::get_spike(int number) {
+	//number est le numéro du neurone qui ENVOIE le spike
 	
-	//isExcitatory est le bool du neurone qui ENVOIE le spike
-
+	//sauf erreur l'indice dans le tableau = numero du neuron - 1
+	//donc les neurones n°1 à 2500 sont inhibiteurs, et 2501-12500 excitateurs
+	//pour le moment les neurones d'indice 12501 à 13500 sont excitateurs externes
+	
+	//(paranoia : controler que le numero est positif, sinon faire une erreur)
+	
 	//Recu d'un neurone inhibiteur
-	if (!isExcitatory) {
+	if (number <= Neuron::inhibatory_neurons) {
 		
 		if (this->potential >= g*Neuron::potential_amplitude) {
 			this->potential -= g*Neuron::potential_amplitude;
+			compteur_spikes += 1; 
 			
 		} else if (this->potential > 0) {
 			this->potential = 0;
-		
+			compteur_spikes += 1;
 		}
-		
 		//dans les autres cas il ne se passe rien 
 		//(en considérant que le potentiel ne peux pas etre negatif)
 		//sinon mettre une limite minimale autre que 0 
 	}
 	
 	//Recu d'un neurone excitateur (du network ou externe)
-	if (isExcitatory) {
+	int total_number(Neuron::inhibatory_neurons + Neuron::excitatory_neurons + Neuron::ext_excitatory_connection);
+	if ((number > Neuron::inhibatory_neurons) and (number < total_number )) {
 		this->potential += Neuron::potential_amplitude;
 		compteur_spikes += 1;
 	}
 	
 }
 
-void Neuron::send_spike() {
-
-	compteur_spikes += 1;
-	this->reset();
-	this->refractory();
-	
-	/* voir comment implémenter le tps pour que refractory soit appelé
-	 * en boucle tant que Env::time < last_spike+Neuron::refractory_period
-	 * (sachant que on n'a pas accès à time car on ne peux meme pas
-	 * utiliser le getteur (on ne peux pas inclure Env ici)
-	 */
+int Neuron::is_times_spikes_empty(){
+	return times_spikes.size();		
 }
 
+void Neuron::times_spikes_add(int x){
+	times_spikes.push_back(x);
+}
 
+int Neuron::get_time_last_spike(){
+	int b(times_spikes.size());
+	return times_spikes[b-1];
+}
+
+vector<int> Neuron::get_times_spikes(){
+	return times_spikes;
+}
