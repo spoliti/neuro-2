@@ -12,31 +12,30 @@ int main() {
 	//Env(); //constructeur de env pour créer des neurones
 	Env network;
 	//appel de random_connection pour générer les connections
-	network.Env::random_connection();
+	//network.Env::random_connection();
 
 	
 	//Mise en route de la simulation
-	
-	//toutes les actions doivent etre appelées dans la boucle
-	//chaque itération correspond à une unité de temps (soit 0.01 ms)
-	//on peut changer l'unité de tps dans Env.cpp si trop petit
     
-    for(; network.get_time() <= Env::time_simu; network.actualise_time()){
+    int time_simu = network.Env::get_time_simu();
+    
+    for(int i(0); i <= time_simu; ++i){
         
-        //lancement des spikes pdt que le temps s'écoule
-        
-        //par les neurones du background
-        //network.Env::random_spike();
-        
-        //pour tous les autres neurones
-        //appel d'une fonction de env qui boucle sur neurons_ pour les mettre à jour
-        
+        //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
+        if(network.Env::get_time()%(network.Env::get_periode()) == 0){
+        cout << "temps de mise en place spikes: " << network.Env::get_time() << endl;
+        network.Env::random_spike();
+		}
         
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
-        
+        network.Env::actualise_time();                 //
     }
     
     
+    int a(1);// n
+	network.Env::get_times_spikes(a);  //affichage des temps auquels les spikes ont didribuées été recu pour neuronne i
+    
+    int b(2);
+    network.Env::get_times_spikes(b);
     return 0;
 } 
-
