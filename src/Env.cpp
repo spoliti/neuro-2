@@ -4,15 +4,12 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <random>
+
 using namespace std;
 
-//Initialisation des constantes statiques
-	const double Env::time_unit(0.01);		//[millisecondes]
-	const double Env::time_simu(2000); 		//[ms] = 2s
 
-Env::Env() 
-	:time(0)
-{
+Env::Env() : time(0), time_simu(12), periode(10){
 	
 	double g;
 	do {
@@ -27,6 +24,18 @@ Env::Env()
 	} while (ratio <= 0.0);
 	
 	
+	unsigned int number_of_neurons(3);
+	for(unsigned int i(0); i < number_of_neurons; ++i){
+		if(i<=2){										//les neurones d'indice 0-2499 sont inhibitory
+			Neuron* A = new Neuron(i, g, false, ratio);
+			neurons_.push_back(A);
+		}
+		else if(i>=3 ){									//les neurones d'indice  2500-13499 sont excitatory
+			Neuron* A = new Neuron(i, g, true, ratio);		//(ceux d'indice 12500-13499 sont le background)
+			neurons_.push_back(A);
+		}
+	}
+	/*
 	unsigned int number_of_neurons(13499);
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2499){										//les neurones d'indice 0-2499 sont inhibitory
@@ -37,7 +46,7 @@ Env::Env()
 			Neuron* A = new Neuron(i, g, true, ratio);		//(ceux d'indice 12500-13499 sont le background)
 			neurons_.push_back(A);
 		}
-	}
+	}*/
 
 	cout << neurons_.size() << " neurons created ! :) " << endl;
 }
@@ -62,39 +71,76 @@ void Env::random_connection() {
 
 }
 
-//le neurone externe envoie un spike selon loi de poisson aux neurones auquel il est connecté -> problème on a pas de neurones externes pour l'instant 
-//dc pour l'instant on va dire que les neuronnes que l'on a créé recoivent des spikes selon loi de poisson
+//programmation des spikes selon loi de poisson selon cycle de 10 (à t=0, on dit ce qu'il se passe jusqu'a t+10)
 void Env::random_spike() {
-	unsigned int number_of_neurons = neurons_.size();
-	for (unsigned int i(0); i<= number_of_neurons; ++i){
-	double p; // la proba
-	double lambda(4.0); //valeur provisoire bien sur
-	double t; // temps qu'il s'est passé depuis dernier spike, ca doit etre un attribut de chaque neurone
-	p= ((pow(lambda,t))/(fact(t)))*exp(-lambda);
 	
-	if (p>= 0.15){
-		neurons_[i]->receive_spike(i);
+	int b = (time/periode);
+	
+	time_average_spike = (b)*periode + periode/2;
+	
+	cout << "temps moyen pour loi de poisson: " << time_average_spike << endl;
+		
+	std::random_device rd;
+    std::mt19937 gen(rd());
+ 
+    std::poisson_distribution<> d(time_average_spike); //moyenne
+		
+	unsigned int number_of_neurons = neurons_.size();
+	
+	for (unsigned int i(0); i<= (number_of_neurons-1); ++i){
+		int a (d(gen));
+		if (a >= (time_average_spike + periode/2)){
+			a = time_average_spike + periode/2;
+		}
+		if (a <= (time_average_spike - periode/2)){
+			a = time_average_spike - periode/2;
+		}
+		
+		if (neurons_[i]->Neuron::is_times_spikes_empty() == 0){                    //premier spike        
+		neurons_[i]->Neuron::times_spikes_add(a);
+		cout << "temps delivres par loi poisson: " << a << endl;
+		}
+		
+		else if (neurons_[i]->Neuron::is_times_spikes_empty() >=1){			// faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
+			if((time - neurons_[i]->Neuron::get_time_last_spike())>=4){
+			neurons_[i]->Neuron::times_spikes_add(a);
+			
+			}					
+		}
 	}
-}
 }
 
-double Env::fact(double x){
-	int s (1);
-	for (int i(1); i<=x; ++i){
-		s=s*i;
+//lancement des spikes au temps t comme programmé au dessus
+void Env::actualise() {
+	unsigned int number_of_neurons = neurons_.size();
+	for (unsigned int i(0); i<= number_of_neurons-1; ++i){
+		if (neurons_[i]->Neuron::get_time_last_spike()== time){
+		neurons_[i]->get_spike(i);
+		}
 	}
-	return s;
+}
+
+void Env::get_times_spikes(int i){
+	neurons_[i]->Neuron::get_times_spikes();
+	unsigned int size ((neurons_[i]->Neuron::get_times_spikes()).size());
+	for (unsigned int j(0); j<= size-1; ++j){
+		cout << "neuron: " << i << " spike numero: " << j << " receptionné au temps: " << (neurons_[i]->Neuron::get_times_spikes())[j] << endl;
+	}
 }
 		
-double Env::get_time(){
+int Env::get_time(){
 	return time;
 }
 
-/*
-double Env::get_time_simu(){
+int Env::get_time_simu(){
 	return time_simu;
-} */
+}
 
-void Env::actualise_time(){
-	time += time_unit;
+int Env::actualise_time(){
+	time = time + 1;
+	return time;
+}
+
+int Env::get_periode(){
+	return periode;
 }
