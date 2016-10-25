@@ -28,8 +28,8 @@ int main() {
 		}
         
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
-        network.Env::actualise_time();                 //
-    }
+        network.Env::actualise_time(); 
+        network.Env::actualise();    }
     
     
     int a(1);// n
