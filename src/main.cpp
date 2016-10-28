@@ -12,14 +12,15 @@ int main() {
 	//Env(); //constructeur de env pour créer des neurones
 	Env network;
 	//appel de random_connection pour générer les connections
-	//network.Env::random_connection();
+	network.Env::random_connection();
 
 	
 	//Mise en route de la simulation
     
-    int time_simu = network.Env::get_time_simu();
+    int time_simu(network.Env::get_time_simu());
     
     for(int i(0); i <= time_simu; ++i){
+    //for (int i(0); i < time_simu; i += Env::time_unit) {
         
         //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
         if(network.Env::get_time()%(network.Env::get_periode()) == 0){
@@ -29,7 +30,8 @@ int main() {
         
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
         network.Env::actualise_time(); 
-        network.Env::actualise();    }
+        network.Env::actualise();    
+	}
     
     
     int a(1);// n

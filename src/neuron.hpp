@@ -16,6 +16,7 @@ public:
     ~Neuron();
     //getters
     int get_numero();
+    bool get_type();
     double get_compteur();
     double get_potential();
     //autre
@@ -23,8 +24,7 @@ public:
     void refractory();
     void random_connection();
     void add_connection(int indice_tab, int neuron_number);
-    void get_spike(int neuron_number); 	//modifier l'argument si on utilise un booléen pour le type
-										//neuron_number est le numero du neurone qui ENVOIE le spike
+    void get_spike(bool isExcitatory);	//isExcitatory: bool du neurone qui ENVOIE le spike
 	int is_times_spikes_empty();
 	void times_spikes_add(int x);
 	int get_time_last_spike();

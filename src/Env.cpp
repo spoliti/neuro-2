@@ -8,8 +8,15 @@
 
 using namespace std;
 
+//Initialisation des constantes statiques
+	const double Env::time_unit(/*0.01*/1);		//[millisecondes]
+	const double Env::time_simu(/*2000*/12); 		//[ms] = 2s
+	const double Env::periode(/*0.1*/10); 		//[ms], 10 unités de temps pour le moment
+	
 
-Env::Env() : time(0), time_simu(12), periode(10){
+Env::Env() 
+: time(0)
+{
 	
 	double g;
 	do {
@@ -74,7 +81,7 @@ void Env::random_connection() {
 //programmation des spikes selon loi de poisson selon cycle de 10 (à t=0, on dit ce qu'il se passe jusqu'a t+10)
 void Env::random_spike() {
 	
-	int b = (time/periode);
+	double b = (time/periode);
 	
 	time_average_spike = (b)*periode + periode/2;
 	
@@ -133,14 +140,15 @@ int Env::get_time(){
 }
 
 int Env::get_time_simu(){
-	return time_simu;
+	return Env::time_simu;
 }
 
 int Env::actualise_time(){
-	time = time + 1;
+	time += time_unit;
 	return time;
 }
 
 int Env::get_periode(){
-	return periode;
+	return Env::periode;
 }
+

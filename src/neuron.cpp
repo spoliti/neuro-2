@@ -18,7 +18,7 @@ using namespace std;
 	const int Neuron::inhibatory_connection(250);        //nb of inhibitory connections for each neuron
     const int Neuron::ext_excitatory_connection(1000);   //nb of external excitatory connections for each neuron
 	
-	const int Neuron::excitatory_neurons(10000);    	//nb of excitatory neurons in the network
+	const int Neuron::excitatory_neurons(10000);    //nb of excitatory neurons in the network
     const int Neuron::inhibatory_neurons(2500);   	//nb of inhibitory neurons in the network
 
 //Methodes
@@ -46,6 +46,10 @@ Neuron::~Neuron() {
 int Neuron::get_numero(){
     return numero_neuron;
 }
+
+bool Neuron::get_type() {
+ 	return is_excitatory;
+ }
 	
 double Neuron::get_compteur(){
     return compteur_spikes;
@@ -68,14 +72,6 @@ void Neuron::refractory(){
     //temps (refractory_time)
    
    	active_state = false;
-   		
-    /*do {
-		active_state = false;
-		last_spike += Env::time_unit;
-	} while (Env::time < last_spike + Neuron::refractory_period);
-	* pb : pas de cohérence du temps (passe plus vite ici que dans env
-	* et pas d'accès à Env::time dans ce fichier
-	*/
 	
 }
 
@@ -108,17 +104,11 @@ void Neuron::add_connection(int indice, int number) {
 	this->connections_[indice] = number;
 }
 
-void Neuron::get_spike(int number) {
-	//number est le numéro du neurone qui ENVOIE le spike
-	
-	//sauf erreur l'indice dans le tableau = numero du neuron - 1
-	//donc les neurones n°1 à 2500 sont inhibiteurs, et 2501-12500 excitateurs
-	//pour le moment les neurones d'indice 12501 à 13500 sont excitateurs externes
-	
-	//(paranoia : controler que le numero est positif, sinon faire une erreur)
-	
+void Neuron::get_spike(bool isExcitatory) {
+	//isExcitatory est le bool du neurone qui ENVOIE le spike
+		
 	//Recu d'un neurone inhibiteur
-	if (number <= Neuron::inhibatory_neurons) {
+	if (!isExcitatory) {
 		
 		if (this->potential >= g*Neuron::potential_amplitude) {
 			this->potential -= g*Neuron::potential_amplitude;
@@ -134,8 +124,7 @@ void Neuron::get_spike(int number) {
 	}
 	
 	//Recu d'un neurone excitateur (du network ou externe)
-	int total_number(Neuron::inhibatory_neurons + Neuron::excitatory_neurons + Neuron::ext_excitatory_connection);
-	if ((number > Neuron::inhibatory_neurons) and (number < total_number )) {
+	if (isExcitatory) {
 		this->potential += Neuron::potential_amplitude;
 		compteur_spikes += 1;
 	}
