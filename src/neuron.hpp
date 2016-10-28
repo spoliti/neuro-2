@@ -25,10 +25,12 @@ public:
     void random_connection();
     void add_connection(int indice_tab, int neuron_number);
     void get_spike(bool isExcitatory);	//isExcitatory: bool du neurone qui ENVOIE le spike
-	int is_times_spikes_empty();
+	
+	//utilisé par loi de Poisson
+	bool is_times_spikes_empty();
 	void times_spikes_add(int x);
-	int get_time_last_spike();
-	std::vector<int> get_times_spikes();
+	double get_time_last_spike();
+	std::vector<double> get_times_spikes();
 private:
     
     //attributs
@@ -39,8 +41,8 @@ private:
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory;		//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
 	std::array<int, 2250> connections_;	//tab contenant les indices des neurones auquel l'instance est connectée
-	//modifier la taille si on compte les connections avec le background (à 2250) -> fait
-	std::vector<int> times_spikes; //temps auquel les spikes st recus
+	std::vector<double> times_spikes; //temps auquel les spikes st recus
+	
     double g;		//relative strength of inhibitory synapses
     double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback
     double v_ext;   //external frequency (background ?)

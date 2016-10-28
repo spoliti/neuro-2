@@ -2,6 +2,7 @@
 #include "Env.cpp"
 #include <iostream>
 #include <vector>
+#include <math.h>
 using namespace std;
 
 class Env; 
@@ -23,8 +24,15 @@ int main() {
     //for (int i(0); i < time_simu; i += Env::time_unit) {
         
         //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
-        if(network.Env::get_time()%(network.Env::get_periode()) == 0){
-        cout << "temps de mise en place spikes: " << network.Env::get_time() << endl;
+        //if(network.Env::get_time()%(network.Env::get_periode()) == 0){
+        
+        //modulo pour des nb doubles
+        double modulo;
+        modulo = fmod(network.Env::get_time(), network.Env::get_periode());
+
+        //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
+        if (modulo == 0) {
+        cerr << "temps de mise en place spikes: " << network.Env::get_time() << endl;
         network.Env::random_spike();
 		}
         
@@ -36,7 +44,7 @@ int main() {
     
     int a(1);// n
 	network.Env::get_times_spikes(a);  //affichage des temps auquels les spikes ont didribuées été recu pour neuronne i
-    
+	
     int b(2);
     network.Env::get_times_spikes(b);
     return 0;

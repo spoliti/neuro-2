@@ -106,17 +106,18 @@ void Neuron::add_connection(int indice, int number) {
 
 void Neuron::get_spike(bool isExcitatory) {
 	//isExcitatory est le bool du neurone qui ENVOIE le spike
+	//cerr << "GET SPIKE " << endl;
+		
+	compteur_spikes += 1;
 		
 	//Recu d'un neurone inhibiteur
 	if (!isExcitatory) {
 		
 		if (this->potential >= g*Neuron::potential_amplitude) {
 			this->potential -= g*Neuron::potential_amplitude;
-			compteur_spikes += 1; 
 			
 		} else if (this->potential > 0) {
 			this->potential = 0;
-			compteur_spikes += 1;
 		}
 		//dans les autres cas il ne se passe rien 
 		//(en considérant que le potentiel ne peux pas etre negatif)
@@ -126,24 +127,29 @@ void Neuron::get_spike(bool isExcitatory) {
 	//Recu d'un neurone excitateur (du network ou externe)
 	if (isExcitatory) {
 		this->potential += Neuron::potential_amplitude;
-		compteur_spikes += 1;
 	}
 	
 }
 
-int Neuron::is_times_spikes_empty(){
-	return times_spikes.size();		
+bool Neuron::is_times_spikes_empty() {
+	if (times_spikes.size() == 0) {
+		return true;
+	}
+	return false;
 }
 
 void Neuron::times_spikes_add(int x){
+	//cerr << "ADD SOMETHING TO TIMES_SPIKES" << endl;
+	//compteur_spikes += 1;
+	//pour avoir des valeurs justes pour loi poisson, compter ici
 	times_spikes.push_back(x);
 }
 
-int Neuron::get_time_last_spike(){
+double Neuron::get_time_last_spike(){
 	int b(times_spikes.size());
 	return times_spikes[b-1];
 }
 
-vector<int> Neuron::get_times_spikes(){
+vector<double> Neuron::get_times_spikes(){
 	return times_spikes;
 }

@@ -11,12 +11,12 @@ class Env {
 		void random_connection();
 		void random_spike();
 		void actualise();
-		int actualise_time();
-		int get_time();
-		int get_time_simu();
+		double actualise_time();
+		double get_time();
+		double get_time_simu();
 		double fact(double t);
-		int get_periode();
-		void get_times_spikes(int i);
+		double get_periode();
+		void get_times_spikes(double i);
 	private:
 		vector<Neuron*> neurons_; 		//collection de neurones de l'env,
 		double time;					//temps t où on en est

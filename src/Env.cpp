@@ -11,7 +11,7 @@ using namespace std;
 //Initialisation des constantes statiques
 	const double Env::time_unit(/*0.01*/1);		//[millisecondes]
 	const double Env::time_simu(/*2000*/12); 		//[ms] = 2s
-	const double Env::periode(/*0.1*/10); 		//[ms], 10 unités de temps pour le moment
+	const double Env::periode(/*0.1*/1); 		//[ms], 10 unités de temps pour le moment
 	
 
 Env::Env() 
@@ -85,7 +85,7 @@ void Env::random_spike() {
 	
 	time_average_spike = (b)*periode + periode/2;
 	
-	cout << "temps moyen pour loi de poisson: " << time_average_spike << endl;
+	cerr << "temps moyen pour loi de poisson: " << time_average_spike << endl;
 		
 	std::random_device rd;
     std::mt19937 gen(rd());
@@ -103,15 +103,15 @@ void Env::random_spike() {
 			a = time_average_spike - periode/2;
 		}
 		
-		if (neurons_[i]->Neuron::is_times_spikes_empty() == 0){                    //premier spike        
-		neurons_[i]->Neuron::times_spikes_add(a);
-		cout << "temps delivres par loi poisson: " << a << endl;
-		}
-		
-		else if (neurons_[i]->Neuron::is_times_spikes_empty() >=1){			// faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
-			if((time - neurons_[i]->Neuron::get_time_last_spike())>=4){
+                         
+		if (neurons_[i]->Neuron::is_times_spikes_empty()) { 		//premier spike  
 			neurons_[i]->Neuron::times_spikes_add(a);
-			
+			cerr << "temps delivres par loi poisson: " << a << endl;
+		
+		} else if (!neurons_[i]->Neuron::is_times_spikes_empty()){	// faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
+
+			if((time - neurons_[i]->Neuron::get_time_last_spike())>=4){
+				neurons_[i]->Neuron::times_spikes_add(a);
 			}					
 		}
 	}
@@ -119,36 +119,38 @@ void Env::random_spike() {
 
 //lancement des spikes au temps t comme programmé au dessus
 void Env::actualise() {
-	unsigned int number_of_neurons = neurons_.size();
-	for (unsigned int i(0); i<= number_of_neurons-1; ++i){
+
+	for (unsigned int i(0); i < neurons_.size(); ++i){
+		
 		if (neurons_[i]->Neuron::get_time_last_spike()== time){
-		neurons_[i]->get_spike(i);
+			neurons_[i]->get_spike(i);
 		}
 	}
 }
 
-void Env::get_times_spikes(int i){
+void Env::get_times_spikes(double i){
 	neurons_[i]->Neuron::get_times_spikes();
 	unsigned int size ((neurons_[i]->Neuron::get_times_spikes()).size());
 	for (unsigned int j(0); j<= size-1; ++j){
-		cout << "neuron: " << i << " spike numero: " << j << " receptionné au temps: " << (neurons_[i]->Neuron::get_times_spikes())[j] << endl;
+		cerr << "neuron: " << i << " spike numero: " << j << " receptionné au temps: " << (neurons_[i]->Neuron::get_times_spikes())[j] << endl;
 	}
+	cerr << "For neuron " << i << " , compteur spikes : " << neurons_[i]->get_compteur() << endl;
 }
 		
-int Env::get_time(){
+double Env::get_time(){
 	return time;
 }
 
-int Env::get_time_simu(){
+double Env::get_time_simu(){
 	return Env::time_simu;
 }
 
-int Env::actualise_time(){
+double Env::actualise_time(){
 	time += time_unit;
 	return time;
 }
 
-int Env::get_periode(){
+double Env::get_periode(){
 	return Env::periode;
 }
 
