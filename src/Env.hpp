@@ -8,7 +8,9 @@ class Env {
 	public:
 		Env(); 							//constructeur
 		~Env();							//destructeur
-		void random_connection();
+		void set_connections();			//créé les connections entre tous les neurones
+		void random_connection();		//créé connections aléatoires pour network
+		void background_connection();	//ajoute les connections avec le background
 		void random_spike();
 		void actualise();
 		double actualise_time();

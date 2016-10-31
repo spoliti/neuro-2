@@ -47,6 +47,7 @@ Env::Env()
 		}
 	}
 	/*
+	//CREATION DES NEURONES
 	unsigned int number_of_neurons(13499);
 	//contructeur neuron : i, g, excitatory, is_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
@@ -64,6 +65,7 @@ Env::Env()
 	}*/
 
 	cout << neurons_.size() << " neurons created ! :) " << endl;
+	
 }
 
 
@@ -78,12 +80,28 @@ Env::~Env() {
 	neurons_.clear();
 }
 
+void Env::set_connections() {
+	
+	//Connections entre neurones du network
+	random_connection();
+	//Ajout des connections avec le background
+	background_connection();
+	
+}
+
 void Env::random_connection() {
 	//Boucle sur tous les neurones du network
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
 		neurons_[i]->Neuron::random_connection();
 	}
 
+}
+
+void Env::background_connection() {
+	for (unsigned int i(0); i < neurons_.size(); ++i) {
+		//neurons_[i]->Neuron::add_connection();
+	}
+	
 }
 
 //programmation des spikes selon loi de poisson selon cycle de 10 (à t=0, on dit ce qu'il se passe jusqu'a t+10)

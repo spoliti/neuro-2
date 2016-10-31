@@ -90,25 +90,27 @@ void Neuron::random_connection() {
      
     int number;
     
-	//Connections avec les neurons inhibiteurs
-	if (is_excitatory_ == false) {										//AVANT: for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i)
+	//Connections avec les neurons inhibiteurs	
+	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
+
 		number = rand() % Neuron::inhibatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
      
-     //Connections avec les neurons excitateurs
-	else if (is_excitatory_ == true) {									// AVANT: unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
-																		//for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
+    //Connections avec les neurons excitateurs
+    unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
+    
+	for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
 		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
-
 	
 }
 
 void Neuron::add_connection(int indice, int number) {
 	this->connections_[indice] = number;
 }
+
 
 void Neuron::get_spike(bool isExcitatory) {
 	//isExcitatory est le bool du neurone qui ENVOIE le spike
