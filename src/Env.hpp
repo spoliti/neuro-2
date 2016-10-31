@@ -17,6 +17,9 @@ class Env {
 		double fact(double t);
 		double get_periode();
 		void get_times_spikes(double i);
+		vector<Neuron*> graph_fifty_neurons();
+		vector<vector<double>> spikes_list_fifty_neurons();		//tableau pour interface graphique
+		
 	private:
 		vector<Neuron*> neurons_; 		//collection de neurones de l'env,
 		double time;					//temps t où on en est
