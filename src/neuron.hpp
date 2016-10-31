@@ -12,7 +12,7 @@ public:
     //methodes
     
     //constructeur et destructeur
-    Neuron(int neuron_number_, double g_, bool excitatory_, double rapport_vext_over_vthr_);
+    Neuron(int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
     ~Neuron();
     //getters
     int get_numero();
@@ -40,6 +40,7 @@ private:
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory;		//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
+	bool is_env;			//true si neuron dans l'environnement, false si du background
 	std::array<int, 2250> connections_;	//tab contenant les indices des neurones auquel l'instance est connectée
 	std::vector<double> times_spikes; //temps auquel les spikes st recus
 	
@@ -66,7 +67,7 @@ public:
 	
 	const static int excitatory_neurons;    	//nb of excitatory neurons in the network
     const static int inhibatory_neurons;   		//nb of inhibitory neurons in the network
-    
+    const static int env_neurons;				// nb de neurones de l'environnement (pas du background)
 	
 
 };
