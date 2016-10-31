@@ -9,9 +9,9 @@
 using namespace std;
 
 //Initialisation des constantes statiques
-	const double Env::time_unit(/*0.01*/1);		//[millisecondes]
-	const double Env::time_simu(/*2000*/12); 		//[ms] = 2s
-	const double Env::periode(/*0.1*/1); 		//[ms], 10 unités de temps pour le moment
+	const double Env::time_unit(0.01);		//[millisecondes]
+	const double Env::time_simu(20); 		//[ms] = 2s
+	const double Env::periode(10); 		//[ms], 10 unités de temps pour le moment
 	
 
 Env::Env() 
@@ -117,9 +117,27 @@ void Env::random_spike() {
 	}
 }
 
-//lancement des spikes au temps t comme programmé au dessus
 void Env::actualise() {
+	
+	//receive spike -> from background and network
+	
+	
+	//calcul du potentiel
+	
+	
+	//send_spike
+	
+	
+	//calcul du potentiel
+	
+	
+	//inactif 
+	
+	
+	//actif -> peut de nouveau recevoir
 
+	
+	//lancement des spikes du background au temps t comme programmé au dessus
 	for (unsigned int i(0); i < neurons_.size(); ++i){
 		
 		if (neurons_[i]->Neuron::get_time_last_spike()== time){
@@ -146,7 +164,7 @@ double Env::get_time_simu(){
 }
 
 double Env::actualise_time(){
-	time += time_unit;
+	time += 1;
 	return time;
 }
 
