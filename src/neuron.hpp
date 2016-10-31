@@ -16,7 +16,8 @@ public:
     ~Neuron();
     //getters
     int get_numero();
-    bool get_type();
+    bool is_excitatory();
+    bool is_in_env();
     double get_compteur();
     double get_potential();
     //autre
@@ -39,8 +40,8 @@ private:
 	int compteur_spikes; 	//nombre de spikes envoyés ?
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
-	bool is_excitatory;		//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
-	bool is_env;			//true si neuron dans l'environnement, false si du background
+	bool is_excitatory_;		//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
+	bool is_in_env_;			//true si neuron dans l'environnement, false si du background
 	std::array<int, 2250> connections_;	//tab contenant les indices des neurones auquel l'instance est connectée
 	std::vector<double> times_spikes; //temps auquel les spikes st recus
 	

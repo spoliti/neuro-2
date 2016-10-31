@@ -48,6 +48,7 @@ Env::Env()
 	}
 	/*
 	unsigned int number_of_neurons(13499);
+	//contructeur neuron : i, g, excitatory, is_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2499){										//les neurones d'indice 0-2499 sont inhibitory et env
 			Neuron* A = new Neuron(i, g, false, true, ratio);
@@ -126,22 +127,38 @@ void Env::random_spike() {
 
 void Env::actualise() {
 	
-	//receive spike -> from background and network
+	//receive spike -> from background and network 
+	//seuls les neurones de env recoivent 
+	
+	//pour les neurones de env
+	//pour tous les neurones du backgroung et de env
+	//neurons_[i]->get_spike (neurons_[j]->get_type)
+	
+	for (unsigned int i(0); i < neurons_.size(); ++i) {
+		
+		//pour tous les neurones de env (i)
+		if (neurons_[i]->is_in_env()) {
+			
+			//pour tous les neurones de env et du background (j)
+			for (unsigned int j(0); j < neurons_.size(); ++i) {
+				
+				//le neurone i recoit les spikes des neurones j auxquels il est connecté si leur potentiel est > threshold
+			}
+		}
+		
+	}
 	
 	
-	//calcul du potentiel
+	//calcul du potentiel -> dans receive spike
 	
 	
 	//send_spike
 	
 	
-	//calcul du potentiel
+	//si a envoyé spike : calcul du potentiel et inactif
 	
 	
-	//inactif 
-	
-	
-	//actif -> peut de nouveau recevoir
+	//actif -> peut de nouveau recevoir on recommence la boucle
 
 	
 	//lancement des spikes du background au temps t comme programmé au dessus
@@ -189,8 +206,7 @@ vector<Neuron*> Env::graph_fifty_neurons(){
         }
         return fifty_neurons;
 }      
-                                                                               
-       
+                                                                                  
 vector<vector<double>> Env::spikes_list_fifty_neurons(){
         vector<vector<double>> spikes_list;
         vector<Neuron*> list_neurons(graph_fifty_neurons());
@@ -200,3 +216,4 @@ vector<vector<double>> Env::spikes_list_fifty_neurons(){
         }
         return spikes_list;
 }
+

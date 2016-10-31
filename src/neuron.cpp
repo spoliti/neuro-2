@@ -29,8 +29,8 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, 
     compteur_spikes(0.0),           //initialisation du nb de spikes a 0
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
-    is_excitatory(excitatory_),
-    is_env(is_in_env),
+    is_excitatory_(excitatory_),
+    is_in_env_(is_in_env),
     g(g_)                           //initialisation de g
 
 {
@@ -49,9 +49,13 @@ int Neuron::get_numero(){
     return numero_neuron;
 }
 
-bool Neuron::get_type() {
- 	return is_excitatory;
- }
+bool Neuron::is_excitatory() {
+ 	return is_excitatory_;
+}
+
+bool Neuron::is_in_env() {
+		return is_in_env_;
+}
 	
 double Neuron::get_compteur(){
     return compteur_spikes;
@@ -87,13 +91,13 @@ void Neuron::random_connection() {
     int number;
     
 	//Connections avec les neurons inhibiteurs
-	if (is_excitatory == false) {										//AVANT: for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i)
+	if (is_excitatory_ == false) {										//AVANT: for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i)
 		number = rand() % Neuron::inhibatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
 	}
      
      //Connections avec les neurons excitateurs
-	else if (is_excitatory == true) {									// AVANT: unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
+	else if (is_excitatory_ == true) {									// AVANT: unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
 																		//for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
 		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
 		this->Neuron::add_connection(numero_neuron, number);
