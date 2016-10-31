@@ -20,15 +20,17 @@ using namespace std;
 	
 	const int Neuron::excitatory_neurons(10000);    //nb of excitatory neurons in the network
     const int Neuron::inhibatory_neurons(2500);   	//nb of inhibitory neurons in the network
+	const int Neuron::env_neurons(12500);			//nb de neurones de l'environnement (pas du background)
 
 //Methodes
 	
-Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, double rapport_vext_over_vthr_)
+Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, double rapport_vext_over_vthr_)
     :numero_neuron(neuron_number_), //initialisation du numero du neuron
     compteur_spikes(0.0),           //initialisation du nb de spikes a 0
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
     is_excitatory(excitatory_),
+    is_env(is_in_env),
     g(g_)                           //initialisation de g
 
 {
