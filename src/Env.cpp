@@ -153,7 +153,12 @@ void Env::actualise() {
 	//neurons_[i]->get_spike (neurons_[j]->get_type)
 	
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
-		
+		//lancement des spikes du background au temps t comme programmé au dessus
+	
+		if (neurons_[i]->Neuron::get_time_last_spike()== time){
+			neurons_[i]->get_spike(i);
+		}
+	/*
 		//pour tous les neurones de env (i)
 		if (neurons_[i]->is_in_env()) {
 			
@@ -162,7 +167,7 @@ void Env::actualise() {
 				
 				//le neurone i recoit les spikes des neurones j auxquels il est connecté si leur potentiel est > threshold
 			}
-		}
+		}*/
 		
 	}
 	
@@ -179,13 +184,7 @@ void Env::actualise() {
 	//actif -> peut de nouveau recevoir on recommence la boucle
 
 	
-	//lancement des spikes du background au temps t comme programmé au dessus
-	for (unsigned int i(0); i < neurons_.size(); ++i){
-		
-		if (neurons_[i]->Neuron::get_time_last_spike()== time){
-			neurons_[i]->get_spike(i);
-		}
-	}
+	
 }
 
 void Env::get_times_spikes(double i){
