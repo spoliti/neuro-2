@@ -1,4 +1,3 @@
-vide
 #include "neuron.hpp"
 #include "Env.cpp"
 #include <iostream>
