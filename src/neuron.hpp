@@ -24,8 +24,9 @@ public:
     void reset();
     void refractory();
     void random_connection();
-    void add_connection(int indice_tab, int neuron_number);
-    void get_spike(bool isExcitatory);	//isExcitatory: bool du neurone qui ENVOIE le spike
+    void add_connection(int neuron_number);
+    bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
+    void get_spike(bool isExcitatory);		//isExcitatory: bool du neurone qui ENVOIE le spike
 	
 	//utilisé par loi de Poisson
 	bool is_times_spikes_empty();
@@ -40,10 +41,12 @@ private:
 	int compteur_spikes; 	//nombre de spikes envoyés ?
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
-	bool is_excitatory_;		//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
-	bool is_in_env_;			//true si neuron dans l'environnement, false si du background
-	std::array<int, 2250> connections_;	//tab contenant les indices des neurones auquel l'instance est connectée
-	std::vector<double> times_spikes; //temps auquel les spikes st recus
+	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
+	bool is_in_env_;		//true si neuron dans l'environnement, false si du background
+	
+	std::vector<int> connections_;		//contient indices des neurones auquel l'instance est connectée
+										//ie de qui l'instance peut RECEVOIR des spikes
+	std::vector<double> times_spikes;	//temps auxquels les spikes sont recus
 	
     double g;		//relative strength of inhibitory synapses
     double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback

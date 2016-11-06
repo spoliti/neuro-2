@@ -23,7 +23,7 @@ class Env {
 		vector<vector<double>> spikes_list_fifty_neurons();		//tableau pour interface graphique
 		
 	private:
-		vector<Neuron*> neurons_; 		//collection de neurones de l'env,
+		vector<Neuron*> neurons_; 		//neurones du network et du background
 		double time;					//temps t où on en est
 		double time_average_spike;
 					

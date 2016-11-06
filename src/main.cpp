@@ -12,8 +12,8 @@ int main() {
 	//Création de la simulation
 	//Env(); //constructeur de env pour créer des neurones
 	Env network;
-	//appel de random_connection pour générer les connections
-	network.Env::random_connection();
+	//appel de random_connection pour générer les connections (de qui on peut recevoir des spikes)
+	network.Env::set_connections();
 
 	
 	//Mise en route de la simulation

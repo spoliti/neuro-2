@@ -87,28 +87,48 @@ void Neuron::random_connection() {
       * exemple : nb entre 250 et 1249 : neurones excitateurs
       * a = 250 + rand() % 1000;
       */
-     
+    
     int number;
     
 	//Connections avec les neurons inhibiteurs	
 	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
 
-		number = rand() % Neuron::inhibatory_neurons;
-		this->Neuron::add_connection(numero_neuron, number);
+		do {
+			number = rand() % Neuron::inhibatory_neurons;
+		} while (!is_a_new_connection(number));
+		
+		this->Neuron::add_connection(number);
 	}
      
     //Connections avec les neurons excitateurs
     unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
     
 	for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
-		number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
-		this->Neuron::add_connection(numero_neuron, number);
+		
+		do {
+			number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
+		} while (!is_a_new_connection(number));
+		
+		this->Neuron::add_connection(number);
 	}
 	
 }
 
-void Neuron::add_connection(int indice, int number) {
-	this->connections_[indice] = number;
+void Neuron::add_connection(int number) {
+	this->connections_.push_back(number);
+}
+
+bool Neuron::is_a_new_connection(int number) {
+	
+	for (unsigned int i(0); i < connections_.size(); ++i) {
+		
+		if (number == connections_[i]) {
+			return false;
+		}
+		
+	}
+	
+	return true;
 }
 
 
@@ -161,3 +181,5 @@ double Neuron::get_time_last_spike(){
 vector<double> Neuron::get_times_spikes(){
 	return times_spikes;
 }
+
+

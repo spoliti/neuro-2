@@ -48,7 +48,8 @@ Env::Env()
 	}
 	/*
 	//CREATION DES NEURONES
-	unsigned int number_of_neurons(13499);
+	* EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
+	unsigned int number_of_neurons(13500);
 	//contructeur neuron : i, g, excitatory, is_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2499){										//les neurones d'indice 0-2499 sont inhibitory et env
@@ -80,9 +81,11 @@ Env::~Env() {
 	neurons_.clear();
 }
 
+
 void Env::set_connections() {
+//génération des connections pour les neurones du network (de qui on peut recevoir des spikes)
 	
-	//Connections entre neurones du network
+	//Connections avec les neurones du network
 	random_connection();
 	//Ajout des connections avec le background
 	background_connection();
@@ -90,19 +93,40 @@ void Env::set_connections() {
 }
 
 void Env::random_connection() {
+	
 	//Boucle sur tous les neurones du network
-	for (unsigned int i(0); i < neurons_.size(); ++i) {
+	for (unsigned int i(0); i < Neuron::env_neurons; ++i) {
 		neurons_[i]->Neuron::random_connection();
 	}
-
+	
+	/* pas besoin d'itérer sur les neurones du background 
+	 * car on ne s'occupe pas de qui ils peuvent recevoir des spikes
+	 * vu qu'ils suivent une loi de poisson
+	 */
 }
 
 void Env::background_connection() {
+	/* Les connections avec les neurones du background sont modélisées
+	 * par les numéros du neurone du background, qui vont de 12500 à 13499 dans le cas normal
+	 * cas général : 
+	 * de env_neuron à env_neuron*(1 + %excitatory_neurons*connection_probability) 
+	 * la borne supérieure correspond en fait à la taille de neurons_ -1
+	 */
+	 
+	int EnvConnectionNumber;
+	EnvConnectionNumber = Neuron::connection_probability * Neuron::env_neurons;
+	
+	//Pour tous les neurones du network
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
-		//neurons_[i]->Neuron::add_connection();
+		
+		//ajout des connections avec le background (les mêmes pour tous les neurones du network)
+		for (unsigned int j(EnvConnectionNumber); j < neurons_.size(); ++j) {
+			neurons_[i]->Neuron::add_connection(j);
+		}
 	}
 	
 }
+
 
 //programmation des spikes selon loi de poisson selon cycle de 10 (à t=0, on dit ce qu'il se passe jusqu'a t+10)
 void Env::random_spike() {
