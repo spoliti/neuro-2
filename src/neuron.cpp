@@ -1,4 +1,3 @@
-//#include <neuro-2/neuron.hpp>
 #include "neuron.hpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
@@ -81,7 +80,8 @@ void Neuron::refractory(){
 	
 }
 
-void Neuron::random_connection() {
+
+void Neuron::random_connection(vector<Neuron*> neurons) {
 	  /* Pour un nombre random entre min et max :
       * a = min + rand() % (max - min + 1 );
       * exemple : nb entre 250 et 1249 : neurones excitateurs
@@ -97,7 +97,7 @@ void Neuron::random_connection() {
 			number = rand() % Neuron::inhibatory_neurons;
 		} while (!is_a_new_connection(number));
 		
-		this->Neuron::add_connection(number);
+		this->Neuron::add_connection(neurons[number]);
 	}
      
     //Connections avec les neurons excitateurs
@@ -109,20 +109,20 @@ void Neuron::random_connection() {
 			number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
 		} while (!is_a_new_connection(number));
 		
-		this->Neuron::add_connection(number);
+		this->Neuron::add_connection(neurons[number]);
 	}
 	
 }
 
-void Neuron::add_connection(int number) {
-	this->connections_.push_back(number);
+void Neuron::add_connection(Neuron* neuron) {
+	this->connections_.push_back(neuron);
 }
 
 bool Neuron::is_a_new_connection(int number) {
 	
 	for (unsigned int i(0); i < connections_.size(); ++i) {
 		
-		if (number == connections_[i]) {
+		if (number == connections_[i]->get_numero()) {
 			return false;
 		}
 		
@@ -132,31 +132,42 @@ bool Neuron::is_a_new_connection(int number) {
 }
 
 
-void Neuron::get_spike(bool isExcitatory) {
-	//isExcitatory est le bool du neurone qui ENVOIE le spike
-	//cerr << "GET SPIKE " << endl;
+void Neuron::receive_spike() {
+	//cerr << "RECEIVE SPIKE " << endl;
+	
+	/* ATTENTION DANS CETTE VERSION ON RECOIT UN SPIKE DE TOUS LES NEURONS DE CONNECTIONS_ 
+	 * -> créer une fonction bool qui dit si on doit recevoir un spike ou pas
+	 * suivant la valeur du potentiel du neuron
+	 * (pourquoi pas créer un attribut de neuron bool can_send_spike
+	 */
+	
+	bool isExcitatory;
+	
+	for (unsigned int i(0); i < connections_.size(); ++i) {
+	
+		isExcitatory = connections_[i]->is_excitatory();
 		
-	compteur_spikes += 1;
+		//Recu d'un neurone inhibiteur
+		if (!isExcitatory) {
 		
-	//Recu d'un neurone inhibiteur
-	if (!isExcitatory) {
-		
-		if (this->potential >= g*Neuron::potential_amplitude) {
-			this->potential -= g*Neuron::potential_amplitude;
+			if (this->potential >= g*Neuron::potential_amplitude) {
+				this->potential -= g*Neuron::potential_amplitude;
 			
-		} else if (this->potential > 0) {
-			this->potential = 0;
+			} else if (this->potential > 0) {
+				this->potential = 0;
+			}
+			//dans les autres cas il ne se passe rien 
+			//(en considérant que le potentiel ne peux pas etre negatif)
+			//sinon mettre une limite minimale autre que 0 
 		}
-		//dans les autres cas il ne se passe rien 
-		//(en considérant que le potentiel ne peux pas etre negatif)
-		//sinon mettre une limite minimale autre que 0 
-	}
 	
-	//Recu d'un neurone excitateur (du network ou externe)
-	if (isExcitatory) {
-		this->potential += Neuron::potential_amplitude;
+		//Recu d'un neurone excitateur (du network ou externe)
+		if (isExcitatory) {
+			this->potential += Neuron::potential_amplitude;
+		}
+		
+		compteur_spikes += 1;
 	}
-	
 }
 
 bool Neuron::is_times_spikes_empty() {
@@ -170,6 +181,7 @@ void Neuron::times_spikes_add(int x){
 	//cerr << "ADD SOMETHING TO TIMES_SPIKES" << endl;
 	//compteur_spikes += 1;
 	//pour avoir des valeurs justes pour loi poisson, compter ici
+	
 	times_spikes.push_back(x);
 }
 

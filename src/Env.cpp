@@ -69,7 +69,6 @@ Env::Env()
 	
 }
 
-
 Env::~Env() {
 	
 	//destruction de la collection de neurones
@@ -86,17 +85,17 @@ void Env::set_connections() {
 //génération des connections pour les neurones du network (de qui on peut recevoir des spikes)
 	
 	//Connections avec les neurones du network
-	random_connection();
+	random_connection(neurons_);
 	//Ajout des connections avec le background
 	background_connection();
 	
 }
 
-void Env::random_connection() {
+void Env::random_connection(vector<Neuron*> neurons) {
 	
 	//Boucle sur tous les neurones du network
 	for (unsigned int i(0); i < Neuron::env_neurons; ++i) {
-		neurons_[i]->Neuron::random_connection();
+		neurons_[i]->Neuron::random_connection(neurons);
 	}
 	
 	/* pas besoin d'itérer sur les neurones du background 
@@ -121,7 +120,7 @@ void Env::background_connection() {
 		
 		//ajout des connections avec le background (les mêmes pour tous les neurones du network)
 		for (unsigned int j(EnvConnectionNumber); j < neurons_.size(); ++j) {
-			neurons_[i]->Neuron::add_connection(j);
+			neurons_[i]->Neuron::add_connection(neurons_[j]);
 		}
 	}
 	
@@ -169,8 +168,10 @@ void Env::random_spike() {
 
 void Env::actualise() {
 	
-	//receive spike -> from background and network 
-	//seuls les neurones de env recoivent 
+	//Reception des spikes, seuls les neurones de env recoivent 
+	for (int i(0); i < Neuron::env_neurons; ++i) {
+		neurons_[i]->receive_spike();
+	}
 	
 	//pour les neurones de env
 	//pour tous les neurones du backgroung et de env
@@ -180,7 +181,8 @@ void Env::actualise() {
 		//lancement des spikes du background au temps t comme programmé au dessus
 	
 		if (neurons_[i]->Neuron::get_time_last_spike()== time){
-			neurons_[i]->get_spike(i);
+			//neurons_[i]->receive_spike(i);
+			neurons_[i]->receive_spike();
 		}
 	/*
 		//pour tous les neurones de env (i)

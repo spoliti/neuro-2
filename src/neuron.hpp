@@ -23,10 +23,10 @@ public:
     //autre
     void reset();
     void refractory();
-    void random_connection();
-    void add_connection(int neuron_number);
+    void random_connection(std::vector<Neuron*> neurons);
+    void add_connection(Neuron* neuron);
     bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
-    void get_spike(bool isExcitatory);		//isExcitatory: bool du neurone qui ENVOIE le spike
+	void receive_spike();
 	
 	//utilisé par loi de Poisson
 	bool is_times_spikes_empty();
@@ -44,7 +44,7 @@ private:
 	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
 	bool is_in_env_;		//true si neuron dans l'environnement, false si du background
 	
-	std::vector<int> connections_;		//contient indices des neurones auquel l'instance est connectée
+	std::vector<Neuron*> connections_;		//contient indices des neurones auquel l'instance est connectée
 										//ie de qui l'instance peut RECEVOIR des spikes
 	std::vector<double> times_spikes;	//temps auxquels les spikes sont recus
 	
