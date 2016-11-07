@@ -1,3 +1,6 @@
+#ifndef ENV_H
+#define ENV_H
+
 #include <vector>
 #include <iostream>  
 #include "neuron.hpp"
@@ -35,3 +38,4 @@ class Env {
 
 
 
+#endif

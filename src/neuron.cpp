@@ -40,7 +40,13 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, 
 }
 
 Neuron::~Neuron() {
-    //vide si pas d'utilisation de pointeurs
+	//destruction de la collection de connections
+    for (unsigned int i(0); i < connections_.size(); ++i) {
+        delete connections_[i];
+    }
+	
+	//réinitialise la taille de neurons_ à 0
+	connections_.clear();
 }
   
                    
@@ -115,7 +121,7 @@ void Neuron::random_connection(vector<Neuron*> neurons) {
 }
 
 void Neuron::add_connection(Neuron* neuron) {
-	this->connections_.push_back(neuron);
+	//this->connections_.push_back(neuron);
 }
 
 bool Neuron::is_a_new_connection(int number) {
@@ -141,6 +147,10 @@ void Neuron::receive_spike() {
 	 * (pourquoi pas créer un attribut de neuron bool can_send_spike
 	 */
 	
+	/* Modifier le calcul du potentiel suivant la formule
+	 * rajouter des arguments dans la fonction si besoin
+	 */
+	
 	bool isExcitatory;
 	
 	for (unsigned int i(0); i < connections_.size(); ++i) {
@@ -156,9 +166,11 @@ void Neuron::receive_spike() {
 			} else if (this->potential > 0) {
 				this->potential = 0;
 			}
-			//dans les autres cas il ne se passe rien 
-			//(en considérant que le potentiel ne peux pas etre negatif)
-			//sinon mettre une limite minimale autre que 0 
+			
+			/* dans les autres cas il ne se passe rien 
+			 * (en considérant que le potentiel ne peux pas etre negatif)
+			 * sinon mettre une limite minimale autre que 0 
+			 */
 		}
 	
 		//Recu d'un neurone excitateur (du network ou externe)

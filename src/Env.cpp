@@ -30,7 +30,7 @@ Env::Env()
 		cin >> ratio;
 	} while (ratio <= 0.0);
 	
-	
+	/*
 	unsigned int number_of_neurons(4);
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2){										//les neurones d'indice 0-2499 sont inhibitory et env
@@ -45,10 +45,10 @@ Env::Env()
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
 		}
-	}
-	/*
+	}*/
+	
 	//CREATION DES NEURONES
-	* EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
+	// EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
 	unsigned int number_of_neurons(13500);
 	//contructeur neuron : i, g, excitatory, is_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
@@ -63,7 +63,8 @@ Env::Env()
 		else if(i>= 12500){									
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
-	}*/
+		}
+	}//*/
 
 	cout << neurons_.size() << " neurons created ! :) " << endl;
 	
@@ -83,6 +84,8 @@ Env::~Env() {
 
 void Env::set_connections() {
 //génération des connections pour les neurones du network (de qui on peut recevoir des spikes)
+	
+	cerr << "set_connections" << endl;
 	
 	//Connections avec les neurones du network
 	random_connection(neurons_);
@@ -173,9 +176,6 @@ void Env::actualise() {
 		neurons_[i]->receive_spike();
 	}
 	
-	//pour les neurones de env
-	//pour tous les neurones du backgroung et de env
-	//neurons_[i]->get_spike (neurons_[j]->get_type)
 	
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
 		//lancement des spikes du background au temps t comme programmé au dessus

@@ -26,6 +26,7 @@ int main() {
         //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
         //if(network.Env::get_time()%(network.Env::get_periode()) == 0){
         
+        
         //modulo pour des nb doubles
         double modulo;
         modulo = fmod(network.Env::get_time(), network.Env::get_periode());
@@ -39,6 +40,7 @@ int main() {
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
         network.Env::actualise_time(); 
         network.Env::actualise();    
+        
 	}
     
     
@@ -47,5 +49,9 @@ int main() {
 	
     int b(2);
     network.Env::get_times_spikes(b);
-    return 0;
+    
+
+    
+       return 0;
 } 
+
