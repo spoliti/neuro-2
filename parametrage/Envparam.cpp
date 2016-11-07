@@ -56,4 +56,9 @@ void Env::actualise() {
 		}*/
 		
 	}
+	
+//A changer dans Neuron:	
+	
+	//int env_neuron= inhibitory+excitatory
+
 
