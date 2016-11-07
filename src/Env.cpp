@@ -31,6 +31,18 @@ Env::Env()
 	} while (ratio <= 0.0);
 	
 	
+	
+	/*cout << "Valeur de g ? (relative strengh of excitatory and inhibitory neurons, > 0) " << endl;
+		cin >> g;
+		if (g<=0.0) throw string ("g doit être supérieur à zéro");
+
+double ratio;
+	cout << "Valeur de Vext/Vthr ? ( ratio > 0) " << endl;
+		cin >> ratio;
+		if (ratio<= 0.0) throw string ("Le ratio doit être supérieur à zéro"); */
+
+	
+	
 	unsigned int number_of_neurons(5);
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2){										//les neurones d'indice 0-2499 sont inhibitory et env
