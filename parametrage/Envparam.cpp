@@ -26,5 +26,34 @@ int Env::get_inhibatory_neurons () {
 		 }
 	}*/ 
   //la modification tu tableau
-
+void Env::actualise() {
+	
+	//Reception des spikes, seuls les neurones de env recoivent 
+	for (int i(0); i < Neuron::env_neurons; ++i) { /// il faudrait changer en inibatory_neurons+excitatory_neurons????
+		neurons_[i]->receive_spike();
+	}
+	
+	//pour les neurones de env
+	//pour tous les neurones du backgroung et de env
+	//neurons_[i]->get_spike (neurons_[j]->get_type)
+	
+	for (unsigned int i(0); i < neurons_.size(); ++i) {
+		//lancement des spikes du background au temps t comme programmé au dessus
+	
+		if (neurons_[i]->Neuron::get_time_last_spike()== time){
+			//neurons_[i]->receive_spike(i);
+			neurons_[i]->receive_spike();
+		}
+	/*
+		//pour tous les neurones de env (i)
+		if (neurons_[i]->is_in_env()) {
+			
+			//pour tous les neurones de env et du background (j)
+			for (unsigned int j(0); j < neurons_.size(); ++i) {
+				
+				//le neurone i recoit les spikes des neurones j auxquels il est connecté si leur potentiel est > threshold
+			}
+		}*/
+		
+	}
 
