@@ -103,7 +103,11 @@ void Neuron::random_connection(vector<Neuron*> neurons) {
 			number = rand() % Neuron::inhibatory_neurons;
 		} while (!is_a_new_connection(number));
 		
-		this->Neuron::add_connection(neurons[number]);
+		
+		if (neurons[number] != nullptr) {
+			this->Neuron::add_connection(neurons[number]);
+			//cerr << "neurons[number]" << neurons[number] << endl;
+		}
 	}
      
     //Connections avec les neurons excitateurs
@@ -115,13 +119,16 @@ void Neuron::random_connection(vector<Neuron*> neurons) {
 			number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
 		} while (!is_a_new_connection(number));
 		
-		this->Neuron::add_connection(neurons[number]);
+		if (neurons[number] != 0) {
+			this->Neuron::add_connection(neurons[number]);
+		}
 	}
 	
 }
 
 void Neuron::add_connection(Neuron* neuron) {
 	//this->connections_.push_back(neuron);
+	cout << "Neuron::add_connec neuron " << neuron << endl;
 }
 
 bool Neuron::is_a_new_connection(int number) {
@@ -151,11 +158,13 @@ void Neuron::receive_spike() {
 	 * rajouter des arguments dans la fonction si besoin
 	 */
 	
-	bool isExcitatory;
+	//bool isExcitatory(true);
+	//cerr << "receive spike, taille connection : " << connections_.size();
+	/*
+	//<= PORVISOIRE
+	for (unsigned int i(0); i <= connections_.size(); ++i) {
 	
-	for (unsigned int i(0); i < connections_.size(); ++i) {
-	
-		isExcitatory = connections_[i]->is_excitatory();
+		//isExcitatory = connections_[i]->is_excitatory();
 		
 		//Recu d'un neurone inhibiteur
 		if (!isExcitatory) {
@@ -165,13 +174,13 @@ void Neuron::receive_spike() {
 			
 			} else if (this->potential > 0) {
 				this->potential = 0;
-			}
+			} 
 			
 			/* dans les autres cas il ne se passe rien 
 			 * (en considérant que le potentiel ne peux pas etre negatif)
 			 * sinon mettre une limite minimale autre que 0 
 			 */
-		}
+		/* }
 	
 		//Recu d'un neurone excitateur (du network ou externe)
 		if (isExcitatory) {
@@ -179,7 +188,7 @@ void Neuron::receive_spike() {
 		}
 		
 		compteur_spikes += 1;
-	}
+	} */
 }
 
 bool Neuron::is_times_spikes_empty() {

@@ -30,8 +30,8 @@ Env::Env()
 		cin >> ratio;
 	} while (ratio <= 0.0);
 	
-	/*
-	unsigned int number_of_neurons(4);
+	
+	unsigned int number_of_neurons(5);
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2){										//les neurones d'indice 0-2499 sont inhibitory et env
 			Neuron* A = new Neuron(i, g, false, true, ratio);
@@ -45,8 +45,8 @@ Env::Env()
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
 		}
-	}*/
-	
+	}
+	/*
 	//CREATION DES NEURONES
 	// EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
 	unsigned int number_of_neurons(13500);
@@ -64,9 +64,11 @@ Env::Env()
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
 		}
-	}//*/
+	} */
 
 	cout << neurons_.size() << " neurons created ! :) " << endl;
+	
+	//si on essaye d'accéder à un indice invalide de neurons_ -> vaut 0
 	
 }
 
@@ -98,7 +100,12 @@ void Env::random_connection(vector<Neuron*> neurons) {
 	
 	//Boucle sur tous les neurones du network
 	for (unsigned int i(0); i < Neuron::env_neurons; ++i) {
-		neurons_[i]->Neuron::random_connection(neurons);
+		
+		if (neurons_[i] != 0) {
+			neurons_[i]->Neuron::random_connection(neurons);
+			cout << neurons_[i] << endl;
+		}
+		
 	}
 	
 	/* pas besoin d'itérer sur les neurones du background 
@@ -173,18 +180,20 @@ void Env::actualise() {
 	
 	//Reception des spikes, seuls les neurones de env recoivent 
 	for (int i(0); i < Neuron::env_neurons; ++i) {
-		neurons_[i]->receive_spike();
+		if (neurons_[i] != 0) {
+			neurons_[i]->receive_spike();
+		}
 	}
 	
-	
+	/*
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
 		//lancement des spikes du background au temps t comme programmé au dessus
 	
 		if (neurons_[i]->Neuron::get_time_last_spike()== time){
 			//neurons_[i]->receive_spike(i);
-			neurons_[i]->receive_spike();
+			//neurons_[i]->receive_spike();
 		}
-	/*
+	
 		//pour tous les neurones de env (i)
 		if (neurons_[i]->is_in_env()) {
 			
@@ -193,9 +202,9 @@ void Env::actualise() {
 				
 				//le neurone i recoit les spikes des neurones j auxquels il est connecté si leur potentiel est > threshold
 			}
-		}*/
+		}
 		
-	}
+	} */
 	
 	
 	//calcul du potentiel -> dans receive spike
