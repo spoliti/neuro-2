@@ -34,6 +34,11 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, 
 
 {
     //Calcul des valeurs pour Vthr et Vext
+    
+    /* 
+    if (potential_amplitude==0 or excitatory_connection==0 or membrane_time==0) throw string("div by 0");
+    */
+
     v_thr = firing_threshold / (potential_amplitude * excitatory_connection * membrane_time);
     v_ext = rapport_vext_over_vthr_ * v_thr;
     
