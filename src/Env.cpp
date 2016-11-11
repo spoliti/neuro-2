@@ -116,7 +116,7 @@ void Env::random_connection() {
 		
 		if (neurons_[i] != 0) {
 			neurons_[i]->Neuron::random_connection(neurons_);
-			cout << neurons_[i] << endl;
+			//cout << neurons_[i] << endl;
 		}
 		
 	}
