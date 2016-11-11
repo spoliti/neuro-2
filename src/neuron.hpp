@@ -31,9 +31,12 @@ public:
 	
 	//utilisé par loi de Poisson
 	bool is_times_spikes_empty();
-	void times_spikes_add(int x);
+	void times_spikes_add(const double time);
 	double get_time_last_spike();
 	std::vector<double> get_times_spikes();
+	bool send_spike(time);
+	void affect_potential();
+	
 private:
     
     //attributs
