@@ -12,7 +12,7 @@ class Env {
 		Env(); 							//constructeur
 		~Env();							//destructeur
 		void set_connections();			//créé les connections entre tous les neurones
-		void random_connection(vector<Neuron*> neurons);	//créé connections aléatoires pour network
+		void random_connection();		//créé connections aléatoires pour network
 		void background_connection();	//ajoute les connections avec le background
 		void random_spike();
 		void actualise();

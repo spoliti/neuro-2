@@ -23,10 +23,11 @@ public:
     //autre
     void reset();
     void refractory();
-    void random_connection(std::vector<Neuron*> neurons);
+    void random_connection(std::vector<Neuron*> &neurons);
     void add_connection(Neuron* neuron);
     bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
 	void receive_spike();
+	void send_spike(std::vector<Neuron*> &neurons);
 	
 	//utilisé par loi de Poisson
 	bool is_times_spikes_empty();

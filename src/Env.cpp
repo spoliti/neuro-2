@@ -42,7 +42,7 @@ double ratio;
 		if (ratio<= 0.0) throw string ("Le ratio doit être supérieur à zéro"); */
 
 	
-	
+	/*
 	unsigned int number_of_neurons(5);
 	for(unsigned int i(0); i < number_of_neurons; ++i){
 		if(i<=2){										//les neurones d'indice 0-2499 sont inhibitory et env
@@ -58,25 +58,26 @@ double ratio;
 			neurons_.push_back(A);
 		}
 	}
-	/*
+	*/
 	//CREATION DES NEURONES
 	// EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
-	unsigned int number_of_neurons(13500);
+	//TESTS AVEC 10 FOIS MOINS DE NEURONES
+	unsigned int number_of_neurons(1350);
 	//contructeur neuron : i, g, excitatory, is_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if(i<=2499){										//les neurones d'indice 0-2499 sont inhibitory et env
+		if(i<=249){										//les neurones d'indice 0-2499 sont inhibitory et env
 			Neuron* A = new Neuron(i, g, false, true, ratio);
 			neurons_.push_back(A);
 		}
-		else if(i>= 2500 and i<12500){									//les neurones d'indice  2500-13499 sont excitatory et env
+		else if(i>= 250 and i<1250){									//les neurones d'indice  2500-13499 sont excitatory et env
 			Neuron* A = new Neuron(i, g, true, true, ratio);		//(ceux d'indice 12500-13499 sont le background)
 			neurons_.push_back(A);
 		}
-		else if(i>= 12500){									
+		else if(i>= 1250){									
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
 		}
-	} */
+	} 
 
 	cout << neurons_.size() << " neurons created ! :) " << endl;
 	
@@ -102,19 +103,19 @@ void Env::set_connections() {
 	cerr << "set_connections" << endl;
 	
 	//Connections avec les neurones du network
-	random_connection(neurons_);
+	random_connection();
 	//Ajout des connections avec le background
 	background_connection();
 	
 }
 
-void Env::random_connection(vector<Neuron*> neurons) {
+void Env::random_connection() {
 	
 	//Boucle sur tous les neurones du network
 	for (unsigned int i(0); i < Neuron::env_neurons; ++i) {
 		
 		if (neurons_[i] != 0) {
-			neurons_[i]->Neuron::random_connection(neurons);
+			neurons_[i]->Neuron::random_connection(neurons_);
 			cout << neurons_[i] << endl;
 		}
 		

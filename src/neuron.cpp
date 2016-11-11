@@ -12,14 +12,15 @@ using namespace std;
 	const double Neuron::transmission_delay(1.5);    //[milliseconde]
 	const int Neuron::membrane_time(20);             //[milliseconde]
 
+//NORMALEMENT 10 FOIS PLUS DE NEURONES ET DE CONNECTIONS
     const double Neuron::connection_probability(0.1);
-    const int Neuron::excitatory_connection(1000);       //nb of excitatory connections for each neuron
-	const int Neuron::inhibatory_connection(250);        //nb of inhibitory connections for each neuron
-    const int Neuron::ext_excitatory_connection(1000);   //nb of external excitatory connections for each neuron
+    const int Neuron::excitatory_connection(100);       //nb of excitatory connections for each neuron
+	const int Neuron::inhibatory_connection(25);        //nb of inhibitory connections for each neuron
+    const int Neuron::ext_excitatory_connection(100);   //nb of external excitatory connections for each neuron
 	
-	const int Neuron::excitatory_neurons(10000);    //nb of excitatory neurons in the network
-    const int Neuron::inhibatory_neurons(2500);   	//nb of inhibitory neurons in the network
-	const int Neuron::env_neurons(12500);			//nb de neurones de l'environnement (pas du background)
+	const int Neuron::excitatory_neurons(1000);    //nb of excitatory neurons in the network
+    const int Neuron::inhibatory_neurons(250);   	//nb of inhibitory neurons in the network
+	const int Neuron::env_neurons(1250);			//nb de neurones de l'environnement (pas du background)
 
 //Methodes
 	
@@ -92,7 +93,7 @@ void Neuron::refractory(){
 }
 
 
-void Neuron::random_connection(vector<Neuron*> neurons) {
+void Neuron::random_connection(vector<Neuron*> &neurons) {
 	  /* Pour un nombre random entre min et max :
       * a = min + rand() % (max - min + 1 );
       * exemple : nb entre 250 et 1249 : neurones excitateurs
@@ -110,7 +111,7 @@ void Neuron::random_connection(vector<Neuron*> neurons) {
 		
 		
 		if (neurons[number] != nullptr) {
-			this->Neuron::add_connection(neurons[number]);
+			this->add_connection(neurons[number]);
 			//cerr << "neurons[number]" << neurons[number] << endl;
 		}
 	}
@@ -125,14 +126,14 @@ void Neuron::random_connection(vector<Neuron*> neurons) {
 		} while (!is_a_new_connection(number));
 		
 		if (neurons[number] != 0) {
-			this->Neuron::add_connection(neurons[number]);
+			this->add_connection(neurons[number]);
 		}
 	}
 	
 }
 
 void Neuron::add_connection(Neuron* neuron) {
-	//this->connections_.push_back(neuron);
+	this->connections_.push_back(neuron);
 	cout << "Neuron::add_connec neuron " << neuron << endl;
 }
 
@@ -166,7 +167,7 @@ void Neuron::receive_spike() {
 	//bool isExcitatory(true);
 	//cerr << "receive spike, taille connection : " << connections_.size();
 	/*
-	//<= PORVISOIRE
+	//<= PROVISOIRE
 	for (unsigned int i(0); i <= connections_.size(); ++i) {
 	
 		//isExcitatory = connections_[i]->is_excitatory();
@@ -179,7 +180,7 @@ void Neuron::receive_spike() {
 			
 			} else if (this->potential > 0) {
 				this->potential = 0;
-			} 
+			} */
 			
 			/* dans les autres cas il ne se passe rien 
 			 * (en considérant que le potentiel ne peux pas etre negatif)
@@ -194,6 +195,19 @@ void Neuron::receive_spike() {
 		
 		compteur_spikes += 1;
 	} */
+}
+
+void Neuron::send_spike(std::vector<Neuron*> &neurons) {
+	//voir si utilise reset() et refractory()
+	/* utilise neurons_ pour chercher dans tous les tableaux de connections_ si un neurone peut recevoir
+	 * un spike de l'instance courante (this) 
+	 * (utiliser le numero de l'instance pour l'identifier,
+	 * par exemple faire dans des boucles une condition du genre 
+	 * if (numero_neuron == neurons[i]->connections[j]->numero_neuron) {//envoie du spike à i}
+	 * avec i parcourant tous les neurones de Env
+	 * et j parcourant le tableau de connection du neurone i
+	 */
+	 
 }
 
 bool Neuron::is_times_spikes_empty() {
