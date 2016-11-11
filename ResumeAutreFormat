@@ -38,15 +38,11 @@ Emission time of a spike and time in general are notated t.
 Membrane time constant (tau)  τ = 20 ms
 
 Théorie utile :  When V(t) reaches the firing threshold (theta) θ, an action potential is emitted by the neuron (spike). The depolarization is reset to the reset potential Vr  after a refractory period (tau) τrp  during which the potential is insensitive to stimulation.
-
 Depolarization of a neuron: τ * dV(t)/dt = -V(t) + RI(t)
-Snaptic current at the soma of a neuron (central part of a neuron): RI(t) = μ(t) + σ(t)sqrt(τ)η(t)
+Snaptic current at the soma of a neuron (central part of a neuron): RI(t) =  τ * (J*number exitatory neuron's spikes (t) - g*J*number inhibitory neuron's spikes(t))
  - I(t) (sum of the contribution of spikes arriving at different synapses)
  - R (resistance)
- - Sum of local and external inputs: μ(t) = μ(t)local + μ(t)external = Ce*J(1-γg)v(t-D)τ - Ce*J*v*τ
- - Fluctuation in the sum of internal excitatory, inhibitory and poissonian inputs: σ(t)^2 = σ(t)local^2 + σ(t)external^2 = J*sqrt(Ce(1+γg^2)v(t-D)τ) + J*sqrt(Ce*v*τ)
- - Gaussian white noise: η(t)
- - V(t) = V0 + v*e^(-t/γ)
+ - V(t) = V0 - (V0/ τ)*t + RI(t)
 
 firing threshold (theta) θ = 20 mV
 reset potential Vr = 10 mV
