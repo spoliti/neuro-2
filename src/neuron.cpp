@@ -134,7 +134,7 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
 
 void Neuron::add_connection(Neuron* neuron) {
 	this->connections_.push_back(neuron);
-	cout << "Neuron::add_connec neuron " << neuron << endl;
+	//cout << "Neuron::add_connec neuron " << neuron << endl;
 }
 
 bool Neuron::is_a_new_connection(int number) {
