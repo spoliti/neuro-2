@@ -217,12 +217,12 @@ bool Neuron::is_times_spikes_empty() {
 	return false;
 }
 
-void Neuron::times_spikes_add(int x){
+void Neuron::times_spikes_add(const double time){		
 	//cerr << "ADD SOMETHING TO TIMES_SPIKES" << endl;
 	//compteur_spikes += 1;
 	//pour avoir des valeurs justes pour loi poisson, compter ici
 	
-	times_spikes.push_back(x);
+	times_spikes.push_back(time);
 }
 
 double Neuron::get_time_last_spike(){
@@ -232,6 +232,32 @@ double Neuron::get_time_last_spike(){
 
 vector<double> Neuron::get_times_spikes(){
 	return times_spikes;
+}
+
+// methode send spike, simplement pour marquer si a un temps donné une spike est envoyé depuis le neuron en consideration
+bool Neuron::send_spike(time) {
+	if(potential>=firing_threshold)
+	{	
+		times_spikes_add(time);
+		reset();
+		return true;
+	}
+	else return false;
+}
+
+void Neuron::affect_potential(const double time) {
+	int number_spikes_e(0);
+	int number_spikes_i(0);
+	int spike_contributions(0);
+	for(int i(0); i<connections_.size(); i++)		// parcourre le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
+		{
+			if(connections_[i].send_spike(time)
+				if(connections_[i].isExitatory)
+					++number_spikes_e;
+				else ++number_spikes_i;
+		}
+	spike_contributions = number_spikes_e*potential_amplitude - number_spikes_i*g*potential_amplitude; 		// spike_contributions = RI(t)
+	potential = potential - (potential/firing_threshold)*time + spike_contributions;
 }
 
 
