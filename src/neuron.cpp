@@ -1,6 +1,7 @@
 #include "neuron.hpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
+#include <assert.h>
 
 using namespace std;
 
@@ -97,6 +98,7 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
     int number;
     
 	//Connections avec les neurons inhibiteurs	
+	assert(Neuron::inhibatory_connection < Neuron::inhibatory_neurons);
 	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
 
 		do {
@@ -110,6 +112,7 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
 	}
      
     //Connections avec les neurons excitateurs
+    assert(Neuron::excitatory_connection < Neuron::excitatory_neurons);
     unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
     
 	for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
@@ -243,15 +246,20 @@ void Neuron::affect_potential(const double time) {
 	int number_spikes_e(0);
 	int number_spikes_i(0);
 	int spike_contributions(0);
+	
 	for(unsigned int i(0); i<connections_.size(); i++) {		// parcourre le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
 	
 			if(connections_[i]->send_spike(time)) {
-				if(connections_[i]->is_excitatory()) 
-					++number_spikes_e;
 				
-				else {++number_spikes_i;}
+				if(connections_[i]->is_excitatory()) {
+					++number_spikes_e;
+				} else {
+					++number_spikes_i;
+				}
 		}
 	}
+	
+	// spike_contributions = RI(t)
 	spike_contributions = number_spikes_e*potential_amplitude - number_spikes_i*g*potential_amplitude; 		// spike_contributions = RI(t)
 	potential = potential - (potential/firing_threshold)*time + spike_contributions;
 }
