@@ -46,13 +46,7 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, 
 }
 
 Neuron::~Neuron() {
-	//destruction de la collection de connections
-    for (unsigned int i(0); i < connections_.size(); ++i) {
-        delete connections_[i];
-    }
-	
-	//réinitialise la taille de neurons_ à 0
-	connections_.clear();
+	//vide
 }
   
                    
@@ -112,7 +106,6 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
 		
 		if (neurons[number] != nullptr) {
 			this->add_connection(neurons[number]);
-			//cerr << "neurons[number]" << neurons[number] << endl;
 		}
 	}
      
@@ -137,11 +130,13 @@ void Neuron::add_connection(Neuron* neuron) {
 	//cout << "Neuron::add_connec neuron " << neuron << endl;
 }
 
+//vérifie que la connection n'existe pas déja 
+//et que l'on ne fait pas de connection avec soi même 
 bool Neuron::is_a_new_connection(int number) {
 	
 	for (unsigned int i(0); i < connections_.size(); ++i) {
 		
-		if (number == connections_[i]->get_numero()) {
+		if ((number == connections_[i]->get_numero())or (number == numero_neuron)) {
 			return false;
 		}
 		
@@ -152,7 +147,6 @@ bool Neuron::is_a_new_connection(int number) {
 
 
 void Neuron::receive_spike() {
-	//cerr << "RECEIVE SPIKE " << endl;
 	
 	/* ATTENTION DANS CETTE VERSION ON RECOIT UN SPIKE DE TOUS LES NEURONS DE CONNECTIONS_ 
 	 * -> créer une fonction bool qui dit si on doit recevoir un spike ou pas
@@ -164,13 +158,13 @@ void Neuron::receive_spike() {
 	 * rajouter des arguments dans la fonction si besoin
 	 */
 	
-	//bool isExcitatory(true);
-	//cerr << "receive spike, taille connection : " << connections_.size();
-	/*
-	//<= PROVISOIRE
+	bool isExcitatory(true);
+	
 	for (unsigned int i(0); i <= connections_.size(); ++i) {
 	
-		//isExcitatory = connections_[i]->is_excitatory();
+		if (connections_[i] != nullptr) {
+			isExcitatory = connections_[i]->is_excitatory(); 
+		}
 		
 		//Recu d'un neurone inhibiteur
 		if (!isExcitatory) {
@@ -180,13 +174,13 @@ void Neuron::receive_spike() {
 			
 			} else if (this->potential > 0) {
 				this->potential = 0;
-			} */
+			} 
 			
 			/* dans les autres cas il ne se passe rien 
 			 * (en considérant que le potentiel ne peux pas etre negatif)
 			 * sinon mettre une limite minimale autre que 0 
 			 */
-		/* }
+		}
 	
 		//Recu d'un neurone excitateur (du network ou externe)
 		if (isExcitatory) {
@@ -194,7 +188,7 @@ void Neuron::receive_spike() {
 		}
 		
 		compteur_spikes += 1;
-	} */
+	} 
 }
 
 void Neuron::send_spike(std::vector<Neuron*> &neurons) {
@@ -235,7 +229,7 @@ vector<double> Neuron::get_times_spikes(){
 }
 
 // methode send spike, simplement pour marquer si a un temps donné une spike est envoyé depuis le neuron en consideration
-bool Neuron::send_spike(time) {
+bool Neuron::send_spike(double time) {
 	if(potential>=firing_threshold)
 	{	
 		times_spikes_add(time);
@@ -249,13 +243,15 @@ void Neuron::affect_potential(const double time) {
 	int number_spikes_e(0);
 	int number_spikes_i(0);
 	int spike_contributions(0);
-	for(int i(0); i<connections_.size(); i++)		// parcourre le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
-		{
-			if(connections_[i].send_spike(time)
-				if(connections_[i].isExitatory)
+	for(unsigned int i(0); i<connections_.size(); i++) {		// parcourre le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
+	
+			if(connections_[i]->send_spike(time)) {
+				if(connections_[i]->is_excitatory()) 
 					++number_spikes_e;
-				else ++number_spikes_i;
+				
+				else {++number_spikes_i;}
 		}
+	}
 	spike_contributions = number_spikes_e*potential_amplitude - number_spikes_i*g*potential_amplitude; 		// spike_contributions = RI(t)
 	potential = potential - (potential/firing_threshold)*time + spike_contributions;
 }

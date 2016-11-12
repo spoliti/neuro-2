@@ -34,8 +34,8 @@ public:
 	void times_spikes_add(const double time);
 	double get_time_last_spike();
 	std::vector<double> get_times_spikes();
-	bool send_spike(time);
-	void affect_potential();
+	bool send_spike(double time);
+	void affect_potential(const double time);
 	
 private:
     
