@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 2.6)
 
 project(neuro-2)
 
+
+INCLUDE(${CMAKE_ROOT}/Modules/FindGnuplot.cmake)
+
 option(test "Build tests." ON)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++11")
@@ -10,16 +13,16 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(PkgConfig)
 
-pkg_check_modules(GTKMM gtkmm-3) # look into FindPkgConfig.cmake, 
+pkg_check_modules(GNUPLOT gnuplot) # look into FindPkgConfig.cmake, 
                                                                 # it contains documentation
 # Now the variables GTKMM_INCLUDE_DIRS, GTKMM_LIBRARY_DIRS and GTKMM_LIBRARIES 
 # contain what you expect 
 
 link_directories(
-    ${GTKMM_LIBRARY_DIRS}  )
+    ${GNUPLOT_LIBRARY_DIRS}  )
 
 include_directories(
-    ${GTKMM_INCLUDE_DIRS}  )
+    ${GNUPLOT_INCLUDE_DIRS}  )
 
 add_executable(neuro-2 src/main.cpp src/Env.cpp scr/neuron.cpp)
 

@@ -1,0 +1,9 @@
+plotmm-0.1.2
+
+  * Added patch from Goetz Gaycken to make plotmm work with both
+    gtkmm-2.0 and 2.4/2.6
+  * All uint were changed to unsigned int to make compilation work for mingw-w32
+    (thanks to Mikolaj Habdank)
+  * fixed several segfaults
+
+ -- Andy Thaller <andy.thaller@gmx.de>  Thu, 10 Nov 2005 15:18:29 +0100

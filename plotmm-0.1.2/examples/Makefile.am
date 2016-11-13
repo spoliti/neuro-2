@@ -1,0 +1,5 @@
+SUBDIRS = simple curves
+
+CLEANFILES = *~
+
+

@@ -1,0 +1,33 @@
+The PlotMM Widget Library
+-------------------------
+
+      PlotMM is an extension to the gtkmm library.  It contains widgets
+      which are primarily useful for technical and scientifical purposes.
+      Initially, this is a 2-D plotting widget.
+
+      PlotMM is based in part on the work of the Qwt project 
+      (http://qwt.sf.net).
+
+      PlotMM is hosted at http://plotmm.sf.net/
+
+
+Installation
+------------
+      
+      Read INSTALL to learn how to build and install PlotMM.
+
+Copyright
+---------
+
+    PlotMM Widget Library 
+    Copyright (C) 2004,2005   Andy Thaller
+
+    PlotMM is published under the LGPL, Version 2
+    You should have received a copy of this licence in the file
+    COPYING.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+  

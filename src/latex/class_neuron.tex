@@ -1,0 +1,181 @@
+\hypertarget{class_neuron}{}\section{Neuron Class Reference}
+\label{class_neuron}\index{Neuron@{Neuron}}
+
+
+{\ttfamily \#include $<$neuron.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_neuron_ab15c755e86f858840a6e3799ff5bc7aa}{Neuron} (int neuron\+\_\+number\+\_\+, double g\+\_\+, bool excitatory\+\_\+, double rapport\+\_\+vext\+\_\+over\+\_\+vthr\+\_\+)
+\item 
+\hyperlink{class_neuron_a94a250ce7e167760e593979b899745b1}{$\sim$\+Neuron} ()
+\item 
+int \hyperlink{class_neuron_a34b44bcd44cfd9e04831e307b32a605e}{get\+\_\+numero} ()
+\item 
+double \hyperlink{class_neuron_a601c49ff0ef55337e90b0c163054e1d7}{get\+\_\+compteur} ()
+\item 
+double \hyperlink{class_neuron_ac7f8ab271cb1b315206ff26c440d7eee}{get\+\_\+potential} ()
+\item 
+void \hyperlink{class_neuron_a6817fc5bf2128150b41b65e74f018408}{reset} ()
+\item 
+void \hyperlink{class_neuron_ac35d991a6113da31ad2961ca28242722}{refractory} ()
+\item 
+void \hyperlink{class_neuron_ad4e598fd98e9119290a3ee1ac0ef8289}{random\+\_\+connection} ()
+\item 
+void \hyperlink{class_neuron_a1fb776caee1ae8f839233f598c090e70}{add\+\_\+connection} (int indice\+\_\+tab, int neuron\+\_\+number)
+\item 
+void \hyperlink{class_neuron_aa3f598d0bfdd7de26a4efedbfeb55885}{get\+\_\+spike} (int neuron\+\_\+number)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const double \hyperlink{class_neuron_a060e99d9c0a3b7309137e4930a5d6440}{v\+\_\+reset}
+\item 
+static const double \hyperlink{class_neuron_afd59ba07f501d71b910d32772e387b61}{potential\+\_\+amplitude}
+\item 
+static const int \hyperlink{class_neuron_a6f7525f237c3d299f58c7a3bf42d62a9}{refractory\+\_\+period}
+\item 
+static const int \hyperlink{class_neuron_a06ea7a20372a1c3bf89396a5f0e5f331}{firing\+\_\+threshold}
+\item 
+static const double \hyperlink{class_neuron_a7a3978b9b9da2d1873eabae310a82a43}{transmission\+\_\+delay}
+\item 
+static const int \hyperlink{class_neuron_a61c7512561ec7aa826c7c49614879e3e}{membrane\+\_\+time}
+\item 
+static const double \hyperlink{class_neuron_a6a33431be5ded570bb95b0574c443e08}{connection\+\_\+probability}
+\item 
+static const int \hyperlink{class_neuron_a9767a0722e3f8d86e43d9efa90ec0f36}{excitatory\+\_\+connection}
+\item 
+static const int \hyperlink{class_neuron_aa1809e0164c6de44397f66ab4dddad84}{inhibatory\+\_\+connection}
+\item 
+static const int \hyperlink{class_neuron_aa151305e976e30c7f5d396a15779c3f3}{ext\+\_\+excitatory\+\_\+connection}
+\item 
+static const int \hyperlink{class_neuron_ad93c068fdb3a5f1671a321437ab6d155}{excitatory\+\_\+neurons}
+\item 
+static const int \hyperlink{class_neuron_abaddad04d5a8ac031af69b59ba6127a0}{inhibatory\+\_\+neurons}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Neuron@{Neuron}!Neuron@{Neuron}}
+\index{Neuron@{Neuron}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{Neuron(int neuron\+\_\+number\+\_\+, double g\+\_\+, bool excitatory\+\_\+, double rapport\+\_\+vext\+\_\+over\+\_\+vthr\+\_\+)}{Neuron(int neuron_number_, double g_, bool excitatory_, double rapport_vext_over_vthr_)}}]{\setlength{\rightskip}{0pt plus 5cm}Neuron\+::\+Neuron (
+\begin{DoxyParamCaption}
+\item[{int}]{neuron\+\_\+number\+\_\+, }
+\item[{double}]{g\+\_\+, }
+\item[{bool}]{excitatory\+\_\+, }
+\item[{double}]{rapport\+\_\+vext\+\_\+over\+\_\+vthr\+\_\+}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_ab15c755e86f858840a6e3799ff5bc7aa}{}\label{class_neuron_ab15c755e86f858840a6e3799ff5bc7aa}
+\index{Neuron@{Neuron}!````~Neuron@{$\sim$\+Neuron}}
+\index{````~Neuron@{$\sim$\+Neuron}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{$\sim$\+Neuron()}{~Neuron()}}]{\setlength{\rightskip}{0pt plus 5cm}Neuron\+::$\sim$\+Neuron (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_a94a250ce7e167760e593979b899745b1}{}\label{class_neuron_a94a250ce7e167760e593979b899745b1}
+
+
+\subsection{Member Function Documentation}
+\index{Neuron@{Neuron}!add\+\_\+connection@{add\+\_\+connection}}
+\index{add\+\_\+connection@{add\+\_\+connection}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{add\+\_\+connection(int indice\+\_\+tab, int neuron\+\_\+number)}{add_connection(int indice_tab, int neuron_number)}}]{\setlength{\rightskip}{0pt plus 5cm}void Neuron\+::add\+\_\+connection (
+\begin{DoxyParamCaption}
+\item[{int}]{indice\+\_\+tab, }
+\item[{int}]{neuron\+\_\+number}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_a1fb776caee1ae8f839233f598c090e70}{}\label{class_neuron_a1fb776caee1ae8f839233f598c090e70}
+\index{Neuron@{Neuron}!get\+\_\+compteur@{get\+\_\+compteur}}
+\index{get\+\_\+compteur@{get\+\_\+compteur}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{get\+\_\+compteur()}{get_compteur()}}]{\setlength{\rightskip}{0pt plus 5cm}double Neuron\+::get\+\_\+compteur (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_a601c49ff0ef55337e90b0c163054e1d7}{}\label{class_neuron_a601c49ff0ef55337e90b0c163054e1d7}
+\index{Neuron@{Neuron}!get\+\_\+numero@{get\+\_\+numero}}
+\index{get\+\_\+numero@{get\+\_\+numero}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{get\+\_\+numero()}{get_numero()}}]{\setlength{\rightskip}{0pt plus 5cm}int Neuron\+::get\+\_\+numero (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_a34b44bcd44cfd9e04831e307b32a605e}{}\label{class_neuron_a34b44bcd44cfd9e04831e307b32a605e}
+\index{Neuron@{Neuron}!get\+\_\+potential@{get\+\_\+potential}}
+\index{get\+\_\+potential@{get\+\_\+potential}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{get\+\_\+potential()}{get_potential()}}]{\setlength{\rightskip}{0pt plus 5cm}double Neuron\+::get\+\_\+potential (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_ac7f8ab271cb1b315206ff26c440d7eee}{}\label{class_neuron_ac7f8ab271cb1b315206ff26c440d7eee}
+\index{Neuron@{Neuron}!get\+\_\+spike@{get\+\_\+spike}}
+\index{get\+\_\+spike@{get\+\_\+spike}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{get\+\_\+spike(int neuron\+\_\+number)}{get_spike(int neuron_number)}}]{\setlength{\rightskip}{0pt plus 5cm}void Neuron\+::get\+\_\+spike (
+\begin{DoxyParamCaption}
+\item[{int}]{neuron\+\_\+number}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_aa3f598d0bfdd7de26a4efedbfeb55885}{}\label{class_neuron_aa3f598d0bfdd7de26a4efedbfeb55885}
+\index{Neuron@{Neuron}!random\+\_\+connection@{random\+\_\+connection}}
+\index{random\+\_\+connection@{random\+\_\+connection}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{random\+\_\+connection()}{random_connection()}}]{\setlength{\rightskip}{0pt plus 5cm}void Neuron\+::random\+\_\+connection (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_ad4e598fd98e9119290a3ee1ac0ef8289}{}\label{class_neuron_ad4e598fd98e9119290a3ee1ac0ef8289}
+\index{Neuron@{Neuron}!refractory@{refractory}}
+\index{refractory@{refractory}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{refractory()}{refractory()}}]{\setlength{\rightskip}{0pt plus 5cm}void Neuron\+::refractory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_ac35d991a6113da31ad2961ca28242722}{}\label{class_neuron_ac35d991a6113da31ad2961ca28242722}
+\index{Neuron@{Neuron}!reset@{reset}}
+\index{reset@{reset}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{reset()}{reset()}}]{\setlength{\rightskip}{0pt plus 5cm}void Neuron\+::reset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_neuron_a6817fc5bf2128150b41b65e74f018408}{}\label{class_neuron_a6817fc5bf2128150b41b65e74f018408}
+
+
+\subsection{Member Data Documentation}
+\index{Neuron@{Neuron}!connection\+\_\+probability@{connection\+\_\+probability}}
+\index{connection\+\_\+probability@{connection\+\_\+probability}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{connection\+\_\+probability}{connection_probability}}]{\setlength{\rightskip}{0pt plus 5cm}const double Neuron\+::connection\+\_\+probability\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a6a33431be5ded570bb95b0574c443e08}{}\label{class_neuron_a6a33431be5ded570bb95b0574c443e08}
+\index{Neuron@{Neuron}!excitatory\+\_\+connection@{excitatory\+\_\+connection}}
+\index{excitatory\+\_\+connection@{excitatory\+\_\+connection}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{excitatory\+\_\+connection}{excitatory_connection}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::excitatory\+\_\+connection\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a9767a0722e3f8d86e43d9efa90ec0f36}{}\label{class_neuron_a9767a0722e3f8d86e43d9efa90ec0f36}
+\index{Neuron@{Neuron}!excitatory\+\_\+neurons@{excitatory\+\_\+neurons}}
+\index{excitatory\+\_\+neurons@{excitatory\+\_\+neurons}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{excitatory\+\_\+neurons}{excitatory_neurons}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::excitatory\+\_\+neurons\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_ad93c068fdb3a5f1671a321437ab6d155}{}\label{class_neuron_ad93c068fdb3a5f1671a321437ab6d155}
+\index{Neuron@{Neuron}!ext\+\_\+excitatory\+\_\+connection@{ext\+\_\+excitatory\+\_\+connection}}
+\index{ext\+\_\+excitatory\+\_\+connection@{ext\+\_\+excitatory\+\_\+connection}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{ext\+\_\+excitatory\+\_\+connection}{ext_excitatory_connection}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::ext\+\_\+excitatory\+\_\+connection\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_aa151305e976e30c7f5d396a15779c3f3}{}\label{class_neuron_aa151305e976e30c7f5d396a15779c3f3}
+\index{Neuron@{Neuron}!firing\+\_\+threshold@{firing\+\_\+threshold}}
+\index{firing\+\_\+threshold@{firing\+\_\+threshold}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{firing\+\_\+threshold}{firing_threshold}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::firing\+\_\+threshold\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a06ea7a20372a1c3bf89396a5f0e5f331}{}\label{class_neuron_a06ea7a20372a1c3bf89396a5f0e5f331}
+\index{Neuron@{Neuron}!inhibatory\+\_\+connection@{inhibatory\+\_\+connection}}
+\index{inhibatory\+\_\+connection@{inhibatory\+\_\+connection}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{inhibatory\+\_\+connection}{inhibatory_connection}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::inhibatory\+\_\+connection\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_aa1809e0164c6de44397f66ab4dddad84}{}\label{class_neuron_aa1809e0164c6de44397f66ab4dddad84}
+\index{Neuron@{Neuron}!inhibatory\+\_\+neurons@{inhibatory\+\_\+neurons}}
+\index{inhibatory\+\_\+neurons@{inhibatory\+\_\+neurons}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{inhibatory\+\_\+neurons}{inhibatory_neurons}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::inhibatory\+\_\+neurons\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_abaddad04d5a8ac031af69b59ba6127a0}{}\label{class_neuron_abaddad04d5a8ac031af69b59ba6127a0}
+\index{Neuron@{Neuron}!membrane\+\_\+time@{membrane\+\_\+time}}
+\index{membrane\+\_\+time@{membrane\+\_\+time}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{membrane\+\_\+time}{membrane_time}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::membrane\+\_\+time\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a61c7512561ec7aa826c7c49614879e3e}{}\label{class_neuron_a61c7512561ec7aa826c7c49614879e3e}
+\index{Neuron@{Neuron}!potential\+\_\+amplitude@{potential\+\_\+amplitude}}
+\index{potential\+\_\+amplitude@{potential\+\_\+amplitude}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{potential\+\_\+amplitude}{potential_amplitude}}]{\setlength{\rightskip}{0pt plus 5cm}const double Neuron\+::potential\+\_\+amplitude\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_afd59ba07f501d71b910d32772e387b61}{}\label{class_neuron_afd59ba07f501d71b910d32772e387b61}
+\index{Neuron@{Neuron}!refractory\+\_\+period@{refractory\+\_\+period}}
+\index{refractory\+\_\+period@{refractory\+\_\+period}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{refractory\+\_\+period}{refractory_period}}]{\setlength{\rightskip}{0pt plus 5cm}const int Neuron\+::refractory\+\_\+period\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a6f7525f237c3d299f58c7a3bf42d62a9}{}\label{class_neuron_a6f7525f237c3d299f58c7a3bf42d62a9}
+\index{Neuron@{Neuron}!transmission\+\_\+delay@{transmission\+\_\+delay}}
+\index{transmission\+\_\+delay@{transmission\+\_\+delay}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{transmission\+\_\+delay}{transmission_delay}}]{\setlength{\rightskip}{0pt plus 5cm}const double Neuron\+::transmission\+\_\+delay\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a7a3978b9b9da2d1873eabae310a82a43}{}\label{class_neuron_a7a3978b9b9da2d1873eabae310a82a43}
+\index{Neuron@{Neuron}!v\+\_\+reset@{v\+\_\+reset}}
+\index{v\+\_\+reset@{v\+\_\+reset}!Neuron@{Neuron}}
+\subsubsection[{\texorpdfstring{v\+\_\+reset}{v_reset}}]{\setlength{\rightskip}{0pt plus 5cm}const double Neuron\+::v\+\_\+reset\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{class_neuron_a060e99d9c0a3b7309137e4930a5d6440}{}\label{class_neuron_a060e99d9c0a3b7309137e4930a5d6440}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{neuron_8hpp}{neuron.\+hpp}\item 
+\hyperlink{neuron_8cpp}{neuron.\+cpp}\end{DoxyCompactItemize}

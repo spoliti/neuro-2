@@ -1,0 +1,12 @@
+digraph G
+{
+  edge [fontname="Helvetica",fontsize=10,labelfontname="Helvetica",labelfontsize=10];
+  node [fontname="Helvetica",fontsize=10,shape=record];
+  Node1 [label="PlotMM::Plot",height=0.2,width=0.4,color="white", fillcolor="black", style="filled" fontcolor="white"];
+  Node2 -> Node1 [dir=back,color="darkorchid3",fontsize=10,style="dashed",label="title_",fontname="Helvetica"];
+  Node2 [label="PlotMM::PlotLabel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_plot_m_m_1_1_plot_label.html"];
+  Node3 -> Node1 [dir=back,color="darkorchid3",fontsize=10,style="dashed",label="select_",fontname="Helvetica"];
+  Node3 [label="PlotMM::Rectangle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_plot_m_m_1_1_rectangle.html"];
+  Node4 -> Node1 [dir=back,color="darkorchid3",fontsize=10,style="dashed",label="canvas_",fontname="Helvetica"];
+  Node4 [label="PlotMM::PlotCanvas",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_plot_m_m_1_1_plot_canvas.html"];
+}

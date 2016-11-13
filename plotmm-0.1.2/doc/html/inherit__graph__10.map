@@ -1,0 +1,4 @@
+base referer
+rect $class_plot_m_m_1_1_scale.html 18,31 112,54
+rect $class_plot_m_m_1_1_h_scale.html 162,7 264,31
+rect $class_plot_m_m_1_1_v_scale.html 162,54 264,78
