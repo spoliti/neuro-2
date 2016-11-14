@@ -191,12 +191,27 @@ void Env::random_spike() {
 
 void Env::actualise() {
 	
-	//Reception des spikes, seuls les neurones de env recoivent 
+	//Envoie des spikes (pour neurones de env)
 	for (int i(0); i < Neuron::env_neurons; ++i) {
-		if (neurons_[i] != 0) {
-			neurons_[i]->receive_spike();
+		
+		if (neurons_[i] != nullptr) {
+			neurons_[i]->send_spike(time);
 		}
 	}
+	
+	//Réception des spikes, seuls les neurones de env recoivent 
+	for (int i(0); i < Neuron::env_neurons; ++i) {
+		if (neurons_[i]->get_refractory_time() <= time) {
+			neurons_[i]->set_neuron_as_active();
+		}
+		//Si existe et n'est pas dans refractory period
+		if ((neurons_[i] != nullptr) and (neurons_[i]->get_refractory_time() <= time)) {
+			neurons_[i]->affect_potential(time);
+		}
+	}
+	
+	actualise_time();
+	
 	
 	/*
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
@@ -224,6 +239,18 @@ void Env::actualise() {
 	
 	
 	//send_spike
+	/*
+	for (unsigned int i(0); i < neurons_.size(); ++i) {
+		if (neurons_[i]->is_in_env()) {
+			for (unsigned int j(0); j < (neurons_[i].connections_).size(); ++j) {
+				// envoyer spike
+				
+			}
+			neurons_[i].potential = v_reset;		
+		}
+		
+	}
+	*/ 
 	
 	
 	//si a envoyé spike : calcul du potentiel et inactif
