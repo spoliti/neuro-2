@@ -1,88 +1,43 @@
 ﻿#include "neuron.hpp"
 #include "neuron.cpp"
 #include "Env.hpp"
+#include "Configuration.hpp"
 #include <iostream>
 #include <vector>
 #include <math.h>
 #include <random>
 
 using namespace std;
-
-//Initialisation des constantes statiques
-	const double Env::time_unit(0.01);		//[millisecondes]
-	const double Env::time_simu(20); 		//[ms] = 2s
-	const double Env::periode(10); 		//[ms], 10 unités de temps pour le moment
 	
 
-Env::Env() 
-: time(0)
+Env::Env(double time_simu_, int excitatory_neurons_, int gstrenght, double ratio) 
+: Config(time_simu_, excitatory_neurons_, g, ratio),
+time(0)
 {
-	
-	double g;
-	do {
-		cout << "Valeur de g ? (relative strengh of excitatory and inhibitory neurons, > 0) " << endl;
-		cin >> g;
-	} while (g <= 0.0);
-	
-	double ratio;
-	do {
-		cout << "Valeur de Vext/Vthr ? ( ratio > 0) " << endl;
-		cin >> ratio;
-	} while (ratio <= 0.0);
-	
-	
-	
-	/*cout << "Valeur de g ? (relative strengh of excitatory and inhibitory neurons, > 0) " << endl;
-		cin >> g;
-		if (g<=0.0) throw string ("g doit être supérieur à zéro");
-
-double ratio;
-	cout << "Valeur de Vext/Vthr ? ( ratio > 0) " << endl;
-		cin >> ratio;
-		if (ratio<= 0.0) throw string ("Le ratio doit être supérieur à zéro"); */
-
-	
-	/*
-	unsigned int number_of_neurons(5);
-	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if(i<=2){										//les neurones d'indice 0-2499 sont inhibitory et env
-			Neuron* A = new Neuron(i, g, false, true, ratio);
-			neurons_.push_back(A);
-		}
-		else if(i>2 and i<=3 ){									//les neurones d'indice  2500-13499 sont excitatory et env
-			Neuron* A = new Neuron(i, g, true, true, ratio);
-			neurons_.push_back(A);
-		}
-		else if(i>3){
-			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
-			neurons_.push_back(A);
-		}
-	}
-	*/
 	//CREATION DES NEURONES
-	// EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
-	//TESTS AVEC 10 FOIS MOINS DE NEURONES
-	unsigned int number_of_neurons(1350);
-	//contructeur neuron : i, g, excitatory, is_env, ratio)
-	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if(i<=249){										//les neurones d'indice 0-2499 sont inhibitory et env
-			Neuron* A = new Neuron(i, g, false, true, ratio);
+	//contructeur neuron : time, exci_neur, i, g, excitatory, is_env, ratio)
+	for(unsigned int i(0); i < total_number_neurons; ++i){
+		
+		//les neurones d'indice 0-2499 sont inhibitory et env
+		if(i <= inhibatory_neurons){										
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, g, false, true, ratio);
 			neurons_.push_back(A);
 		}
-		else if(i>= 250 and i<1250){									//les neurones d'indice  2500-13499 sont excitatory et env
-			Neuron* A = new Neuron(i, g, true, true, ratio);		//(ceux d'indice 12500-13499 sont le background)
+		
+		//les neurones d'indice  2500-13499 sont excitatory et env
+		else if(i >= inhibatory_neurons and i < env_neurons){									
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, g, true, true, ratio);		
 			neurons_.push_back(A);
 		}
-		else if(i>= 1250){									
-			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
+		
+		//ceux d'indice 12500-13499 sont du background (excitatory)
+		else if(i>= env_neurons){									
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, g, true, false, ratio);		
 			neurons_.push_back(A);
 		}
 	} 
 
-	cout << neurons_.size() << " neurons created ! :) " << endl;
-	
-	//si on essaye d'accéder à un indice invalide de neurons_ -> vaut 0
-	
+	cout << neurons_.size() << " neurons created ! :) " << endl;	
 }
 
 Env::~Env() {
@@ -112,7 +67,7 @@ void Env::set_connections() {
 void Env::random_connection() {
 	
 	//Boucle sur tous les neurones du network
-	for (unsigned int i(0); i < Neuron::env_neurons; ++i) {
+	for (unsigned int i(0); i < env_neurons; ++i) {
 		
 		if (neurons_[i] != 0) {
 			neurons_[i]->Neuron::random_connection(neurons_);
@@ -136,7 +91,7 @@ void Env::background_connection() {
 	 */
 	 
 	int EnvConnectionNumber;
-	EnvConnectionNumber = Neuron::connection_probability * Neuron::env_neurons;
+	EnvConnectionNumber = connection_probability * env_neurons;
 	
 	//Pour tous les neurones du network
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
@@ -192,15 +147,17 @@ void Env::random_spike() {
 void Env::actualise() {
 	
 	//Envoie des spikes (pour neurones de env)
-	for (int i(0); i < Neuron::env_neurons; ++i) {
+	for (unsigned int i(0); i < env_neurons; ++i) {
 		
 		if (neurons_[i] != nullptr) {
 			neurons_[i]->send_spike(time);
 		}
 	}
 	
+	//rajouter envoie des spikes du background
+	
 	//Réception des spikes, seuls les neurones de env recoivent 
-	for (int i(0); i < Neuron::env_neurons; ++i) {
+	for (unsigned int i(0); i < env_neurons; ++i) {
 		if (neurons_[i]->get_refractory_time() <= time) {
 			neurons_[i]->set_neuron_as_active();
 		}
@@ -234,10 +191,7 @@ void Env::actualise() {
 		
 	} */
 	
-	
 	//calcul du potentiel -> dans receive spike
-	
-	
 	//send_spike
 	/*
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
@@ -252,14 +206,9 @@ void Env::actualise() {
 	}
 	*/ 
 	
-	
 	//si a envoyé spike : calcul du potentiel et inactif
-	
-	
 	//actif -> peut de nouveau recevoir on recommence la boucle
 
-	
-	
 }
 
 void Env::get_times_spikes(double i){
@@ -293,7 +242,7 @@ vector<Neuron*> Env::graph_fifty_neurons(){
         int number;
         for(unsigned int i(0); i<50 ; ++i){
                 //if (is_env == true)
-                number = rand() % Neuron::env_neurons; //12500 , on ne sait pas si on peut avoir accès a env_neurons
+                number = rand() % env_neurons; //12500 , on ne sait pas si on peut avoir accès a env_neurons
                 fifty_neurons.push_back(neurons_[number]);
         }
         return fifty_neurons;

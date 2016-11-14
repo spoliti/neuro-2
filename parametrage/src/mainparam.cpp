@@ -40,8 +40,9 @@ int main(int argc, char** argv) {
 	cmd.parse( argc, argv ); 
 									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
 	
+	//convertir les valeurs
 	//Création de la simulation
-	Config Fichier(time_simu_arg, number_of_excitatory_neurons_arg,g_arg, ratio_arg);
+	//Config fichier(time_simu_arg, number_of_excitatory_neurons_arg,g_arg, ratio_arg);
 									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
 	
 	
@@ -63,7 +64,7 @@ int main(int argc, char** argv) {
 	int inhibatory_neurons(network.Env::get_inhibatory_neurons());
 	int g(network.Env::g);
 	int time_simu(network.Env::get_time_simu());
-	/*const int Neuron::inhibatory_connection(250);        //nb of inhibitory connections for each neuron
+	const int Neuron::inhibatory_connection(250);        //nb of inhibitory connections for each neuron
     const int Neuron::ext_excitatory_connection(1000); */
 	
 
@@ -74,15 +75,17 @@ int main(int argc, char** argv) {
 	
 	{ std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
 	
+	
+	//convertir les valeurs
 	//Création de la simulation
-	Env network; 
+	Env network(time_simu_arg, number_of_excitatory_neurons_arg,g_arg, ratio_arg); 
 	 
 	//appel de random_connection pour générer les connections
 	network.Env::random_connection();
 
 
 	//Mise en route de la simulation
-	//int time_simu(network.Env::get_time_simu());
+	int time_simu(network.Env::get_time_simu());
     
     
     for(int i(0); i <= time_simu; ++i){ //  ceci peut rester exactement comme ceci
@@ -115,3 +118,26 @@ int main(int argc, char** argv) {
     return 0;
 } 
 
+	/*
+	 * VOIR GESTION DES ERREURS POUR GTEST
+	double g;
+	do {
+		cout << "Valeur de g ? (relative strengh of excitatory and inhibitory neurons, > 0) " << endl;
+		cin >> g;
+	} while (g <= 0.0);
+	
+	double ratio;
+	do {
+		cout << "Valeur de Vext/Vthr ? ( ratio > 0) " << endl;
+		cin >> ratio;
+	} while (ratio <= 0.0);
+	
+	cout << "Valeur de g ? (relative strengh of excitatory and inhibitory neurons, > 0) " << endl;
+		cin >> g;
+		if (g<=0.0) throw string ("g doit être supérieur à zéro");
+
+	double ratio;
+	cout << "Valeur de Vext/Vthr ? ( ratio > 0) " << endl;
+	cin >> ratio;
+	if (ratio<= 0.0) throw string ("Le ratio doit être supérieur à zéro"); 
+	*/

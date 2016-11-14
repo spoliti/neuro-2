@@ -1,51 +1,22 @@
 #include "neuron.hpp"
+#include "Configuration.hpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
 #include <assert.h>
 
 using namespace std;
 
-//Initialisation des constantes static
-	const double Neuron::v_reset(10);         	   	 //[milliVolt]
-    const double Neuron::potential_amplitude(0.1);   //[milliVolt]
-	const int Neuron::refractory_period(2);          //[milliseconde]
-	const int Neuron::firing_threshold(20);          //[milliVolt]
-	const double Neuron::transmission_delay(1.5);    //[milliseconde]
-	const int Neuron::membrane_time(20);             //[milliseconde]
-
-//NORMALEMENT 10 FOIS PLUS DE NEURONES ET DE CONNECTIONS
-    const double Neuron::connection_probability(0.1);
-    const int Neuron::excitatory_connection(100);       //nb of excitatory connections for each neuron
-	const int Neuron::inhibatory_connection(25);        //nb of inhibitory connections for each neuron
-    const int Neuron::ext_excitatory_connection(100);   //nb of external excitatory connections for each neuron
 	
-	const int Neuron::excitatory_neurons(1000);    //nb of excitatory neurons in the network
-    const int Neuron::inhibatory_neurons(250);   	//nb of inhibitory neurons in the network
-	const int Neuron::env_neurons(1250);			//nb de neurones de l'environnement (pas du background)
-
-//Methodes
-	
-Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, double rapport_vext_over_vthr_)
-    :numero_neuron(neuron_number_), //initialisation du numero du neuron
+Neuron::Neuron(double time_simu_, int excitatory_neurons, int neuron_number_, double g_, bool excitatory_, bool is_in_env, double ratio_)
+    :Config(time_simu_, excitatory_neurons, g, ratio_),
+    numero_neuron(neuron_number_), //initialisation du numero du neuron
     compteur_spikes(0.0),           //initialisation du nb de spikes a 0
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
     is_excitatory_(excitatory_),
     is_in_env_(is_in_env),
-    is_refractory_until_then(0.0),
-    g(g_)                           //initialisation de g
-
-{
-    //Calcul des valeurs pour Vthr et Vext
-    
-    /* 
-    if (potential_amplitude==0 or excitatory_connection==0 or membrane_time==0) throw string("div by 0");
-    */
-
-    v_thr = firing_threshold / (potential_amplitude * excitatory_connection * membrane_time);
-    v_ext = rapport_vext_over_vthr_ * v_thr;
-    
-}
+    is_refractory_until_then(0.0)
+{}
 
 Neuron::~Neuron() {
 	//vide
@@ -107,11 +78,11 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
     int number;
     
 	//Connections avec les neurons inhibiteurs	
-	assert(Neuron::inhibatory_connection < Neuron::inhibatory_neurons);
-	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
+	assert(inhibatory_connection < inhibatory_neurons);
+	for (unsigned int i(0); i < inhibatory_connection; ++i) {
 
 		do {
-			number = rand() % Neuron::inhibatory_neurons;
+			number = rand() % inhibatory_neurons;
 		} while (!is_a_new_connection(number));
 		
 		
@@ -121,13 +92,13 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
 	}
      
     //Connections avec les neurons excitateurs
-    assert(Neuron::excitatory_connection < Neuron::excitatory_neurons);
-    unsigned int borne_max(Neuron::excitatory_connection +  Neuron::inhibatory_connection);
+    assert(excitatory_connection < excitatory_neurons);
+    unsigned int borne_max(excitatory_connection +  inhibatory_connection);
     
-	for (unsigned int i(Neuron::inhibatory_connection); i < borne_max; ++i) {
+	for (unsigned int i(inhibatory_connection); i < borne_max; ++i) {
 		
 		do {
-			number = Neuron::inhibatory_neurons + rand() % Neuron::excitatory_neurons;
+			number = inhibatory_neurons + rand() % excitatory_neurons;
 		} while (!is_a_new_connection(number));
 		
 		if (neurons[number] != 0) {
@@ -157,18 +128,18 @@ bool Neuron::is_a_new_connection(int number) {
 	return true;
 }
 
-
+/*
 void Neuron::receive_spike() {
 	
-	/* ATTENTION DANS CETTE VERSION ON RECOIT UN SPIKE DE TOUS LES NEURONS DE CONNECTIONS_ 
+	 * ATTENTION DANS CETTE VERSION ON RECOIT UN SPIKE DE TOUS LES NEURONS DE CONNECTIONS_ 
 	 * -> créer une fonction bool qui dit si on doit recevoir un spike ou pas
 	 * suivant la valeur du potentiel du neuron
 	 * (pourquoi pas créer un attribut de neuron bool can_send_spike
-	 */
+	 *
 	
-	/* Modifier le calcul du potentiel suivant la formule
+	 * Modifier le calcul du potentiel suivant la formule
 	 * rajouter des arguments dans la fonction si besoin
-	 */
+	 *
 	
 	bool isExcitatory(true);
 	
@@ -188,10 +159,10 @@ void Neuron::receive_spike() {
 				this->potential = 0;
 			} 
 			
-			/* dans les autres cas il ne se passe rien 
+			 * dans les autres cas il ne se passe rien 
 			 * (en considérant que le potentiel ne peux pas etre negatif)
 			 * sinon mettre une limite minimale autre que 0 
-			 */
+			 *
 		}
 	
 		//Recu d'un neurone excitateur (du network ou externe)
@@ -201,7 +172,7 @@ void Neuron::receive_spike() {
 		
 		compteur_spikes += 1;
 	} 
-}
+} */
 
 bool Neuron::is_times_spikes_empty() {
 	if (times_spikes.size() == 0) {
@@ -232,10 +203,10 @@ bool Neuron::send_spike(double const& time) {
 	
 	//voir si l utilisation du delay de transmission est juste
 	if(potential>=firing_threshold) {	
-		times_spikes_add(time - Neuron::transmission_delay);
+		times_spikes_add(time - transmission_delay);
 		potential = v_reset;
 		active_state = false;
-		is_refractory_until_then = time + Neuron::refractory_period;
+		is_refractory_until_then = time + refractory_period;
 		return true;
 	}
 	else return false;

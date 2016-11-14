@@ -4,7 +4,7 @@
 #include <array>
 #include <vector>
 #include <iostream>
-
+#include "Configuration.hpp"
 
 /*!
  * @class Neuron
@@ -12,7 +12,7 @@
  * @brief description
  */
 
-class Neuron
+class Neuron : public Config
 {
     
 public:
@@ -32,7 +32,7 @@ public:
  * 
  *  
  **/     
-    Neuron(int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
+    Neuron(double time_simu_, int excitatory_neurons, int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
 /*!  
  * @brief Desctructor of neuron class
  * Delete the colection of connections
@@ -142,7 +142,7 @@ public:
  * 
  **/      
     bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
-	void receive_spike();
+	//void receive_spike();
 	
     bool send_spike(double const& time); //ok si tps de env est en milisec
     void affect_potential(double const& time); //ok si le tps de env est en milisec
@@ -200,31 +200,27 @@ private:
 	std::vector<double> times_spikes;
 	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false	//temps auxquels les spikes sont recus
 	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
-	
-    double g;		//relative strength of inhibitory synapses
-    double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback
-    double v_ext;   //external frequency (background ?)
     
     
     //constantes
 public:
     //General 
-	const static double v_reset;         	  	/*!< Value in millivolt */
-    const static double potential_amplitude;	/*!< Value in milliVolt */
-	const static int refractory_period;   		/*!< Value in millisecond */
-	const static int firing_threshold;         	/*!< Value in milliVolt */
-	const static double transmission_delay;    	/*!< Value millisecond */
-	const static int membrane_time;             /*!< Value millisecond */
+	//const static double v_reset;         	  	/*!< Value in millivolt */
+   // const static double potential_amplitude;	/*!< Value in milliVolt */
+	//const static int refractory_period;   		/*!< Value in millisecond */
+	//const static int firing_threshold;         	/*!< Value in milliVolt */
+	//const static double transmission_delay;    	/*!< Value millisecond */
+	//const static int membrane_time;             /*!< Value millisecond */
     
     //Connections
-    const static double connection_probability;
-    const static int excitatory_connection;    	/*!< number of excitatory connections for each neuron */
-    const static int inhibatory_connection;   	/*!< number of inhibitory connections for each neuron */
-    const static int ext_excitatory_connection;	/*!< number of external excitatory connections for each neuron */
+   // const static double connection_probability;
+   // const static int excitatory_connection;    	/*!< number of excitatory connections for each neuron */
+   // const static int inhibatory_connection;   	/*!< number of inhibitory connections for each neuron */
+   // const static int ext_excitatory_connection;	/*!< number of external excitatory connections for each neuron */
 	
-	const static int excitatory_neurons;    	/*!< number of excitatory neurons in the network */
-    const static int inhibatory_neurons;   		/*!< number of inhibitory neurons in the network */
-    const static int env_neurons;				/*!< number of neuron in the environment(not from the background) */
+	//const static int excitatory_neurons;    	/*!< number of excitatory neurons in the network */
+   // const static int inhibatory_neurons;   		/*!< number of inhibitory neurons in the network */
+   // const static int env_neurons;				/*!< number of neuron in the environment(not from the background) */
 	
 
 };
