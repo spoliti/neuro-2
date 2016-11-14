@@ -1,32 +1,47 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
 #include <vector>
 #include <iostream>  
 
 
 //Initialisation des constantes static
-class Config	{
+class Config {
 	public:
-	Config();
+	Config(int time,int excitatory_neurons, int gstrenght,double r);
 	~Config();
 	
-	const double v_reset(10);         	   	 //[milliVolt]
-    const double potential_amplitude(0.1);   //[milliVolt]
-	const int  refractory_period(2);          //[milliseconde]
-	const int firing_threshold(20);          //[milliVolt]
-	const double transmission_delay(1.5);    //[milliseconde]
-	const int membrane_time(20);             //[milliseconde]
+	//Constantes
+	
+	const double v_reset;         	   	//[milliVolt]
+    const double potential_amplitude;   //[milliVolt]
+	const int  refractory_period;       //[milliseconde]
+	const int firing_threshold;         //[milliVolt]
+	const double transmission_delay;    //[milliseconde]
+	const int membrane_time;            //[milliseconde]
 
-    double connection_probability;
-    int excitatory_connection;       //nb of excitatory connections for each neuron
-	int inhibatory_connection;        //nb of inhibitory connections for each neuron
-	int ext_excitatory_connection;   //nb of external excitatory connections for each neuron
+    const double connection_probability;
+    
+    const double periode;	//pour loi de poisson
+ 	const double time_unit;	//unité de temps, 0.1ms ? 
+    
+    
+    //Potentiellement variables
+    
+    double time_simu; 	//durée totale de la simuation
+    double g;
+    
+    int excitatory_connection;      //nb of excitatory connections for each neuron
+	int inhibatory_connection;      //nb of inhibitory connections for each neuron
+	int ext_excitatory_connection;  //nb of external excitatory connections for each neuron
 	
-	const int excitatory_neurons;    //nb of excitatory neurons in the network
-    const int inhibatory_neurons;   	//nb of inhibitory neurons in the network
-	const int env_neurons(excitatory_neurons+inhibatory_neurons);			//nb de neurones de l'environnement (pas du background)
+	int excitatory_neurons; //nb of excitatory neurons in the network
+    int inhibatory_neurons; //nb of inhibitory neurons in the network
+	int env_neurons;		//nb de neurones de l'environnement (pas du background)
 	
-		
-	const static double periode;		//pour loi de poisson
- 	const static double time_unit;	//unité de temps, 0.01ms ? 
  	
- 	static double time_simu; 	//durée totale de la simuation
- 	};
+ 	
+};
+
+#endif
+

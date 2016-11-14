@@ -16,11 +16,13 @@ time_simu(time),
 g(gstrengh_),
 excitatory_neurons(excitatory_neurons_)
 {
+
 inhibatory_neurons= (excitatory_neurons_/gstrengh_);
 inhibatory_connection = connection_probability*inhibatory_neurons;
-/*number_connection_excitatory;
-number_connection_bckground;
-numbertotalneurone; */
+
+excitatory_connection = excitatory_neurons*connection_probability;
+ext_excitatory_connection = excitatory_connection;
+env_neurons = inhibatory_neurons+excitatory_neurons;
 
 }
 
