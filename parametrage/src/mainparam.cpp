@@ -4,12 +4,13 @@
 #include <vector>
 #include <math.h>
 #include "../lib/tclap/include/tclap/CmdLine.h" //il faut télécharger et installer tclap
+//#include "../lib/tclap/include/tclap/ValueArg.h"
 using namespace TCLAP; 
 //using namespace std;
 
 class Env; 
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { 
 	
 	
 	//Création de la simulation
@@ -17,26 +18,27 @@ int main(int argc, char** argv) {
 	Env network; 
 	
 	try {
-	CmdLine cmd( "My TCLAP test" );  /// on doit mettre des valeurs dans les parenthèse? j'ai pas compris
+	CmdLine cmd( "My TCLAP test" );  // on doit mettre des valeurs dans les parenthèse? j'ai pas compris
 	
-									// je déclare des variables mises en paramètre
+	// je déclare des variables mises en paramètre
 	ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, network.Env::get_time_simu(), "int" ); // c'est le parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. le 0 est la valeur par défaut , eton a le type.
       	cmd.add( time_simu_arg );
        
-									/*ValueArg< int > excitatory_neurons_arg( "ne", "excitatory_neurons", "Give me some numbers",  false, 10000,"int" ); /il faut empecher les valeurs abberrante plus valeur par défaut? get_numberofexcitatory_neurons() dans Env.
-											cmd.add( excitatory_neurons_arg ); 
+	/*ValueArg< int > excitatory_neurons_arg( "ne", "excitatory_neurons", "Give me some numbers",  false, 10000,"int" ); /il faut empecher les valeurs abberrante plus valeur par défaut? get_numberofexcitatory_neurons() dans Env.
+	cmd.add( excitatory_neurons_arg ); 
 		
-										ValueArg< int > inhibatory_neurons_arg( "ni", " inhibatory_neurons", "Give me some number", false,2500, "int" ); 
-										cmd.add(  inhibatory_neurons_arg);*/
-	ValueArg<int>number_of_excitatory_neurons_arg("ne","Excitatory", "Give me the totale number of excitatory neurones", false, 12500, "int");
+	ValueArg< int > inhibatory_neurons_arg( "ni", " inhibatory_neurons", "Give me some number", false,2500, "int" ); 
+	cmd.add(  inhibatory_neurons_arg);*/
+	
+	ValueArg<int>number_of_excitatory_neurons_arg("ne","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
 	cmd.add(number_of_excitatory_neurons_arg);
        
-     	ValueArg<int>g_arg( "g", "Relative_strength_inhibitory_synapses", false,4, "int")
+    ValueArg<int>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me g", false,4, "int");
    	cmd.add(g_arg);
      
   
-    	MultiArg<double>ratio_arg("r","ratio","Give me ratio Vext/Vthr", false, double);
-    	cmd.add(ratio_arg); 
+    ValueArg<double>ratio_arg("r","ratio","Give me ratio Vext/Vthr", false,2.0, "double");
+    cmd.add(ratio_arg); 
     
 	cmd.parse( argc, argv ); 
 									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
@@ -49,7 +51,7 @@ int main(int argc, char** argv) {
 	
 	network.Env::get_excitatory_neurons()= number_of_excitatory_neurons_arg.getValue();
 	
-	network.Env::get_inhibitory_neurons()=network.Env::get_excitatory_neurons*network.Env::g;
+	network.Env::get_inhibitory_neurons()=network.Env::get_excitatory_neurons/network.Env::g;
 	
 	//ON NE PEUT PAS DECLARER LES VARIABLES ICI CAR PB DE PORTÉE 
 	//IE ON NE PEUT PAS LES UTILISER DANS LE MAIN
