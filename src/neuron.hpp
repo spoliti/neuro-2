@@ -92,7 +92,8 @@ public:
 	
     double get_refractory_time();
     //autre
-
+    void set_neuron_as_active();
+	
 /*! 
  * @brief Reset the potential value at the v_reset value
  * 
