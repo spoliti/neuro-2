@@ -210,6 +210,7 @@ void Env::actualise() {
 		}
 	}
 	
+	actualise_time();
 	
 	
 	/*
