@@ -130,6 +130,8 @@ class Env {
 		 */
 		vector<vector<double>> spikes_list_fifty_neurons();	
 		
+		unsigned int number_of_neurons();
+		
 	private:
 		vector<Neuron*> neurons_; 		//neurones du network et du background
 		double time;					//temps t où on en est

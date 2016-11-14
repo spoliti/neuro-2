@@ -309,3 +309,10 @@ vector<vector<double>> Env::spikes_list_fifty_neurons(){
         return spikes_list;
 }
 
+
+
+
+
+unsigned int Env::number_of_neurons () {
+	return neurons_.size();
+	}
