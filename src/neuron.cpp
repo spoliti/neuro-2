@@ -75,8 +75,12 @@ double Neuron::get_potential(){
 double Neuron::get_refractory_time() {
 	return is_refractory_until_then;
 }
-	
-	
+
+
+void Neuron::set_neuron_as_active() {
+	active_state = true;
+}
+
 void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
     //envoyé un spike
@@ -199,7 +203,6 @@ void Neuron::receive_spike() {
 	} 
 }
 
-
 bool Neuron::is_times_spikes_empty() {
 	if (times_spikes.size() == 0) {
 		return true;
@@ -244,9 +247,10 @@ void Neuron::affect_potential(double const& time) {
 	int number_spikes_i(0);
 	int spike_contributions(0);
 	
-	//parcourt le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
-	for(unsigned int i(0); i< connections_.size(); i++) {	
-			
+
+	//parcourt le tableau de neurones connectés a l'instance et compte ceux qui envoyent un spike au temps courant
+	for(unsigned int i(0); i<connections_.size(); i++) {	
+		
 			if(connections_[i]->send_spike(time)) {
 				
 				if(connections_[i]->is_excitatory()) {
@@ -257,9 +261,9 @@ void Neuron::affect_potential(double const& time) {
 		}
 	}
 	
-	compteur_spikes += number_spikes_e + number_spikes_i;
+	compteur_spikes += number_spikes_e + number_spikes_i; 
 	
-	//spike_contributions = RI(t)
+	// spike_contributions = RI(t)
 	spike_contributions = number_spikes_e*potential_amplitude - number_spikes_i*g*potential_amplitude; 		// spike_contributions = RI(t)
 	potential = potential - (potential/firing_threshold)*time + spike_contributions;
 }
@@ -268,4 +272,4 @@ void Neuron::affect_potential(double const& time) {
  * avec i parcourant tous les neurones de Env
  * et j parcourant le tableau de connection du neurone i
  */
- 
+
