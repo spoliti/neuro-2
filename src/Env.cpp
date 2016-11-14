@@ -191,10 +191,20 @@ void Env::random_spike() {
 
 void Env::actualise() {
 	
-	//Reception des spikes, seuls les neurones de env recoivent 
+	//Envoie des spikes (pour neurones de env)
 	for (int i(0); i < Neuron::env_neurons; ++i) {
-		if (neurons_[i] != 0) {
-			neurons_[i]->receive_spike();
+		
+		if (neurons_[i] != nullptr) {
+			neurons_[i]->send_spike(time);
+		}
+	}
+	
+	//Réception des spikes, seuls les neurones de env recoivent 
+	for (int i(0); i < Neuron::env_neurons; ++i) {
+		
+		//Si existe et n'est pas dans refractory period
+		if ((neurons_[i] != nullptr) and (neurons_[i]->get_refractory_time() <= time)) {
+			neurons_[i]->affect_potential(time);
 		}
 	}
 	
