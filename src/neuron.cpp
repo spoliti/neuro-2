@@ -76,6 +76,7 @@ double Neuron::get_refractory_time() {
 	return is_refractory_until_then;
 }
 
+
 void Neuron::set_neuron_as_active() {
 	active_state = true;
 }
@@ -246,6 +247,7 @@ void Neuron::affect_potential(double const& time) {
 	int number_spikes_i(0);
 	int spike_contributions(0);
 	
+
 	//parcourt le tableau de neurones connectés a l'instance et compte ceux qui envoyent un spike au temps courant
 	for(unsigned int i(0); i<connections_.size(); i++) {	
 		
@@ -270,5 +272,4 @@ void Neuron::affect_potential(double const& time) {
  * avec i parcourant tous les neurones de Env
  * et j parcourant le tableau de connection du neurone i
  */
-
 
