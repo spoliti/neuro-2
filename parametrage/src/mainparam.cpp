@@ -40,14 +40,18 @@ int main(int argc, char** argv) {
 									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
 	
 	//Création de la simulation
-	Env network; 
+	Config Fichier(time_simu_arg, number_of_excitatory_neurons_arg,g_arg, ratio_arg);
+									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
+	
+	//Création de la simulation
+	/*Env network; 
 	
 	network.Env::time_simu=time_simu_arg.getValue();  				// va attribuer la nouvelle valeur choisie pour l'attribut temps
 											/*excitatory_neurons=excitatory_neurons_arg.getValue(); / je peux déclarer le temps dans le main. Mais mes valeurs des neurones sont dans le fichier neurones, mais en plus je veux un tableau de neurones
 											inhibitory_neurons=inhibatory_neurons_arg.getValue();/ qui lui est un Env.il faudrai donc un getters dans les fonctions de Env, pour de nouveau déclarer avant int excitatory_neurons(network.Env::get_neurones())*/
 	
 	
-	network.Env::ratio = ratio_arg.getValue();
+	/*network.Env::ratio = ratio_arg.getValue();
 	
 	network.Env::get_excitatory_neurons()= number_of_excitatory_neurons_arg.getValue();
 	
