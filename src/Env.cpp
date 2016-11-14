@@ -224,6 +224,18 @@ void Env::actualise() {
 	
 	
 	//send_spike
+	/*
+	for (unsigned int i(0); i < neurons_.size(); ++i) {
+		if (neurons_[i]->is_in_env()) {
+			for (unsigned int j(0); j < (neurons_[i].connections_).size(); ++j) {
+				// envoyer spike
+				
+			}
+			neurons_[i].potential = v_reset;		
+		}
+		
+	}
+	*/ 
 	
 	
 	//si a envoyé spike : calcul du potentiel et inactif
