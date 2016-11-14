@@ -32,6 +32,7 @@ Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, 
     active_state(true),             //etat de départ est actif
     is_excitatory_(excitatory_),
     is_in_env_(is_in_env),
+    is_refractory_until_then(0.0),
     g(g_)                           //initialisation de g
 
 {
@@ -69,6 +70,10 @@ double Neuron::get_compteur(){
 	
 double Neuron::get_potential(){
     return potential;
+}
+
+double Neuron::get_refractory_time() {
+	return is_refractory_until_then;
 }
 	
 	
@@ -194,18 +199,6 @@ void Neuron::receive_spike() {
 	} 
 }
 
-void Neuron::send_spike(std::vector<Neuron*> &neurons) {
-	//voir si utilise reset() et refractory()
-	/* utilise neurons_ pour chercher dans tous les tableaux de connections_ si un neurone peut recevoir
-	 * un spike de l'instance courante (this) 
-	 * (utiliser le numero de l'instance pour l'identifier,
-	 * par exemple faire dans des boucles une condition du genre 
-	 * if (numero_neuron == neurons[i]->connections[j]->numero_neuron) {//envoie du spike à i}
-	 * avec i parcourant tous les neurones de Env
-	 * et j parcourant le tableau de connection du neurone i
-	 */
-	 
-}
 
 bool Neuron::is_times_spikes_empty() {
 	if (times_spikes.size() == 0) {
@@ -231,24 +224,29 @@ vector<double> Neuron::get_times_spikes(){
 	return times_spikes;
 }
 
-// methode send spike, simplement pour marquer si a un temps donné une spike est envoyé depuis le neuron en consideration
-bool Neuron::send_spike(double time) {
-	if(potential>=firing_threshold)
-	{	
-		times_spikes_add(time);
-		reset();
+//marquer si à un temps donné un spike est envoyé depuis le neuron en consideration
+bool Neuron::send_spike(double const& time) {
+	
+	//voir si l utilisation du delay de transmission est juste
+	if(potential>=firing_threshold) {	
+		times_spikes_add(time - Neuron::transmission_delay);
+		potential = v_reset;
+		active_state = false;
+		is_refractory_until_then = time + Neuron::refractory_period;
 		return true;
 	}
 	else return false;
 }
 
-void Neuron::affect_potential(const double time) {
+//ok si le tps est en milisec dans Env
+void Neuron::affect_potential(double const& time) {
 	int number_spikes_e(0);
 	int number_spikes_i(0);
 	int spike_contributions(0);
 	
-	for(unsigned int i(0); i<connections_.size(); i++) {		// parcourre le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
-	
+	//parcourt le tableau de neurones connectés a l'instance et compte ceux qui envoyent une spike au temps courant
+	for(unsigned int i(0); i< connections_.size(); i++) {	
+			
 			if(connections_[i]->send_spike(time)) {
 				
 				if(connections_[i]->is_excitatory()) {
@@ -259,9 +257,15 @@ void Neuron::affect_potential(const double time) {
 		}
 	}
 	
-	// spike_contributions = RI(t)
+	compteur_spikes += number_spikes_e + number_spikes_i;
+	
+	//spike_contributions = RI(t)
 	spike_contributions = number_spikes_e*potential_amplitude - number_spikes_i*g*potential_amplitude; 		// spike_contributions = RI(t)
 	potential = potential - (potential/firing_threshold)*time + spike_contributions;
 }
 
-
+/* if (numero_neuron == neurons[i]->connections[j]->numero_neuron) {//envoie du spike à i}
+ * avec i parcourant tous les neurones de Env
+ * et j parcourant le tableau de connection du neurone i
+ */
+ 
