@@ -75,7 +75,11 @@ double Neuron::get_potential(){
 double Neuron::get_refractory_time() {
 	return is_refractory_until_then;
 }
-	
+
+void Neuron::set_neuron_as_active() {
+	active_state = true;
+}
+
 void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
     //envoyé un spike
