@@ -1,23 +1,30 @@
 #include <vector>
 #include <iostream>  
+#include "Configuration.hpp"
 
-Config::Config(int time,int excitatory_neurons, int gstrenght,double r)
-: time
-excitatory_neurons
-gsrenght
-r
+Config::Config(int time ,int excitatory_neurons_, int gstrengh_ ,double ratio)
+:v_reset(10),
+potential_amplitude(0.1),
+refractory_period(2),
+firing_threshold(20),
+transmission_delay(1.5),
+membrane_time(20),
+connection_probability(0.1),
+periode(10),
+time_unit(0.1),
+time_simu(time),
+g(gstrengh_),
+excitatory_neurons(excitatory_neurons_)
 {
-inhibitory_neurons=excitatory_neurons/network.Env::g;
+inhibatory_neurons= (excitatory_neurons_/gstrengh_);
 inhibatory_connection = connection_probability*inhibatory_neurons;
-number_connection_excitatory
+/*number_connection_excitatory;
 number_connection_bckground;
-numbertotalneurone
-
-
-
-
-
+numbertotalneurone; */
 
 }
 
-~Config::Config(){}
+Config::~Config(){
+	//vide
+}
+
