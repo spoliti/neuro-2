@@ -11,18 +11,14 @@ using namespace TCLAP;
 class Env; 
 
 int main(int argc, char** argv) { 
-	
-	
-	//Création de la simulation
-	//Env(); //constructeur de env pour créer des neurones
-	Env network; 
+
 	
 	try {
 	CmdLine cmd( "My TCLAP test" );  // on doit mettre des valeurs dans les parenthèse? j'ai pas compris
 	
 	// je déclare des variables mises en paramètre
-	ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, network.Env::get_time_simu(), "int" ); // c'est le parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. le 0 est la valeur par défaut , eton a le type.
-      	cmd.add( time_simu_arg );
+	ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, 20, "int" ); // c'est le parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. le 0 est la valeur par défaut , eton a le type.
+    cmd.add( time_simu_arg );
        
 	/*ValueArg< int > excitatory_neurons_arg( "ne", "excitatory_neurons", "Give me some numbers",  false, 10000,"int" ); /il faut empecher les valeurs abberrante plus valeur par défaut? get_numberofexcitatory_neurons() dans Env.
 	cmd.add( excitatory_neurons_arg ); 
@@ -42,6 +38,10 @@ int main(int argc, char** argv) {
     
 	cmd.parse( argc, argv ); 
 									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
+	
+	//Création de la simulation
+	Env network; 
+	
 	network.Env::time_simu=time_simu_arg.getValue();  				// va attribuer la nouvelle valeur choisie pour l'attribut temps
 											/*excitatory_neurons=excitatory_neurons_arg.getValue(); / je peux déclarer le temps dans le main. Mais mes valeurs des neurones sont dans le fichier neurones, mais en plus je veux un tableau de neurones
 											inhibitory_neurons=inhibatory_neurons_arg.getValue();/ qui lui est un Env.il faudrai donc un getters dans les fonctions de Env, pour de nouveau déclarer avant int excitatory_neurons(network.Env::get_neurones())*/
