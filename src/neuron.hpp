@@ -7,9 +7,9 @@
 
 
 /*!
- * @class Class Neuron
+ * @class Neuron
  *
- * @brief Class description
+ * @brief description
  */
 
 class Neuron
@@ -47,7 +47,7 @@ public:
  * This method returns the neuron number
  *  
  * 
- * @return neuron number(int)
+ * @return the neuron number
  * 
  **/     
     int get_numero();
@@ -58,7 +58,8 @@ public:
  * This method give the information if the neuron is excitatory or not
  * 
  * 
- * @return True if the neuron is an excitatory neuron, false if not (boolean)
+ * @return True if the neuron is an excitatory neuron
+ * @return Flase if the neuron is not an excitatory neuron
  * 
  **/      
     bool is_excitatory();
@@ -68,7 +69,8 @@ public:
  * This method tells if the neuron is in the environment 
  * 
  * 
- * @return booleen value, true if the neuron is in the environment, false if not
+ * @return True if the neuron is in the environment
+ * @return False if the neuron is not in the environment
  * 
  **/    
     bool is_in_env();
@@ -77,7 +79,7 @@ public:
  * @brief getter for the spikes counter
  * 
  * 
- * @return compteur_spike value (double)
+ * @return compteur_spike value
  * 
  **/         
     double get_compteur();
@@ -85,15 +87,16 @@ public:
  * @brief getter for the potential value
  * 
  * 
- * @return potential value (double) 
+ * @return potential value
  * 
  **/      
     double get_potential();
-	
+    
     double get_refractory_time();
-    //autre
+    
     void set_neuron_as_active();
-	
+    //autre
+
 /*! 
  * @brief Reset the potential value at the v_reset value
  * 
@@ -133,21 +136,16 @@ public:
  * 
  * @param int number representing a connection
  * 
- * @return boolean value
- * If the number of "number" already exist in connection_ the method will return false. Else return true
+ * @return False if the number of "number" exhist in connection_
+ * @return True if the number do not exhist in connection_
+ * 
  * 
  **/      
     bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
 	void receive_spike();
 	
-/*! 
- * @brief not definied yet
- * 
- * @param vector of pointers in neurons 
- * 
- **/ 	
-	bool send_spike(double const& time); //ok si tps de env est en milisec 
-	void affect_potential(double const& time); //ok si le tps de env est en milisec
+    bool send_spike(double const& time); //ok si tps de env est en milisec
+    void affect_potential(double const& time); //ok si le tps de env est en milisec
 	
 	//utilisé par loi de Poisson
 	
@@ -155,15 +153,15 @@ public:
  * @brief Indicates if times_spikes is empty
  *The method looks at the size of the vector times_spikes
  * 
- * @return boolean
- * True if the size of times_spikes is 0, else False.  
+ * @return True if the size of times_spikes is 0
+ * @return False if the size of times_spikes is not 0  
  * 
  **/ 	
 	bool is_times_spikes_empty();
 
 	
 /*!
- * @brief Add a value to the vector<int> times_spikes
+ * @brief Add a value to the vector<const double> times_spikes
  * 
  * @param int value representing a time for a spike (const double)
  * 
@@ -171,37 +169,19 @@ public:
 	void times_spikes_add(const double time);
 
 /*! 
- * @brief getter for times_spikes
+ * @brief Method to get the time of the last spike
  * 
- * @return vector<double>
- * times_spikes contains times where spikes are recieved 
+ * @return time of the last spike (the last value of the vector<const double> times_spikes)
  **/ 	
 	double get_time_last_spike();
 
 /*! 
  * @brief getter for times_spikes
  * 
- * @return vector<double>
- * times_spikes contains times where spikes are recieved 
- **/	
+ * @return A vector that contains all times where the neuron recieve a spike
+ **/		
 	std::vector<double> get_times_spikes();
 	
-/*!
- * @brief Determine if a spike is send at this time by this neuron
- * If there is a spike, the method times_add_spikes is used to add this time in the vector 
- * and the method reset() is used to change the neuron potential and to put the neuron in an active state
- * 
- * 
- * @see void Neuron::times_spikes_add(const double time)
- * void Neuron::reset(){
- * 
- * @param double type, the parameter is the time where we want to know if a spike is sended or not
- * 
- * @return true if a spike is sended, else false
- * 
- * 
- * 
- **/		
 
 	
 private:
@@ -217,8 +197,8 @@ private:
 	
 	std::vector<Neuron*> connections_;		//contient indices des neurones auquel l'instance est connectée
 										//ie de qui l'instance peut RECEVOIR des spikes
-	std::vector<double> times_spikes;	//temps auxquels les spikes sont recus
-	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false
+	std::vector<double> times_spikes;
+	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false	//temps auxquels les spikes sont recus
 	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
 	
     double g;		//relative strength of inhibitory synapses
