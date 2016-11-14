@@ -44,10 +44,8 @@ int main(int argc, char** argv) {
 	Config Fichier(time_simu_arg, number_of_excitatory_neurons_arg,g_arg, ratio_arg);
 									// est ce que je dois faire une "boucle if"? qu il me change la valeur du temps si et seulement si on a changé la valeur via ValueArg
 	
-	//Création de la simulation
-	/*Env network; 
 	
-	network.Env::time_simu=time_simu_arg.getValue();  				// va attribuer la nouvelle valeur choisie pour l'attribut temps
+	//network.Env::time_simu=time_simu_arg.getValue();  				// va attribuer la nouvelle valeur choisie pour l'attribut temps
 											/*excitatory_neurons=excitatory_neurons_arg.getValue(); / je peux déclarer le temps dans le main. Mais mes valeurs des neurones sont dans le fichier neurones, mais en plus je veux un tableau de neurones
 											inhibitory_neurons=inhibatory_neurons_arg.getValue();/ qui lui est un Env.il faudrai donc un getters dans les fonctions de Env, pour de nouveau déclarer avant int excitatory_neurons(network.Env::get_neurones())*/
 	
@@ -75,6 +73,10 @@ int main(int argc, char** argv) {
 	} catch (TCLAP::ArgException &e)  /// je ne suis pas sur de ou l'insérer ce try catch et je ne suis pas sur d'avoir bien "gérer" les erreurs
 	
 	{ std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
+	
+	//Création de la simulation
+	Env network; 
+	 
 	//appel de random_connection pour générer les connections
 	network.Env::random_connection();
 
