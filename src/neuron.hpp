@@ -89,6 +89,8 @@ public:
  * 
  **/      
     double get_potential();
+	
+    double get_refractory_time();
     //autre
 
 /*! 
@@ -143,7 +145,8 @@ public:
  * @param vector of pointers in neurons 
  * 
  **/ 	
-	void send_spike(std::vector<Neuron*> &neurons);
+	bool send_spike(double const& time); //ok si tps de env est en milisec 
+	void affect_potential(double const& time); //ok si le tps de env est en milisec
 	
 	//utilisé par loi de Poisson
 	
@@ -198,8 +201,7 @@ public:
  * 
  * 
  **/		
-	bool send_spike(double time);
-	void affect_potential(const double time);
+
 	
 private:
     
@@ -215,6 +217,8 @@ private:
 	std::vector<Neuron*> connections_;		//contient indices des neurones auquel l'instance est connectée
 										//ie de qui l'instance peut RECEVOIR des spikes
 	std::vector<double> times_spikes;	//temps auxquels les spikes sont recus
+	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false
+	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
 	
     double g;		//relative strength of inhibitory synapses
     double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback
