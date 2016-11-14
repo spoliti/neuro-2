@@ -7,12 +7,13 @@ excitatory_neurons
 gsrenght
 r
 {
-inhibitory_neurons=excitatory_neurons/network.Env::g;
+inhibitory_neurons=excitatory_neurons/g;
 inhibatory_connection = connection_probability*inhibatory_neurons;
-number_connection_excitatory
-number_connection_bckground;
-numbertotalneurone
+excitatory_connection = excitatory_neurons*connection_probability;
+ext_excitatory_connection = excitatory_connection;
+env_neurons = inhibatory_neurons+excitatory_neurons;
 
+  
 
 
 
