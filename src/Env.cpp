@@ -201,12 +201,16 @@ void Env::actualise() {
 	
 	//Réception des spikes, seuls les neurones de env recoivent 
 	for (int i(0); i < Neuron::env_neurons; ++i) {
-		
+		if (neurons_[i]->get_refractory_time() <= time) {
+			neurons_[i]->set_neuron_as_active();
+		}
 		//Si existe et n'est pas dans refractory period
 		if ((neurons_[i] != nullptr) and (neurons_[i]->get_refractory_time() <= time)) {
 			neurons_[i]->affect_potential(time);
 		}
 	}
+	
+	
 	
 	/*
 	for (unsigned int i(0); i < neurons_.size(); ++i) {
