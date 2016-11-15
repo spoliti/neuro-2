@@ -127,7 +127,14 @@ public:
  **/    
     void random_connection(std::vector<Neuron*> &neurons);
 
-    
+/*! 
+ * @brief Create a new connection to a neuron
+ * The method add a new pointer on a neuron to the vector connections_ 
+ * 
+ * @param pointer on a neuron
+ * 
+ *
+ **/      
     void add_connection(Neuron* neuron);
 
 /*! 
