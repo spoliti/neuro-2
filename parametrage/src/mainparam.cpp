@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
-#include "../lib/tclap/include/tclap/CmdLine.h" //il faut télécharger et installer tclap
-//#include "../lib/tclap/include/tclap/ValueArg.h"
+#include "../lib/tclap/include/tclap/CmdLine.h" 
+
 using namespace TCLAP; 
 //using namespace std;
 
@@ -13,53 +13,54 @@ class Env;
 
 int main(int argc, char** argv) { 
 
+	int time_simu(20), number_excitatory(10000);
+	double g(4.0), ratio(2.0);
 	
 	try {
-	CmdLine cmd( "My TCLAP test" );  // on doit mettre des valeurs dans les parenthèse? j'ai pas compris
-	
-	// je déclare des variables mises en paramètre
-	ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, 20, "int" ); // c'est le parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. le 0 est la valeur par défaut , eton a le type.
-    cmd.add( time_simu_arg );
-       
-	/*ValueArg< int > excitatory_neurons_arg( "ne", "excitatory_neurons", "Give me some numbers",  false, 10000,"int" ); /il faut empecher les valeurs abberrante plus valeur par défaut? get_numberofexcitatory_neurons() dans Env.
-	cmd.add( excitatory_neurons_arg ); 
 		
-	ValueArg< int > inhibatory_neurons_arg( "ni", " inhibatory_neurons", "Give me some number", false,2500, "int" ); 
-	cmd.add(  inhibatory_neurons_arg);*/
+		CmdLine cmd( "My TCLAP test" );
+		
+//parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. 
+//le 0 est la valeur par défaut , et on a le type.
+		ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, 20, "int" );
+		cmd.add( time_simu_arg );
+		
+		ValueArg<int>number_of_excitatory_neurons_arg("ne","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
+		cmd.add(number_of_excitatory_neurons_arg);
+		   
+		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me g", false,4, "int");
+		cmd.add(g_arg);
+		 
+		ValueArg<double>ratio_arg("r","ratio","Give me ratio Vext/Vthr", false,2.0, "double");
+		cmd.add(ratio_arg); 
+		
+		cmd.parse( argc, argv ); 
+										
+		
+		//convertir les valeurs
+		time_simu = time_simu_arg.getValue();
+		number_excitatory = number_of_excitatory_neurons_arg.getValue();
+		g = g_arg.getValue();
+		ratio = ratio_arg.getValue();
+																	
+	} 
 	
-	ValueArg<int>number_of_excitatory_neurons_arg("ne","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
-	cmd.add(number_of_excitatory_neurons_arg);
-       
-    ValueArg<int>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me g", false,4, "int");
-   	cmd.add(g_arg);
-     
-  
-    ValueArg<double>ratio_arg("r","ratio","Give me ratio Vext/Vthr", false,2.0, "double");
-    cmd.add(ratio_arg); 
-    
-	cmd.parse( argc, argv ); 
-									
+	catch (TCLAP::ArgException &e)
+	
+	{ cerr << "error: " << e.error() << " for arg " << e.argId() << endl; }
 	
 	
 
-	//Env network(time_simu_arg.getValue(),number_of_excitatory_neurons_arg.getValue(),g_arg.getValue(), ratio_arg.getValue()); 
 	
-																	
-	} catch (TCLAP::ArgException &e)  /// je ne suis pas sur de ou l'insérer ce try catch et je ne suis pas sur d'avoir bien "gérer" les erreurs
-	
-	{ std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
-	
-	
-	//convertir les valeurs
 	//Création de la simulation
-	Env network(time_simu_arg.getValue(), number_of_excitatory_neurons_arg.getValue(),g_arg.getValue(), ratio_arg.getValue()); 
+	Env network(time_simu, number_excitatory, g, ratio); 
 	 
 	//appel de random_connection pour générer les connections
 	network.Env::random_connection();
 
 
 	//Mise en route de la simulation
-	int time_simu(network.Env::get_time_simu());
+	//int time_simu(network.Env::get_time_simu());
     
     
     for(int i(0); i <= time_simu; ++i){ //  ceci peut rester exactement comme ceci
@@ -84,11 +85,13 @@ int main(int argc, char** argv) {
 	}
     
     
-    int a(1);// n
-	network.Env::get_times_spikes(a);  //affichage des temps auquels les spikes ont didribuées été recu pour neuronne i
+    int a(1);
+	network.Env::get_times_spikes(a);  //affichage des temps auquels les spikes distribués ont été recu pour neurone i
 	
     int b(2);
     network.Env::get_times_spikes(b);
+    
+    
     return 0;
 } 
 
