@@ -1,5 +1,5 @@
 #include "neuron.hpp"
-#include "Configuration.hpp"
+#include "Configuration.cpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
 #include <assert.h>

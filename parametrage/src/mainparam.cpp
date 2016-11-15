@@ -9,8 +9,6 @@
 using namespace TCLAP; 
 //using namespace std;
 
-class Env; 
-
 int main(int argc, char** argv) { 
 
 	int time_simu(20), number_excitatory(10000);
@@ -25,7 +23,7 @@ int main(int argc, char** argv) {
 		ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, 20, "int" );
 		cmd.add( time_simu_arg );
 		
-		ValueArg<int>number_of_excitatory_neurons_arg("ne","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
+		ValueArg<int>number_of_excitatory_neurons_arg("E","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
 		cmd.add(number_of_excitatory_neurons_arg);
 		   
 		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me g", false,4, "int");
