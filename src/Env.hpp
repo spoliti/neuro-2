@@ -128,9 +128,10 @@ class Env {
 		 * @see Env::graph_fifty_neurons()
 		 * @see Neuron::get_times_spikes()
 		 */
-		vector<vector<double>> spikes_list_fifty_neurons();	
+		vector<vector<double>> spikes_list_fifty_neurons();
 		
-		unsigned int number_of_neurons();
+		void get_liaisons_background(int b);	
+		void get_liaisons_env(int b);
 		
 	private:
 		vector<Neuron*> neurons_; 		//neurones du network et du background

@@ -6,6 +6,14 @@
 #include <iostream>
 
 
+struct to_delivery
+{
+    double time;
+    double potential_provisory_env;
+	double potential_provisory_background; //potentiel calculé avant réception et donné au neurone au temps de réception t du background
+};
+
+
 /*!
  * @class Neuron
  *
@@ -63,6 +71,7 @@ public:
  * 
  **/      
     bool is_excitatory();
+    bool is_inhibitory();
 /*! 
  * @brief getter to see if the neuron is in the environment
  * 
@@ -82,7 +91,16 @@ public:
  * @return compteur_spike value
  * 
  **/         
-    double get_compteur();
+    double get_compteur_background();
+    
+/*!
+ * @brief getter for the spikes counter
+ * 
+ * 
+ * @return compteur_spike value
+ * 
+ **/         
+    double get_compteur_env();
 /*!
  * @brief getter for the potential value
  * 
@@ -118,6 +136,8 @@ public:
  **/     
     void refractory();
     
+    void calculate_potential_and_give_spike_at_t(double const& time);
+    
 /*!
  * @brief Add connections to a vector of pointer on neurons
  * 
@@ -127,14 +147,7 @@ public:
  **/    
     void random_connection(std::vector<Neuron*> &neurons);
 
-/*! 
- * @brief Create a new connection to a neuron
- * The method add a new pointer on a neuron to the vector connections_ 
- * 
- * @param pointer on a neuron
- * 
- *
- **/      
+    
     void add_connection(Neuron* neuron);
 
 /*! 
@@ -151,10 +164,43 @@ public:
     bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
 	void receive_spike();
 	
-    bool send_spike(double const& time); //ok si tps de env est en milisec
-    void affect_potential(double const& time); //ok si le tps de env est en milisec
-	
+    void reset_after_spike(double const& time); //repos d'un neurone pdt un temps + reset quand il > threshold
+    void find_spikes_and_calculate_intermediary_potential(double const& time); //ok si le tps de env est en milisec
+	void affect_potentiel(); //donne le potentiel au temps de réception au neuronne
 	//utilisé par loi de Poisson
+	
+/*!
+ * @brief Indicates if times_spikes is empty
+ *The method looks at the size of the vector times_spikes_background
+ * 
+ * @return True if the size of times_spikes_background is 0
+ * @return False if the size of times_spikes_background is not 0  
+ * 
+ **/ 	
+	bool is_times_spikes_background_empty();
+
+	
+/*!
+ * @brief Add a value to the vector<const double> times_spikes_background
+ * 
+ * @param int value representing a time for a spike (const double)
+ * 
+ **/ 	
+	void times_spikes_background_add(const double time);
+
+/*! 
+ * @brief Method to get the time of the last spike
+ * 
+ * @return time of the last spike (the last value of the vector<const double> times_spikes_background)
+ **/ 	
+	double get_time_last_spike_background();
+
+/*! 
+ * @brief getter for times_spikes_background
+ * 
+ * @return A vector that contains all times where the neuron recieve a spike
+ **/		
+	std::vector<double> get_times_spikes_background();
 	
 /*!
  * @brief Indicates if times_spikes is empty
@@ -164,54 +210,67 @@ public:
  * @return False if the size of times_spikes is not 0  
  * 
  **/ 	
-	bool is_times_spikes_empty();
+	bool is_times_spikes_env_empty();
 
 	
 /*!
- * @brief Add a value to the vector<const double> times_spikes
+ * @brief Add a value to the vector<const double> times_spikes_env
  * 
  * @param int value representing a time for a spike (const double)
  * 
  **/ 	
-	void times_spikes_add(const double time);
+	void times_spikes_env_add(const double time);
 
 /*! 
  * @brief Method to get the time of the last spike
  * 
- * @return time of the last spike (the last value of the vector<const double> times_spikes)
+ * @return time of the last spike (the last value of the vector<const double> times_spikes_env)
  **/ 	
-	double get_time_last_spike();
+	double get_time_last_spike_env();
 
 /*! 
  * @brief getter for times_spikes
  * 
  * @return A vector that contains all times where the neuron recieve a spike
  **/		
-	std::vector<double> get_times_spikes();
+	std::vector<double> get_times_spikes_env();
 	
-
+	std::vector<Neuron*> get_connections_();
+	
+	bool is_in_background();
+	
+	
+	
+	std::vector<double> get_list_potential();
+    
 	
 private:
     
     //attributs
 	const int numero_neuron;
 	
-	int compteur_spikes; 	//nombre de spikes envoyés ?
+	int compteur_spikes_env; 	//nombre de spikes envoyés ?
+	int compteur_spikes_background;
 	double potential;       //potentiel de la membrane au temps t
+	std::vector <to_delivery> to_delivery_at_t; //vecteur des objets to delivery à t
+	
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
 	bool is_in_env_;		//true si neuron dans l'environnement, false si du background
 	
 	std::vector<Neuron*> connections_;		//contient indices des neurones auquel l'instance est connectée
 										//ie de qui l'instance peut RECEVOIR des spikes
-	std::vector<double> times_spikes;
+	std::vector<double> list_potential;
+	std::vector<double> times_spikes_env;
+	std::vector<double> times_spikes_background;
+	
 	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false	//temps auxquels les spikes sont recus
 	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
 	
     double g;		//relative strength of inhibitory synapses
     double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback
     double v_ext;   //external frequency (background ?)
-    
+    bool seuil_depassement; //est à un true qd on est au moment du reset et ne calcul pas pot
     
     //constantes
 public:

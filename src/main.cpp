@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+     
 using namespace std;
 
 class Env; 
@@ -12,44 +13,42 @@ int main() {
 	//Création de la simulation
 	Env network;
 	//appel de random_connection pour générer les connections (de qui on peut recevoir des spikes)
+	
 	network.Env::set_connections();
 	
+	int d(180);
+    network.Env::get_liaisons_env(d);
+    
+    int e(2501);
+    network.Env::get_liaisons_env(e);
 	
+	/*
 	//Mise en route de la simulation
     
     int time_simu(network.Env::get_time_simu());
     
-    for(int i(0); i <= time_simu; ++i){
-    //for (int i(0); i < time_simu; i += Env::time_unit) {
-        
-        //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
-        //if(network.Env::get_time()%(network.Env::get_periode()) == 0){
-        
-        
-        //modulo pour des nb doubles
-        double modulo;
-        modulo = fmod(network.Env::get_time(), network.Env::get_periode());
-
-        //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
-        if (modulo == 0) {
-        cerr << "temps de mise en place spikes: " << network.Env::get_time() << endl;
-        network.Env::random_spike();
-		}
-        
+    for(int i(0); i <= time_simu; ++i){     
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
         network.Env::actualise();    
         
 	} 
+    /*
+    int d(100);
+    network.Env::get_liaisons_background(d);
     
+    int e(24);
+    network.Env::get_liaisons_background(e);
+    */
     
-    int a(1);// n
+    /*
+    int a(1250);// n
 	network.Env::get_times_spikes(a);  //affichage des temps auquels les spikes ont didribuées été recu pour neuronne i
 	
-    int b(2);
+    int b(1251);
     network.Env::get_times_spikes(b);
-    
+    */
 
     
-       return 0;
+     return 0;
 } 
 
