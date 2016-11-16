@@ -134,7 +134,7 @@ public:
  * 
  * 
  **/     
-    void refractory(const double time);
+    void refractory();
     
     void calculate_potential_and_give_spike_at_t(double const& time);
     
