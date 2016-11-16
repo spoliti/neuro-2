@@ -97,6 +97,7 @@ void Neuron::refractory(const double time){
 		//time_pass = Env::get_time_simu();			// il faut un equivalent de getAppEnv() du projet de l'anné passé
 	}
 		while(time_pass != time + refractory_period);
+	// reset()
 }
 
 
