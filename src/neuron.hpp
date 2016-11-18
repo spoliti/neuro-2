@@ -115,6 +115,8 @@ public:
     void set_neuron_as_active();
     //autre
 
+	void set_neuron_as_inactive();
+	
 /*! 
  * @brief Reset the potential value at the v_reset value
  * 
@@ -242,6 +244,8 @@ public:
 	
 	
 	std::vector<double> get_list_potential();
+	
+	bool is_active_state();
     
 	
 private:

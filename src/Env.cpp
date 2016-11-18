@@ -330,3 +330,12 @@ void Env::get_liaisons_env(int b){
 	
 	}*/
 }
+
+unsigned int Env::number_of_neurons () {
+	return neurons_.size();
+	}
+
+vector<Neuron*> Env::get_neurons_() {
+	return neurons_;
+	}
+

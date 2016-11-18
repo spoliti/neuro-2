@@ -133,6 +133,9 @@ class Env {
 		void get_liaisons_background(int b);	
 		void get_liaisons_env(int b);
 		
+		unsigned int number_of_neurons();
+		vector<Neuron*> get_neurons_();
+		
 	private:
 		vector<Neuron*> neurons_; 		//neurones du network et du background
 		double time;					//temps t où on en est

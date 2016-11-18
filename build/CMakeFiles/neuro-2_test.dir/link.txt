@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++    -Wall -pedantic -std=c++11 -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/neuro-2_test.dir/src/UnitTest.cpp.o  -o neuro-2_test  GTest/libgtest.a -lpthread libneuron-core.a 

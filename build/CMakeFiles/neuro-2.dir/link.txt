@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++    -Wall -pedantic -std=c++11 -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/neuro-2.dir/src/main.cpp.o  -o neuro-2  libneuron-core.a 

@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libneuron-core.a  CMakeFiles/neuron-core.dir/src/Env.cpp.o CMakeFiles/neuron-core.dir/src/neuron.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libneuron-core.a

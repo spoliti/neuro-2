@@ -76,6 +76,12 @@ bool Neuron::is_in_env() {
 		return is_in_env_;
 }
 
+
+bool Neuron::is_active_state() {
+		return active_state;
+}
+
+
 bool Neuron::is_in_background() {
 		bool a;
 		a = this->is_in_env_;
@@ -107,6 +113,10 @@ void Neuron::set_neuron_as_active() {
 	active_state = true;
 }
 
+void Neuron::set_neuron_as_inactive() {
+	active_state = false;
+}
+
 void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
     //envoyé un spike
@@ -121,6 +131,7 @@ void Neuron::refractory(){
    	active_state = false;
 	
 }
+
 
 
 void Neuron::random_connection(vector<Neuron*> &neurons) {
