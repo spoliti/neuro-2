@@ -22,7 +22,7 @@ int main() {
     int e(1100);
     network.Env::get_liaisons_env(e);
 	
-	/*
+	
 	//Mise en route de la simulation
     
     int time_simu(network.Env::get_time_simu());

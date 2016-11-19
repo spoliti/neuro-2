@@ -247,8 +247,8 @@ void Env::actualise() {
 		 // 
 	}
 	
-	cout << "dans l'env potentiel neur 180: " << "au temps: " << time << "est: " << neurons_[180]->get_potential() << endl;
-	cout << "dans l'env potentiel neur 2501: " << "au temps: " << time << "est: " << neurons_[2501]->get_potential() << endl;
+	cout << "dans l'env potentiel neur 10: " << "au temps: " << time << "est: " << neurons_[10]->get_potential() << endl;
+	cout << "dans l'env potentiel neur 1100: " << "au temps: " << time << "est: " << neurons_[1100]->get_potential() << endl;
 
 }
 
