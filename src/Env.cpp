@@ -59,21 +59,20 @@ double ratio;
 		}
 	}
 	*/
-	//CREATION DES NEURONES
-	// EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
+	//CREATION DES NEURONES 
 	//TESTS AVEC 10 FOIS MOINS DE NEURONES
-	unsigned int number_of_neurons(1350);
+	unsigned int number_of_neurons(Neuron::env_neurons + Neuron::ext_excitatory_connection);
 	//contructeur neuron : i, g, excitatory, is_in_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if(i<=249){										//les neurones d'indice 0-2499 sont inhibitory et env
+		if (i <= Neuron::inhibatory_neurons) {										//les neurones d'indice 0-2499 sont inhibitory et env
 			Neuron* A = new Neuron(i, g, false, true, ratio);
 			neurons_.push_back(A);
 		}
-		else if(i>= 250 and i<1250){									//les neurones d'indice  2500-13499 sont excitatory et env
+		else if(i >= Neuron::inhibatory_neurons and i < Neuron::env_neurons){									//les neurones d'indice  2500-13499 sont excitatory et env
 			Neuron* A = new Neuron(i, g, true, true, ratio);		//(ceux d'indice 12500-13499 sont le background)
 			neurons_.push_back(A);
 		}
-		else if(i>= 1250){									
+		else if(i>= Neuron::env_neurons){								
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
 		}
