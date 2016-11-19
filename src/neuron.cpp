@@ -22,8 +22,8 @@ using namespace std;
     const int Neuron::ext_excitatory_connection(100);   //nb of external excitatory connections for each neuron
 	
 	const int Neuron::excitatory_neurons(1000);    //nb of excitatory neurons in the network
-    const int Neuron::inhibatory_neurons(2500);   	//nb of inhibitory neurons in the network
-	const int Neuron::env_neurons(12500);			//nb de neurones de l'environnement (pas du background)
+    const int Neuron::inhibatory_neurons(250);   	//nb of inhibitory neurons in the network
+	const int Neuron::env_neurons(1250);			//nb de neurones de l'environnement (pas du background)
 
 //Methodes
 	
@@ -140,11 +140,12 @@ void Neuron::random_connection(vector<Neuron*> &neurons) {
       * exemple : nb entre 250 et 1249 : neurones excitateurs
       * a = 250 + rand() % 1000;
       */
-    
+
     int number;
     
 	//Connections avec les neurons inhibiteurs	
 	assert(Neuron::inhibatory_connection < Neuron::inhibatory_neurons);
+	
 	for (unsigned int i(0); i < Neuron::inhibatory_connection; ++i) {
 
 		do {

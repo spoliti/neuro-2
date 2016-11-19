@@ -62,18 +62,18 @@ double ratio;
 	//CREATION DES NEURONES
 	// EXPRIMER LES VALEURS NUMÉRIQUES SELON LES PARAMETRES 
 	//TESTS AVEC 10 FOIS MOINS DE NEURONES
-	unsigned int number_of_neurons(13500);
+	unsigned int number_of_neurons(1350);
 	//contructeur neuron : i, g, excitatory, is_in_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if(i<=2499){										//les neurones d'indice 0-2499 sont inhibitory et env
+		if(i<=249){										//les neurones d'indice 0-2499 sont inhibitory et env
 			Neuron* A = new Neuron(i, g, false, true, ratio);
 			neurons_.push_back(A);
 		}
-		else if(i>= 2500 and i<12500){									//les neurones d'indice  2500-13499 sont excitatory et env
+		else if(i>= 250 and i<1250){									//les neurones d'indice  2500-13499 sont excitatory et env
 			Neuron* A = new Neuron(i, g, true, true, ratio);		//(ceux d'indice 12500-13499 sont le background)
 			neurons_.push_back(A);
 		}
-		else if(i>= 12500){									
+		else if(i>= 1250){									
 			Neuron* A = new Neuron(i, g, true, false, ratio);		//ceux d'indice 12500-13499 sont le background (pas env mais excitatory)
 			neurons_.push_back(A);
 		}
@@ -133,18 +133,20 @@ void Env::background_connection() {
 	 * de env_neuron à env_neuron*(1 + %excitatory_neurons*connection_probability) 
 	 * la borne supérieure correspond en fait à la taille de neurons_ -1
 	 */
-	 
-	int EnvConnectionNumber;
-	EnvConnectionNumber = Neuron::connection_probability * Neuron::env_neurons;
+	
+	//int EnvConnectionNumber;
+	//EnvConnectionNumber = Neuron::connection_probability * Neuron::env_neurons;
 	
 	//Pour tous les neurones du network
-	for (unsigned int i(0); i < neurons_.size(); ++i) {
+	for (unsigned int i(0); i < Neuron::env_neurons; ++i) {
 		
 		//ajout des connections avec le background (les mêmes pour tous les neurones du network)
-		for (unsigned int j(EnvConnectionNumber); j < neurons_.size(); ++j) {
-			neurons_[i]->Neuron::add_connection(neurons_[j]);
+		for (unsigned int j(Neuron::env_neurons); j < neurons_.size(); ++j) {
+			if (neurons_[j] != nullptr) {
+				neurons_[i]->Neuron::add_connection(neurons_[j]);
+			}
 		}
-	}
+	} 
 	
 }
 

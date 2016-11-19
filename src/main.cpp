@@ -16,10 +16,10 @@ int main() {
 	
 	network.Env::set_connections();
 	
-	int d(180);
+	int d(10);
     network.Env::get_liaisons_env(d);
     
-    int e(2501);
+    int e(1100);
     network.Env::get_liaisons_env(e);
 	
 	/*
