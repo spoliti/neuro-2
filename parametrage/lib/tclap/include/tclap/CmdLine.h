@@ -24,6 +24,7 @@
 #ifndef TCLAP_CMDLINE_H
 #define TCLAP_CMDLINE_H
 
+<<<<<<< HEAD
 #include "SwitchArg.h"
 #include "MultiSwitchArg.h"
 #include "UnlabeledValueArg.h"
@@ -33,6 +34,17 @@
 #include "HelpVisitor.h"
 #include "VersionVisitor.h"
 #include "IgnoreRestVisitor.h"
+=======
+#include "../tclap/SwitchArg.h"
+#include "../tclap/MultiSwitchArg.h"
+#include "../tclap/UnlabeledValueArg.h"
+#include "../tclap/UnlabeledMultiArg.h"
+
+#include "../tclap/XorHandler.h"
+#include <tclap/HelpVisitor.h>
+#include <tclap/VersionVisitor.h>
+#include <tclap/IgnoreRestVisitor.h>
+>>>>>>> 37b1a56a22f821d305ded0b61b1cc0ebe5136ea6
 
 #include "CmdLineOutput.h"
 #include "StdOutput.h"
