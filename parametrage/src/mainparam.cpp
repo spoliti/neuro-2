@@ -20,13 +20,13 @@ int main(int argc, char** argv) {
 		
 //parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. 
 //le 0 est la valeur par défaut , et on a le type.
-		ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the time",  false, 20, "int" );
+		ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the duration of the simulation (in ms)",  false, 2000, "int" );
 		cmd.add( time_simu_arg );
 		
 		ValueArg<int>number_of_excitatory_neurons_arg("E","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
 		cmd.add(number_of_excitatory_neurons_arg);
 		   
-		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me g", false,4, "int");
+		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me the relative strength of inhibitory synapses", false,4, "int");
 		cmd.add(g_arg);
 		 
 		ValueArg<double>ratio_arg("r","ratio","Give me ratio Vext/Vthr", false,2.0, "double");
@@ -68,8 +68,10 @@ int main(int argc, char** argv) {
         //if(network.Env::get_time()%(network.Env::get_periode()) == 0){
         
         //modulo pour des nb doubles
-        double modulo;
-        modulo = fmod(network.Env::get_time(), network.Env::get_periode());
+        double modulo(0);
+        if (network.Env::get_periode() != 0) {
+			modulo = fmod(network.Env::get_time(), network.Env::get_periode());
+		}
 
         //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
         if (modulo == 0) {
