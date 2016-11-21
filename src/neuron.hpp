@@ -249,19 +249,22 @@ private:
     
     //attributs
 	const int numero_neuron;
-	
-	int compteur_spikes; 	//nombre de spikes envoyés ?
+	int compteur_spikes_env; 	//nombre de spikes envoyés ?
+ 	int compteur_spikes_background;
+	//int compteur_spikes; 	//nombre de spikes envoyés ?
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
 	bool is_in_env_;		//true si neuron dans l'environnement, false si du background
-	
+	std::vector <to_delivery> to_delivery_at_t; //vecteur des objets to delivery à t
 	std::vector<Neuron*> connections_;		//contient indices des neurones auquel l'instance est connectée
 										//ie de qui l'instance peut RECEVOIR des spikes
-	std::vector<double> times_spikes;
+	std::vector<double> list_potential;
+ 	std::vector<double> times_spikes_env;
+ 	std::vector<double> times_spikes_background;
 	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false	//temps auxquels les spikes sont recus
 	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
-    
+    bool seuil_depassement; //est à un true qd on est au moment du reset et ne calcul pas pot
     
     //constantes
 public:

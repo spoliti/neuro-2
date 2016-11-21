@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
 #include <assert.h>
+#include <math.h>
+#include <stdio.h> //pour exp
 
 using namespace std;
 
@@ -10,7 +12,8 @@ using namespace std;
 Neuron::Neuron(double time_simu_, int excitatory_neurons_, int neuron_number_, double g_, bool excitatory_, bool is_in_env, double ratio_)
     :Config(time_simu_, excitatory_neurons_, g_, ratio_),
     numero_neuron(neuron_number_), //initialisation du numero du neuron
-    compteur_spikes(0.0),           //initialisation du nb de spikes a 0
+    compteur_spikes_background(0.0),           //initialisation du nb de spikes a 0
+    compteur_spikes_env(0.0),
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
     is_excitatory_(excitatory_),
