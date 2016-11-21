@@ -2,7 +2,7 @@
 #include <iostream>  
 #include "Configuration.hpp"
 
-Config::Config(double time_simu_ ,int excitatory_neurons_, int gstrengh_ ,double ratio)
+Config::Config(double time_simu_ ,int excitatory_neurons_, double gstrengh_ ,double ratio_)
 	:v_reset(10),
 	potential_amplitude(0.1),
 	refractory_period(2),
@@ -16,8 +16,7 @@ Config::Config(double time_simu_ ,int excitatory_neurons_, int gstrengh_ ,double
 	g(gstrengh_),
 	excitatory_neurons(excitatory_neurons_)
 {
-
-	inhibatory_neurons= (excitatory_neurons_/gstrengh_);
+	inhibatory_neurons = (double) excitatory_neurons_/gstrengh_;
 	inhibatory_connection = connection_probability*inhibatory_neurons;
 
 	excitatory_connection = excitatory_neurons*connection_probability;
@@ -26,11 +25,12 @@ Config::Config(double time_simu_ ,int excitatory_neurons_, int gstrengh_ ,double
 
 	total_number_neurons = env_neurons + ext_excitatory_connection;
 
+
 	//Calcul des valeurs pour Vthr et Vext
 		
 	//if (potential_amplitude==0 or excitatory_connection==0 or membrane_time==0) throw string("div by 0");
 	v_thr = firing_threshold / (potential_amplitude * excitatory_connection * membrane_time);
-	v_ext = ratio * v_thr;
+	v_ext = ratio_ * v_thr;
 
 }
 

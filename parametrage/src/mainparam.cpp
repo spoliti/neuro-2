@@ -11,7 +11,7 @@ using namespace TCLAP;
 
 int main(int argc, char** argv) { 
 
-	int time_simu(20), number_excitatory(10000);
+	int time_simu(2000), number_excitatory(10000);
 	double g(4.0), ratio(2.0);
 	
 	try {
@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 		ValueArg<int>number_of_excitatory_neurons_arg("E","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
 		cmd.add(number_of_excitatory_neurons_arg);
 		   
-		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me the relative strength of inhibitory synapses", false,4, "int");
+		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me the relative strength of inhibitory synapses", false,4.0, "double");
 		cmd.add(g_arg);
 		 
 		ValueArg<double>ratio_arg("r","ratio","Give me ratio Vext/Vthr", false,2.0, "double");
@@ -48,15 +48,13 @@ int main(int argc, char** argv) {
 	{ cerr << "error: " << e.error() << " for arg " << e.argId() << endl; }
 	
 	
-
-	
 	//Création de la simulation
 	Env network(time_simu, number_excitatory, g, ratio); 
 	 
 	//appel de random_connection pour générer les connections
-	network.Env::random_connection();
+	network.Env::set_connections();
 
-
+/*
 	//Mise en route de la simulation
 	//int time_simu(network.Env::get_time_simu());
     
@@ -89,7 +87,7 @@ int main(int argc, char** argv) {
 	network.Env::get_times_spikes(a);  //affichage des temps auquels les spikes distribués ont été recu pour neurone i
 	
     int b(2);
-    network.Env::get_times_spikes(b);
+    network.Env::get_times_spikes(b); */
     
     
     return 0;

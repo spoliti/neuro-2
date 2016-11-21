@@ -9,7 +9,7 @@
 class Config {
 	
 	public:
-	Config(double time_simu_, int excitatory_neurons, int gstrenght,double r);
+	Config(double time_simu_, int excitatory_neurons_, double gstrenght_ ,double r_);
 	~Config();
 	
 	//Constantes

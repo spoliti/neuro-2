@@ -7,8 +7,8 @@
 using namespace std;
 
 	
-Neuron::Neuron(double time_simu_, int excitatory_neurons, int neuron_number_, double g_, bool excitatory_, bool is_in_env, double ratio_)
-    :Config(time_simu_, excitatory_neurons, g, ratio_),
+Neuron::Neuron(double time_simu_, int excitatory_neurons_, int neuron_number_, double g_, bool excitatory_, bool is_in_env, double ratio_)
+    :Config(time_simu_, excitatory_neurons_, g_, ratio_),
     numero_neuron(neuron_number_), //initialisation du numero du neuron
     compteur_spikes(0.0),           //initialisation du nb de spikes a 0
     potential(v_reset),             //initialisation du potentiel a la valeur de repos

@@ -32,7 +32,7 @@ public:
  * 
  *  
  **/     
-    Neuron(double time_simu_, int excitatory_neurons, int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
+    Neuron(double time_simu_, int excitatory_neurons_, int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
 /*!  
  * @brief Desctructor of neuron class
  * Delete the colection of connections
