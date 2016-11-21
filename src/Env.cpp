@@ -64,7 +64,7 @@ double ratio;
 	unsigned int number_of_neurons(Neuron::env_neurons + Neuron::ext_excitatory_connection);
 	//contructeur neuron : i, g, excitatory, is_in_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if (i <= Neuron::inhibatory_neurons) {										//les neurones d'indice 0-2499 sont inhibitory et env
+		if (i < Neuron::inhibatory_neurons) {										//les neurones d'indice 0-2499 sont inhibitory et env
 			Neuron* A = new Neuron(i, g, false, true, ratio);
 			neurons_.push_back(A);
 		}

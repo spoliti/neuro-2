@@ -6,15 +6,18 @@
 
 using namespace std;
 
-
-
-TEST(nb_of_neurons,TestNumberOfNeuronsCreated) {
+class EnvTest : public ::testing::Test {
+ protected:
+	virtual void SetUp() { 
+  }
 	Env network;
-	EXPECT_EQ(13500, network.number_of_neurons()) ;
+};
+
+TEST_F(EnvTest,TestNumberOfNeuronsCreated) {
+	EXPECT_EQ(1350, network.number_of_neurons()) ;
 }
 	
-TEST(graph_fifty_neurons_test, TestNumberOfNeuronsForGraph) {
-	Env network;
+TEST_F(EnvTest, TestNumberOfNeuronsForGraph) {
 	vector<Neuron*> vect(network.graph_fifty_neurons());
 	EXPECT_EQ(50, vect.size()) ;
 } 
@@ -33,35 +36,42 @@ TEST(reset, state) {
 }
 
 
-
-TEST(basic_test_neuron,neuron_excitaroy) {
-	Env network;
+TEST_F(EnvTest,neuron_excitatory) {
 	vector<Neuron*> vect(network.get_neurons_());
-	for (unsigned int i(2500); i<12500; ++i) {
+	for (unsigned int i(250); i<1250; ++i) {
 		EXPECT_TRUE(vect[i]->is_excitatory()) ;
 	}
 }
- // comment avoir accès au tableau de neurones alors qu'il est privé ??
  
-TEST(basic_test_neuron,neuron_inhibitory) {
-	Env network;
+TEST_F(EnvTest,neuron_inhibitory) {
 	vector<Neuron*> vect(network.get_neurons_());
-	for (unsigned int i(0); i<2500; ++i) {
+	for (unsigned int i(0); i<250; ++i) {
 		EXPECT_FALSE(vect[i]->is_excitatory()) ;
 	}
 }
 
 TEST(new_connection, TestAddConnectionToNeuron) {
 	Neuron neur1(1,1,true,true,1);
-	Neuron neur2(1,1,true,true,1);
+	Neuron neur2(2,1,true,true,1);
 	Neuron* neur(&neur2);
-	std::vector<Neuron*> vect(neur1.get_connections_());
-	//cout << "nombre de connections de neur1: "<< vect.size() << endl;
+	cout << "nombre de connections de neur1: "<< neur1.get_connections_().size() << endl;
 	neur1.add_connection(neur);
-	//cout << "nombre de connections de neur1: "<< vect.size() << endl;
-	EXPECT_EQ(1, vect.size()) ;
+	cout << "nombre de connections de neur1: "<< neur1.get_connections_().size() << endl;
+	EXPECT_EQ(1, neur1.get_connections_().size()) ;
 }
-//vérifier ici on a utliser la nouvelle méthode getconnections verifier quelle marche pour le test !!!!
+
+TEST(new_connection, TestIsANewConnection) {
+	Neuron neur1(1,1,true,true,1);
+	Neuron neur2(2,1,true,true,1);
+	Neuron* neur2_(&neur2);
+	
+	EXPECT_TRUE(neur1.is_a_new_connection(neur2.get_numero()));
+	neur1.add_connection(neur2_);
+	EXPECT_FALSE(neur1.is_a_new_connection(neur2.get_numero()));
+	EXPECT_FALSE(neur1.is_a_new_connection(neur1.get_numero()));
+}
+
+
 
 	
 	
@@ -70,5 +80,6 @@ int main(int ac, char* av[])
   testing::InitGoogleTest(&ac, av);
   return RUN_ALL_TESTS();
 }
+
 
 
