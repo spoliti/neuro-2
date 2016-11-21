@@ -4,7 +4,7 @@
 #include <array>
 #include <vector>
 #include <iostream>
-
+#include "Configuration.hpp"
 
 struct to_delivery
 {
@@ -12,15 +12,13 @@ struct to_delivery
     double potential_provisory_env;
 	double potential_provisory_background; //potentiel calculé avant réception et donné au neurone au temps de réception t du background
 };
-
-
 /*!
  * @class Neuron
  *
  * @brief description
  */
 
-class Neuron
+class Neuron : public Config
 {
     
 public:
@@ -40,7 +38,7 @@ public:
  * 
  *  
  **/     
-    Neuron(int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
+    Neuron(double time_simu_, int excitatory_neurons_, int neuron_number_, double g_, bool excitatory_, bool is_env, double rapport_vext_over_vthr_);
 /*!  
  * @brief Desctructor of neuron class
  * Delete the colection of connections
@@ -91,7 +89,8 @@ public:
  * @return compteur_spike value
  * 
  **/         
-    double get_compteur_background();
+
+  double get_compteur_background();
     
 /*!
  * @brief getter for the spikes counter
@@ -99,8 +98,8 @@ public:
  * 
  * @return compteur_spike value
  * 
- **/         
-    double get_compteur_env();
+ **/  
+  double get_compteur_env();
 /*!
  * @brief getter for the potential value
  * 
@@ -113,10 +112,9 @@ public:
     double get_refractory_time();
     
     void set_neuron_as_active();
+    void set_neuron_as_inactive();
     //autre
 
-	void set_neuron_as_inactive();
-	
 /*! 
  * @brief Reset the potential value at the v_reset value
  * 
@@ -137,7 +135,6 @@ public:
  * 
  **/     
     void refractory();
-    
     void calculate_potential_and_give_spike_at_t(double const& time);
     
 /*!
@@ -166,17 +163,18 @@ public:
     bool is_a_new_connection(int number); 	//vérifie que la connection n'existe pas déjà
 	void receive_spike();
 	
-    void reset_after_spike(double const& time); //repos d'un neurone pdt un temps + reset quand il > threshold
+   void reset_after_spike(double const& time); //repos d'un neurone pdt un temps + reset quand il > threshold
     void find_spikes_and_calculate_intermediary_potential(double const& time); //ok si le tps de env est en milisec
 	void affect_potentiel(); //donne le potentiel au temps de réception au neuronne
 	//utilisé par loi de Poisson
 	
+	
 /*!
  * @brief Indicates if times_spikes is empty
- *The method looks at the size of the vector times_spikes_background
+ *The method looks at the size of the vector times_spikes
  * 
- * @return True if the size of times_spikes_background is 0
- * @return False if the size of times_spikes_background is not 0  
+ * @return True if the size of times_spikes is 0
+ * @return False if the size of times_spikes is not 0  
  * 
  **/ 	
 	bool is_times_spikes_background_empty();
@@ -203,8 +201,7 @@ public:
  * @return A vector that contains all times where the neuron recieve a spike
  **/		
 	std::vector<double> get_times_spikes_background();
-	
-/*!
+	/*!
  * @brief Indicates if times_spikes is empty
  *The method looks at the size of the vector times_spikes
  * 
@@ -246,55 +243,45 @@ public:
 	std::vector<double> get_list_potential();
 	
 	bool is_active_state();
-    
+
 	
 private:
     
     //attributs
 	const int numero_neuron;
 	
-	int compteur_spikes_env; 	//nombre de spikes envoyés ?
-	int compteur_spikes_background;
+	int compteur_spikes; 	//nombre de spikes envoyés ?
 	double potential;       //potentiel de la membrane au temps t
-	std::vector <to_delivery> to_delivery_at_t; //vecteur des objets to delivery à t
-	
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
 	bool is_in_env_;		//true si neuron dans l'environnement, false si du background
 	
 	std::vector<Neuron*> connections_;		//contient indices des neurones auquel l'instance est connectée
 										//ie de qui l'instance peut RECEVOIR des spikes
-	std::vector<double> list_potential;
-	std::vector<double> times_spikes_env;
-	std::vector<double> times_spikes_background;
-	
+	std::vector<double> times_spikes;
 	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false	//temps auxquels les spikes sont recus
 	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
-	
-    double g;		//relative strength of inhibitory synapses
-    double v_thr;   //frequency needed for a neuron to reach threshold in absence of feedback
-    double v_ext;   //external frequency (background ?)
-    bool seuil_depassement; //est à un true qd on est au moment du reset et ne calcul pas pot
+    
     
     //constantes
 public:
     //General 
-	const static double v_reset;         	  	/*!< Value in millivolt */
-    const static double potential_amplitude;	/*!< Value in milliVolt */
-	const static int refractory_period;   		/*!< Value in millisecond */
-	const static int firing_threshold;         	/*!< Value in milliVolt */
-	const static double transmission_delay;    	/*!< Value millisecond */
-	const static int membrane_time;             /*!< Value millisecond */
+	//const static double v_reset;         	  	/*!< Value in millivolt */
+   // const static double potential_amplitude;	/*!< Value in milliVolt */
+	//const static int refractory_period;   		/*!< Value in millisecond */
+	//const static int firing_threshold;         	/*!< Value in milliVolt */
+	//const static double transmission_delay;    	/*!< Value millisecond */
+	//const static int membrane_time;             /*!< Value millisecond */
     
     //Connections
-    const static double connection_probability;
-    const static int excitatory_connection;    	/*!< number of excitatory connections for each neuron */
-    const static int inhibatory_connection;   	/*!< number of inhibitory connections for each neuron */
-    const static int ext_excitatory_connection;	/*!< number of external excitatory connections for each neuron */
+   // const static double connection_probability;
+   // const static int excitatory_connection;    	/*!< number of excitatory connections for each neuron */
+   // const static int inhibatory_connection;   	/*!< number of inhibitory connections for each neuron */
+   // const static int ext_excitatory_connection;	/*!< number of external excitatory connections for each neuron */
 	
-	const static int excitatory_neurons;    	/*!< number of excitatory neurons in the network */
-    const static int inhibatory_neurons;   		/*!< number of inhibitory neurons in the network */
-    const static int env_neurons;				/*!< number of neuron in the environment(not from the background) */
+	//const static int excitatory_neurons;    	/*!< number of excitatory neurons in the network */
+   // const static int inhibatory_neurons;   		/*!< number of inhibitory neurons in the network */
+   // const static int env_neurons;				/*!< number of neuron in the environment(not from the background) */
 	
 
 };
