@@ -251,7 +251,6 @@ private:
 	const int numero_neuron;
 	int compteur_spikes_env; 	//nombre de spikes envoyés ?
  	int compteur_spikes_background;
-	//int compteur_spikes; 	//nombre de spikes envoyés ?
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory

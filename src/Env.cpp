@@ -13,11 +13,13 @@ Env::Env(double time_simu_, int excitatory_neurons_, double gstrenght_, double r
 time(0)
 {
 	//TESTS AVEC 10 FOIS MOINS DE NEURONES
-	unsigned int number_of_neurons(Neuron::env_neurons + Neuron::ext_excitatory_connection);
+	unsigned int number_of_neurons(env_neurons + ext_excitatory_connection);
 	//contructeur neuron : i, g, excitatory, is_in_env, ratio)
 	for(unsigned int i(0); i < number_of_neurons; ++i){
-		if (i < Neuron::inhibatory_neurons) {										//les neurones d'indice 0-2499 sont inhibitory et env
-			Neuron* A = new Neuron(i, g, false, true, ratio);
+		
+		//les neurones d'indice 0-2499 sont inhibitory et env
+		if (i < inhibatory_neurons) {										
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, gstrenght_, false, true, ratio_);
 			neurons_.push_back(A);
 		}
 		
@@ -129,17 +131,17 @@ void Env::random_spike() {
 			a = time_average_spike - periode/2;
 		}
 		
-                         
-		if (neurons_[i]->Neuron::is_times_spikes_empty()) { 		//premier spike  
-			neurons_[i]->Neuron::times_spikes_add(a);
+                        
+		if (neurons_[i]->Neuron::is_times_spikes_background_empty()) { 		//premier spike  
+			neurons_[i]->Neuron::times_spikes_background_add(a);
 			cerr << "temps delivres par loi poisson: " << a << endl;
 		
-		} else if (!neurons_[i]->Neuron::is_times_spikes_empty()){	// faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
+		} else if (!neurons_[i]->Neuron::is_times_spikes_background_empty()){	// faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
 
-			if((time - neurons_[i]->Neuron::get_time_last_spike())>=4){
-				neurons_[i]->Neuron::times_spikes_add(a);
+			if((time - neurons_[i]->Neuron::get_time_last_spike_background())>=4){
+				neurons_[i]->Neuron::times_spikes_background_add(a);
 			}					
-		}
+		} 
 	}
 }
 
@@ -160,7 +162,7 @@ void Env::actualise() {
 	 //on a le potentiel à t de chaque neuronne, les spikes aléatoires st fixés pour la période de 40
 	 //il faut désormais analyser la situation, voir pour chaque neurone le total de spikes de env ou de background
 	 //qu'il va recevoir  
-	 for (int i(0); i < env_neurons; ++i){ /// accès des valeurs env_neurons faire attention
+	 for (unsigned int i(0); i < env_neurons; ++i){ // accès des valeurs env_neurons faire attention
 		neurons_[i]->find_spikes_and_calculate_intermediary_potential(time);
 	
 	} 
@@ -172,7 +174,7 @@ void Env::actualise() {
 	
 	//on est à un nouveau temps on regarde d'abord si certain neurones st à nouveau actifs
 	
-	for (int i(0); i < env_neurons; ++i) {
+	for (unsigned int i(0); i < env_neurons; ++i) {
 		if (neurons_[i]->get_refractory_time() < time) {
 			neurons_[i]->set_neuron_as_active();
 		}
@@ -180,7 +182,7 @@ void Env::actualise() {
 	
 	// on met la situation à jour, les neuronnes recoivent leurs spikes calcule le potentiel à v(t+dt)
 	//SEPARER LES DEUX BOUCLES FOR PAS CHANGER
-	for (int i(0); i<env_neurons; ++i){ 
+	for (unsigned int i(0); i < env_neurons; ++i){ 
 		neurons_[i]->Neuron::reset_after_spike(time);
 		neurons_[i]->Neuron::calculate_potential_and_give_spike_at_t(time);
 		 // 
@@ -192,12 +194,12 @@ void Env::actualise() {
 }
 
 void Env::get_times_spikes(double i){
-	neurons_[i]->Neuron::get_times_spikes();
-	unsigned int size ((neurons_[i]->Neuron::get_times_spikes()).size());
+	neurons_[i]->Neuron::get_times_spikes_background();
+	unsigned int size ((neurons_[i]->Neuron::get_times_spikes_background()).size());
 	for (unsigned int j(0); j<= size-1; ++j){
-		cerr << "neuron: " << i << " spike numero: " << j << " receptionné au temps: " << (neurons_[i]->Neuron::get_times_spikes())[j] << endl;
+		cerr << "neuron: " << i << " spike numero: " << j << " receptionné au temps: " << (neurons_[i]->Neuron::get_times_spikes_background())[j] << endl;
 	}
-	cerr << "For neuron " << i << " , compteur spikes : " << neurons_[i]->get_compteur() << endl;
+	cerr << "For neuron " << i << " , compteur spikes : " << neurons_[i]->get_compteur_background() << endl; 
 }
 		
 double Env::get_time(){
@@ -273,8 +275,9 @@ void Env::get_liaisons_env(int b){
 
 unsigned int Env::number_of_neurons () {
 	return neurons_.size();
-	}
+}
 
 vector<Neuron*> Env::get_neurons_() {
 	return neurons_;
-	}
+}
+

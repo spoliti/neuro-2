@@ -9,6 +9,10 @@
 using namespace TCLAP; 
 //using namespace std;
 
+//POUR CHANGER LE NOMBRE DE NEURONES DE ENV : modifier seulement le nombre de neurones excitateurs
+//modifier number_excitatory à la valeur voulue (ligne 18 )
+//modifier avec la même valeur ligne 30
+
 int main(int argc, char** argv) { 
 
 	int time_simu(2000), number_excitatory(10000);
@@ -62,8 +66,6 @@ int main(int argc, char** argv) {
 
 
 	//Mise en route de la simulation
-    
-    int time_simu(network.Env::get_time_simu());
     
     for(int i(0); i <= time_simu; ++i){     
         //cout<< network.Env::get_time() << endl; //pour voir le temps passer
