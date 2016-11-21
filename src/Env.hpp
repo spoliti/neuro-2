@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>  
 #include "neuron.hpp"
+#include "Configuration.hpp"
 
 using namespace std;
 
@@ -13,12 +14,12 @@ using namespace std;
  * 
  * @brief This class has a set of neurons, from the network and the background. This class allows to create connections between all these neurons during a simulation time. 
  */
-class Env {
+class Env : public Config {
 	public:
 		/*!
 		 * @brief Constructor
 		 */
-		Env(); 					
+		Env(double time_simu_, int excitatory_neurons_, double gstrenght_, double ratio_); 					
 		
 		/*!
 		 * @brief Destructor
@@ -89,9 +90,7 @@ class Env {
 		 * @return The duration of the the simulation. 
 		 */
 		double get_time_simu();
-		
-		//Cette fonction n'est pas dans le cpp !!
-		double fact(double t);
+
 		
 		/*!
 		 * @brief Get the period...
@@ -128,7 +127,7 @@ class Env {
 		 * @see Env::graph_fifty_neurons()
 		 * @see Neuron::get_times_spikes()
 		 */
-		vector<vector<double>> spikes_list_fifty_neurons();
+		vector<vector<double>> spikes_list_fifty_neurons();	
 		
 		void get_liaisons_background(int b);	
 		void get_liaisons_env(int b);
@@ -140,11 +139,7 @@ class Env {
 		vector<Neuron*> neurons_; 		//neurones du network et du background
 		double time;					//temps t où on en est
 		double time_average_spike;
-					
-	public:
-		const static double periode; /*!< Period of ......... , usefull for programming random spikes. */		//periode de quoi precisement ?
- 		const static double time_unit; /*!< Unit of time, 0.01ms. */	   //unité de temps, 0.01ms ? 
- 		const static double time_simu; /*!< Total duration of the simulation. */
+
 };
 
 
