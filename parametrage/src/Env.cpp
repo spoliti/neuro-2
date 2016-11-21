@@ -8,8 +8,8 @@
 using namespace std;
 	
 
-Env::Env(double time_simu_, int excitatory_neurons_, int gstrenght, double ratio) 
-: Config(time_simu_, excitatory_neurons_, g, ratio),
+Env::Env(double time_simu_, int excitatory_neurons_, double gstrenght_, double ratio_) 
+: Config(time_simu_, excitatory_neurons_, gstrenght_, ratio_),
 time(0)
 {
 	//CREATION DES NEURONES
@@ -18,19 +18,19 @@ time(0)
 		
 		//les neurones d'indice 0-2499 sont inhibitory et env
 		if(i <= inhibatory_neurons){										
-			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, g, false, true, ratio);
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, gstrenght_, false, true, ratio_);
 			neurons_.push_back(A);
 		}
 		
 		//les neurones d'indice  2500-13499 sont excitatory et env
 		else if(i >= inhibatory_neurons and i < env_neurons){									
-			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, g, true, true, ratio);		
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, gstrenght_, true, true, ratio_);		
 			neurons_.push_back(A);
 		}
 		
 		//ceux d'indice 12500-13499 sont du background (excitatory)
 		else if(i>= env_neurons){									
-			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, g, true, false, ratio);		
+			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, gstrenght_, true, false, ratio_);		
 			neurons_.push_back(A);
 		}
 	} 
@@ -232,7 +232,7 @@ double Env::actualise_time(){
 }
 
 double Env::get_periode(){
-	return Env::periode;
+	return periode;
 }
 
 vector<Neuron*> Env::graph_fifty_neurons(){

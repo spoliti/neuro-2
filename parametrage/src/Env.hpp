@@ -19,7 +19,7 @@ class Env : public Config {
 		/*!
 		 * @brief Constructor
 		 */
-		Env(double time_simu_, int excitatory_neurons, int gstrenght, double ratio); 					
+		Env(double time_simu_, int excitatory_neurons_, double gstrenght_, double ratio_); 					
 		
 		/*!
 		 * @brief Destructor
