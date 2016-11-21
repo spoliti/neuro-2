@@ -1,54 +1,22 @@
 #include "neuron.hpp"
+#include "Configuration.cpp"
 #include <iostream>
 #include <cstdlib>		//pour fonction rand()
 #include <assert.h>
-#include <math.h>
-#include <stdio.h> //pour exp
 
 using namespace std;
 
-//Initialisation des constantes static
-	const double Neuron::v_reset(10);         	   	 //[milliVolt]
-    const double Neuron::potential_amplitude(0.1);   //[milliVolt]
-	const int Neuron::refractory_period(2);          //[milliseconde]
-	const int Neuron::firing_threshold(20);          //[milliVolt]
-	const double Neuron::transmission_delay(1.5);    //[milliseconde]
-	const int Neuron::membrane_time(20);             //[milliseconde]
-
-//NORMALEMENT 10 FOIS PLUS DE NEURONES ET DE CONNECTIONS
-    const double Neuron::connection_probability(0.1);
-    const int Neuron::excitatory_connection(100);       //nb of excitatory connections for each neuron
-	const int Neuron::inhibatory_connection(25);        //nb of inhibitory connections for each neuron
-    const int Neuron::ext_excitatory_connection(100);   //nb of external excitatory connections for each neuron
 	
-	const int Neuron::excitatory_neurons(1000);    //nb of excitatory neurons in the network
-    const int Neuron::inhibatory_neurons(250);   	//nb of inhibitory neurons in the network
-	const int Neuron::env_neurons(1250);			//nb de neurones de l'environnement (pas du background)
-
-//Methodes
-	
-Neuron::Neuron(int neuron_number_, double g_, bool excitatory_, bool is_in_env, double rapport_vext_over_vthr_)
-    :numero_neuron(neuron_number_), //initialisation du numero du neuron
-    compteur_spikes_env(0),           //initialisation du nb de spikes a 0
-    compteur_spikes_background(0),
+Neuron::Neuron(double time_simu_, int excitatory_neurons_, int neuron_number_, double g_, bool excitatory_, bool is_in_env, double ratio_)
+    :Config(time_simu_, excitatory_neurons_, g_, ratio_),
+    numero_neuron(neuron_number_), //initialisation du numero du neuron
+    compteur_spikes(0.0),           //initialisation du nb de spikes a 0
     potential(v_reset),             //initialisation du potentiel a la valeur de repos
     active_state(true),             //etat de départ est actif
     is_excitatory_(excitatory_),
     is_in_env_(is_in_env),
-    is_refractory_until_then(0.0),
-    g(g_),                          //initialisation de g
-	seuil_depassement(false)
-{
-    //Calcul des valeurs pour Vthr et Vext
-    
-    /* 
-    if (potential_amplitude==0 or excitatory_connection==0 or membrane_time==0) throw string("div by 0");
-    */
-
-    v_thr = firing_threshold / (potential_amplitude * excitatory_connection * membrane_time);
-    v_ext = rapport_vext_over_vthr_ * v_thr;
-    
-}
+    is_refractory_until_then(0.0)
+{}
 
 Neuron::~Neuron() {
 	//vide
@@ -76,12 +44,11 @@ bool Neuron::is_in_env() {
 		return is_in_env_;
 }
 
-
 bool Neuron::is_active_state() {
 		return active_state;
 }
 
-
+	
 bool Neuron::is_in_background() {
 		bool a;
 		a = this->is_in_env_;
@@ -109,6 +76,7 @@ double Neuron::get_refractory_time() {
 	return is_refractory_until_then;
 }
 
+
 void Neuron::set_neuron_as_active() {
 	active_state = true;
 }
@@ -116,6 +84,7 @@ void Neuron::set_neuron_as_active() {
 void Neuron::set_neuron_as_inactive() {
 	active_state = false;
 }
+
 
 void Neuron::reset(){
     //remet le potentiel du neurone a la valeur v_reset après avoir
@@ -133,8 +102,7 @@ void Neuron::refractory(){
 }
 
 
-
-void Neuron::random_connection(vector<Neuron*> &neurons) {
+void Neuron::random_connection(vector<Neuron*> &neurons) { /// revoir accessibilité Neuron::
 	  /* Pour un nombre random entre min et max :
       * a = min + rand() % (max - min + 1 );
       * exemple : nb entre 250 et 1249 : neurones excitateurs
@@ -194,7 +162,6 @@ bool Neuron::is_a_new_connection(int number) {
 	
 	return true;
 }
-
 
 void Neuron::receive_spike() {
 	
@@ -271,8 +238,6 @@ void Neuron::times_spikes_background_add(const double time){
 	this->times_spikes_background.push_back(time);
 }
 
-
-
 double Neuron::get_time_last_spike_env(){
 	int b(times_spikes_env.size());
 	return times_spikes_env[b-1];
@@ -290,6 +255,7 @@ vector<double> Neuron::get_times_spikes_env(){
 vector<double> Neuron::get_times_spikes_background(){
 	return times_spikes_background;
 }
+
 
 //marquer si à un temps donné un spike est envoyé depuis le neuron en consideration
 void Neuron::reset_after_spike(double const& time) {
@@ -484,5 +450,3 @@ void Neuron::affect_potentiel(){
  * avec i parcourant tous les neurones de Env
  * et j parcourant le tableau de connection du neurone i
  */
-
-
