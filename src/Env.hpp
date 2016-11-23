@@ -48,17 +48,6 @@ class Env : public Config {
 		void random_connection();		
 		
 		/*!
-		 * @brief Creates connections between the neurons of the network and the neurons of the background. 
-		 *
-		 * Connections with the neurons of the background are modeled by the number of the neurons of the background, from 12500 to 13499 in normal conditions.
-		 * For the general case : form (number of neurons in the environment) to (this number of neurons * (1+ %(nb of excitatory neurons in the network * connection probability))
-		 * The second number corresponds to the number of neurons (network + background) -1. 
-		 * 
-		 * @see Neuron::add_connection()
-		 */ 
-		void background_connection();
-		
-		/*!
 		 * @brief Programs spkikes accordind to a Poisson's law. 
 		 */
 		void random_spike();

@@ -52,8 +52,6 @@ void Env::set_connections() {
 	
 	//Connections avec les neurones du network
 	random_connection();
-	//Ajout des connections avec le background
-	background_connection();
 	
 }
 
@@ -73,31 +71,6 @@ void Env::random_connection() {
 	 * car on ne s'occupe pas de qui ils peuvent recevoir des spikes
 	 * vu qu'ils suivent une loi de poisson
 	 */
-}
-
-
-void Env::background_connection() {
-	/* Les connections avec les neurones du background sont modélisées
-	 * par les numéros du neurone du background, qui vont de 12500 à 13499 dans le cas normal
-	 * cas général : 
-	 * de env_neuron à env_neuron*(1 + %excitatory_neurons*connection_probability) 
-	 * la borne supérieure correspond en fait à la taille de neurons_ -1
-	 */
-	 
-	//int EnvConnectionNumber;
-	//EnvConnectionNumber = connection_probability * env_neurons;
-	
-	//Pour tous les neurones du network
-	for (unsigned int i(0); i < env_neurons; ++i) {
-		
-		//ajout des connections avec le background (les mêmes pour tous les neurones du network)
-		for (unsigned int j(env_neurons); j < neurons_.size(); ++j) {
-			if ( neurons_[j] != nullptr) {
-			neurons_[i]->Neuron::add_connection(neurons_[j]);
-		}
-		}
-	}
-	
 }
 
 
