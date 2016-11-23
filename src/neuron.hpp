@@ -243,7 +243,7 @@ public:
 	std::vector<double> get_list_potential();
 	
 	bool is_active_state();
-
+	void change_number_spike_background_at_t(int number);
 	
 private:
     
@@ -251,6 +251,7 @@ private:
 	const int numero_neuron;
 	int compteur_spikes_env; 	//nombre de spikes envoyés ?
  	int compteur_spikes_background;
+	int number_spike_background_at_t;
 	double potential;       //potentiel de la membrane au temps t
 	bool active_state;      //true if active state, false if in refractory period
 	bool is_excitatory_;	//initialisé dans constructuer de Env, true if excitatory, false if inhibitory
@@ -264,6 +265,7 @@ private:
 	double is_refractory_until_then; 	//temps jusqu'auquel le neurone est avec active_state = false	//temps auxquels les spikes sont recus
 	//EST CE QUE LE TEMPS EST EN MILISEC ? sinon le convertir dans send_spike
     bool seuil_depassement; //est à un true qd on est au moment du reset et ne calcul pas pot
+    int time_last_to_delivery;
     
     //constantes
 public:

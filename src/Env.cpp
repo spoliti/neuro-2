@@ -24,16 +24,10 @@ time(0)
 		}
 		
 		//les neurones d'indice  2500-13499 sont excitatory et env
-		else if(i >= inhibatory_neurons and i < env_neurons){									
+		else if(i >= inhibatory_neurons){									
 			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, gstrenght_, true, true, ratio_);		
 			neurons_.push_back(A);
-		}
-		
-		//ceux d'indice 12500-13499 sont du background (excitatory)
-		else if(i>= env_neurons){									
-			Neuron* A = new Neuron(time_simu_, excitatory_neurons_, i, gstrenght_, true, false, ratio_);		
-			neurons_.push_back(A);
-		}
+		}	
 	} 
 
 	cout << neurons_.size() << " neurons created ! :) " << endl;	
@@ -81,6 +75,7 @@ void Env::random_connection() {
 	 */
 }
 
+
 void Env::background_connection() {
 	/* Les connections avec les neurones du background sont modélisées
 	 * par les numéros du neurone du background, qui vont de 12500 à 13499 dans le cas normal
@@ -109,63 +104,77 @@ void Env::background_connection() {
 //programmation des spikes selon loi de poisson selon cycle de 10 (à t=0, on dit ce qu'il se passe jusqu'a t+10)
 void Env::random_spike() {
 	
-	double b = (time/periode);
 	
-	time_average_spike = (b)*periode + periode/2;
 	
-	cerr << "temps moyen pour loi de poisson: " << time_average_spike << endl;
-		
-	std::random_device rd;
-    std::mt19937 gen(rd());
- 
-    std::poisson_distribution<> d(time_average_spike); //moyenne
-		
-	unsigned int number_of_neurons = neurons_.size();
+	unsigned int nrolls (number_of_neurons()) ; // number of experiments
 	
-	for (unsigned int i(0); i<= (number_of_neurons-1); ++i){
-		int a (d(gen));
-		if (a >= (time_average_spike + periode/2)){
-			a = time_average_spike + periode/2;
-		}
-		if (a <= (time_average_spike - periode/2)){
-			a = time_average_spike - periode/2;
-		}
+	
+	std::default_random_engine generator;	
+	
+	int b(time/10);
+	
+	int coeff_pour_plus_aleatoire ((time)- b*10);
+	
+	
+	std::poisson_distribution<int> distribution(190 + coeff_pour_plus_aleatoire); // nombre moyen de spikes du background recu par unité de temps
+	for (unsigned int i=0; i<nrolls; ++i) {
 		
-                        
+		int number = distribution(generator);
+		neurons_[i]->change_number_spike_background_at_t(number);
+			if(neurons_[i]->get_numero()==181){
+			neurons_[i]->change_number_spike_background_at_t(number);
+			}
+		
+		
+		//std::cout << number << std::endl;
+		
+		//neurons_[i]->change_number_spike_background_at_t(number);
+			/*
+			if(neurons_[i]->get_numero() == 10){
+			cout << "number: " << number << endl;
+			}*/
+		
+		
+		
+		//REPRENDRE
+		/*
 		if (neurons_[i]->Neuron::is_times_spikes_background_empty()) { 		//premier spike  
-			neurons_[i]->Neuron::times_spikes_background_add(a);
-			cerr << "temps delivres par loi poisson: " << a << endl;
-		
-		} else if (!neurons_[i]->Neuron::is_times_spikes_background_empty()){	// faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
+			neurons_[i]->Neuron::times_spikes_background_add(number);
+			
+			if(neurons_[i]->get_numero() == 10){
+			cout << "number: " << number << endl;
+			}
+		} 
+		else if (!neurons_[i]->Neuron::is_times_spikes_background_empty()){	// AAAA REVOIR faut avoir passé un certain délais depuis le dernier spike disons 4 unités de temps
 
 			if((time - neurons_[i]->Neuron::get_time_last_spike_background())>=4){
-				neurons_[i]->Neuron::times_spikes_background_add(a);
-			}					
-		} 
+				neurons_[i]->Neuron::times_spikes_background_add(number);
+				cout << "number: " << number << endl;
+			}		
+		}*/
 	}
+	
+	
 }
+
+
+
 
 void Env::actualise() {
 	
 	//lancement des spikes sur des cycles de 40 unités de temps (ms, s ?)        
         
-     //modulo pour des nb doubles
-     double modulo;
-     modulo = fmod(time,periode);
-
-        //lancement des spikes sur des cycles de 10 unités de temps (ms, s ?)
-      if (modulo == 0) {
-		cerr << "temps de mise en place spikes: " << time << endl;
-        this->random_spike();
-	   }
+     
+	 //cerr << "on met en place les spikes: " << time << endl;
+     random_spike();
+	   
 	   
 	 //on a le potentiel à t de chaque neuronne, les spikes aléatoires st fixés pour la période de 40
 	 //il faut désormais analyser la situation, voir pour chaque neurone le total de spikes de env ou de background
 	 //qu'il va recevoir  
 	 for (unsigned int i(0); i < env_neurons; ++i){ // accès des valeurs env_neurons faire attention
-		neurons_[i]->find_spikes_and_calculate_intermediary_potential(time);
-	
-	} 
+		neurons_[i]->find_spikes_and_calculate_intermediary_potential(time); // on cherche l'ensemble des spikes à distribuer 20 ms plus tard et on enregistre																	
+		} 
 	cout << time << endl;
 	
 	//on passe au temps suivant
@@ -177,20 +186,36 @@ void Env::actualise() {
 	for (unsigned int i(0); i < env_neurons; ++i) {
 		if (neurons_[i]->get_refractory_time() < time) {
 			neurons_[i]->set_neuron_as_active();
+			
+			if(neurons_[i]->get_numero()==180){
+			cout << "neurone 180 est:  ACTIF "<< endl;
+			}
+			if(neurons_[i]->get_numero()==181){
+			cout << "neurone 181 est:  ACTIF "<< endl;
+			}
+		}
+		else{
+			if(neurons_[i]->get_numero()==180){
+			cout << "neurone 180 est:  INACTIF "<< endl;
+			}
+			if(neurons_[i]->get_numero()==181){
+			cout << "neurone 181 est:  INACTIF "<< endl;
+			}
 		}
 	}
+	
 	
 	// on met la situation à jour, les neuronnes recoivent leurs spikes calcule le potentiel à v(t+dt)
 	//SEPARER LES DEUX BOUCLES FOR PAS CHANGER
 	for (unsigned int i(0); i < env_neurons; ++i){ 
-		neurons_[i]->Neuron::reset_after_spike(time);
+		neurons_[i]->Neuron::reset_after_spike(time); // c'est ici qu'à lieu le set neurone as inactive
 		neurons_[i]->Neuron::calculate_potential_and_give_spike_at_t(time);
-		 // 
+		
 	}
 	
-	cout << "dans l'env potentiel neur 10: " << "au temps: " << time << "est: " << neurons_[10]->get_potential() << endl;
-	cout << "dans l'env potentiel neur 1100: " << "au temps: " << time << "est: " << neurons_[1100]->get_potential() << endl;
-
+	cout << "dans l'env potentiel neur 180: " << "au temps: " << time << "est: " << neurons_[180]->get_potential() << endl;
+	cout << "dans l'env potentiel neur 181: " << "au temps: " << time << "est: " << neurons_[181]->get_potential() << endl;
+	
 }
 
 void Env::get_times_spikes(double i){

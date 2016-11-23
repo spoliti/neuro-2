@@ -24,10 +24,10 @@ int main(int argc, char** argv) {
 		
 //parametre temps qu on veut modifier. il peut être appleer dans le terminal grace à -t ou --time suivit de la valeur que l'on veut lui mettre. 
 //le 0 est la valeur par défaut , et on a le type.
-		ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the duration of the simulation (in ms)",  false, 2000, "int" );
+		ValueArg< int > time_simu_arg( "t", "time_simu", "Give me the duration of the simulation (in ms)",  false, 40, "int" );
 		cmd.add( time_simu_arg );
 		
-		ValueArg<int>number_of_excitatory_neurons_arg("E","Excitatory", "Give me the number of excitatory neurones", false, 10000, "int");
+		ValueArg<int>number_of_excitatory_neurons_arg("E","Excitatory", "Give me the number of excitatory neurones", false, 1000, "int");
 		cmd.add(number_of_excitatory_neurons_arg);
 		   
 		ValueArg<double>g_arg( "g", "Relative_strength_inhibitory_synapses", "Give me the relative strength of inhibitory synapses", false,4.0, "double");
@@ -57,13 +57,13 @@ int main(int argc, char** argv) {
 	 
 	//appel de random_connection pour générer les connections
 	network.Env::set_connections();
-	
+	/*
 	int d(10);
     network.Env::get_liaisons_env(d);
     
     int e(1100);
     network.Env::get_liaisons_env(e);
-
+	*/
 
 	//Mise en route de la simulation
     

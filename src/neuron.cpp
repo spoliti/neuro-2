@@ -18,7 +18,8 @@ Neuron::Neuron(double time_simu_, int excitatory_neurons_, int neuron_number_, d
     active_state(true),             //etat de départ est actif
     is_excitatory_(excitatory_),
     is_in_env_(is_in_env),
-    is_refractory_until_then(0.0)
+    is_refractory_until_then(0.0),
+    time_last_to_delivery(-1)
 {}
 
 Neuron::~Neuron() {
@@ -80,7 +81,7 @@ double Neuron::get_refractory_time() {
 }
 
 
-void Neuron::set_neuron_as_active() {
+void Neuron::set_neuron_as_active() {	
 	active_state = true;
 }
 
@@ -259,6 +260,9 @@ vector<double> Neuron::get_times_spikes_background(){
 	return times_spikes_background;
 }
 
+void Neuron::change_number_spike_background_at_t(int number){
+	number_spike_background_at_t= number;
+}
 
 //marquer si à un temps donné un spike est envoyé depuis le neuron en consideration
 void Neuron::reset_after_spike(double const& time) {
@@ -277,13 +281,25 @@ void Neuron::reset_after_spike(double const& time) {
 		this->potential = v_reset;
 		this->list_potential.push_back(potential);
 		this-> seuil_depassement = true;
-		this->active_state = false;
+		this->active_state = false;   //equivalent à set neurone as inactive
 		this->is_refractory_until_then = time + (Neuron::refractory_period/0.1); //ATTENTION AU 0.1
 		
 		if(this->numero_neuron==180){
-		cout << "seuil dépassé" << "au temps: " << time << endl;
+		cout << "seuil dépassé pour neurone 180: " << "au temps: " << time << endl;
 		cout << "apres depassement" << " l'attribut potentiel vaut: " << this-> potential << endl;
+		if(this->active_state == false){
+		cout << "neurone 180 désormais inactif" << endl;
 		}
+		}
+		
+		if(this->numero_neuron==181){
+		cout << "seuil dépassé pour neurone 181: " << "au temps: " << time -1<< endl;
+		cout << "apres depassement" << " l'attribut potentiel vaut: " << this-> potential << endl;
+		if(this->active_state == false){
+		cout << "neurone 181 désormais inactif" << endl;
+		}
+		}
+		
 	}
 	}
 }
@@ -295,61 +311,42 @@ void Neuron::find_spikes_and_calculate_intermediary_potential(double const& time
 	//int spike_contributions(0);
 	
 	//envoie de spikes entre les neuronnes
-	//parcourt le tableau de neurones connectés a l'instance et compte ceux qui envoyent un spike au temps courant
+	//parcourt le tableau de neurones connectés a l'instance et compte ceux qui envoient un spike au temps courant
+	//POUR CELA LE NEURONNE DOIT ETRE ACTIF
 	for(unsigned int i(0); i<connections_.size(); i++) {	
 		//on s'occupe des spikes entre neurones
-				if(connections_[i]->is_in_env()){
+				if(connections_[i]->is_in_env() and connections_[i]->is_active_state()){
 					if(connections_[i]->is_excitatory()) {
 						if(connections_[i]->potential >=firing_threshold){ //OOOOOOuand ON A ENVOYE TOUS LES SPIKES IL FAUT METTRE LES POTENYIELS DE TOUS LES NEUR A RESET§§§§§§§§§§§
 						++number_spikes_e;
 						}
 					}
-				else if(connections_[i]->is_inhibitory()) {
+					else if(connections_[i]->is_inhibitory()) {
 					
 					if(connections_[i]->potential >=firing_threshold){ //OOOOOOuand ON A ENVOYE TOUS LES SPIKES IL FAUT METTRE LES POTENYIELS DE TOUS LES NEUR A RESET§§§§§§§§§§§
 						++number_spikes_i;
 						}
 						
 					}
-				}			
-		//on s'occupe des spikes deu background
-				if(connections_[i]->is_in_background()) {
-					
-					//TROUVER LA CONDITION SI LE NEURONE VEUT ENVOYER UN SPIJE
-					if(connections_[i]-> times_spikes_background.size() != 0){
-						for(unsigned int j(0); j< connections_[i]->times_spikes_background.size(); ++j){
-							
-							//cout<< "les temps : " << connections_[i]->times_spikes_background[j] << endl;
-							if(connections_[i]->times_spikes_background[j]==time){
-								number_spikes_b = number_spikes_b +1;
-								/*
-								if(this->numero_neuron==23){
-									cout << "b: "<< number_spikes_b << endl; 
-								}*/
-							}
-						}
-					}
-		}
+				}	
+				
 	
 }
-	/*
 	if(this->numero_neuron==180){
-	cout << "b definitif de 180: " << number_spikes_b << endl;
-	}*/
-	
-	if(this->numero_neuron==180){
-	cout << "e definitif de 180: " << number_spikes_e << endl;
-	cout << "i definitif de 180: " << number_spikes_i << endl;
+	cout << "neurone 180: " << endl;	
+	cout << "e definitif de 180: " << number_spikes_e << " / i definitif de 180: " << number_spikes_i << " / b definitif de 180: " << number_spike_background_at_t << endl;
 	}	
 	
 	
-	if(this->numero_neuron==2501){
-	cout << "e definitif de 2501: " << number_spikes_e << endl;
-	cout << "i definitif de 2501: " << number_spikes_i << endl;
-	}		
+	if(this->numero_neuron==181){
+	cout << "neurone 181: " << endl;
+	cout << "e definitif de 181: " << number_spikes_e << " / i definitif de 181: " << number_spikes_i << " / b definitif de 181: " << number_spike_background_at_t << endl;
+	}
 	
 	compteur_spikes_env += number_spikes_e + number_spikes_i; 
 	compteur_spikes_background += number_spikes_b;
+	
+	number_spikes_b = number_spike_background_at_t;
 	
 	// spike_contributions = RI(t)
 	if (number_spikes_e !=0 or number_spikes_i !=0 or number_spikes_b !=0){
