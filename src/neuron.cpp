@@ -433,6 +433,12 @@ vector<Neuron*> Neuron::get_connections_(){
 vector<double> Neuron::get_list_potential(){
 	return this->list_potential;
 }
+
+void Neuron::set_potential(double new_potential) {
+	potential= new_potential;
+}
+
+
 /****
 
 // on fait les send à part

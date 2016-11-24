@@ -244,6 +244,7 @@ public:
 	
 	bool is_active_state();
 	void change_number_spike_background_at_t(int number);
+	void set_potential(double new_potential);
 	
 private:
     
